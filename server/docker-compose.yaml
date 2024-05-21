@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  box:
+    container_name: devops
+    image: harbor.pcdncom.com/backend/devops:latest
+    ports:
+      - "8888:8888"
+    networks:
+      - devops
+networks:
+  devops:
+    driver: bridge

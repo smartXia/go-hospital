@@ -1,0 +1,4 @@
+/*! 
+ Build based on BAIDU 
+ Time : 1716207707000 */
+import{o as t,c as e,A as s,b as o}from"./087AC4D233B64EB0index.5fcd1422.js";const a={class:"flex flex-col md:flex-row gap-2 items-center text-sm text-slate-700 dark:text-slate-500 justify-center py-2"},n=o("div",{class:"text-center"},[o("span",{class:"mr-1"},"Powered by"),o("span",null,[o("a",{class:"font-bold text-active",href:"https://github.com"},"Gin-Vue-ZIJIE")])],-1),r=o("div",{class:"text-center"},[o("span",{class:"mr-1"},"Copyright"),o("span",null,[o("a",{class:"font-bold text-active",href:"https://github.com"},"SIOME团队")])],-1),c=Object.assign({name:"BottomInfo"},{__name:"bottomInfo",setup:o=>(console.log("%c powered by %c some %c","background:#0081ff; padding: 1px; border-radius: 3px 0 0 3px; color: #fff","background:#354855; padding: 1px 5px; border-radius: 0 3px 3px 0; color: #fff; font-weight: bold;","background:transparent"),(o,c)=>(t(),e("div",a,[n,s(o.$slots,"default"),r])))});export{c as _};
