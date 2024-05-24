@@ -1,4 +1,4 @@
-	module devops-manage
+module devops-manage
 
 go 1.22
 

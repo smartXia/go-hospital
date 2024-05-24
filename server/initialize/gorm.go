@@ -3,6 +3,7 @@ package initialize
 import (
 	"devops-manage/global"
 	"devops-manage/model/example"
+	"devops-manage/model/hos"
 	"devops-manage/model/system"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -50,7 +51,7 @@ func RegisterTables() {
 		example.ExaFile{},
 		example.ExaCustomer{},
 		example.ExaFileChunk{},
-		example.ExaFileUploadAndDownload{},
+		example.ExaFileUploadAndDownload{}, hos.SysDept{}, hos.SysPost{},
 	)
 	if err != nil {
 		global.GVA_LOG.Error("register table failed", zap.Error(err))

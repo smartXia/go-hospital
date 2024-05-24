@@ -29,7 +29,7 @@ start(){
  echo "${CMS_NAME} is already running. pid=${pid} ."
  else
 
- nohup ./$CMS_NAME> /opt/www/html/manage/go-server/logFileName1.file 2>&1 &
+ nohup ./$CMS_NAME> /opt/www/html/hospital/go-server/logFileName1.file 2>&1 &
  echo "${CMS_NAME} start success"
  fi
 }

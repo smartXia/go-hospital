@@ -12,7 +12,7 @@ autocode:
     server-api: /api/v1/%s
     server-plug: /plugin/%s
     server-initialize: /initialize
-    root: /opt/www/html/manage
+    root: E:\GolandProjects\go-hospital
     web-table: /view
     web: /web/src
     server-service: /service/%s
@@ -83,7 +83,7 @@ hua-wei-obs:
     access-key: you-access-key
     secret-key: you-secret-key
 jwt:
-    signing-key: dde89f94-85da-4221-b9ce-28a8a4347f68
+    signing-key: cff6c8cd-46e7-4d0a-9c55-f70f95ee472f
     expires-time: 7d
     buffer-time: 1d
     issuer: qmPlus
@@ -123,7 +123,7 @@ mysql:
     prefix: ""
     port: "3306"
     config: charset=utf8mb4&parseTime=True&loc=Local
-    db-name: dev-manage
+    db-name: hospital
     username: root
     password: "123456"
     path: 121.37.182.90

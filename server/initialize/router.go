@@ -79,6 +79,11 @@ func Routers() *gin.Engine {
 		exampleRouter.InitFileUploadAndDownloadRouter(PrivateGroup)
 
 	}
+	{
+		hosRouter := router.RouterGroupApp.Hos
+		hosRouter.InitSysDeptRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitSysPostRouter(PrivateGroup, PublicGroup)
+	}
 
 	global.GVA_LOG.Info("router register success")
 	return Router
