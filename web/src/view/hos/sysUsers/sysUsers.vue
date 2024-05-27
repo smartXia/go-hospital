@@ -16,14 +16,6 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
-        <el-form-item label="用户UUID" prop="uuid">
-         <el-input v-model="searchInfo.uuid" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="用户登录名" prop="username">
-         <el-input v-model="searchInfo.username" placeholder="搜索条件" />
-
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>

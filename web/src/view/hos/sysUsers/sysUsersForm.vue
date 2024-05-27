@@ -74,6 +74,15 @@
         <el-form-item label="租户id:" prop="tenantId">
           <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入" />
        </el-form-item>
+        <el-form-item label="创建者:" prop="createdBy">
+          <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="更新者:" prop="updatedBy">
+          <el-input v-model.number="formData.updatedBy" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="删除者:" prop="deletedBy">
+          <el-input v-model.number="formData.deletedBy" :clearable="true" placeholder="请输入" />
+       </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
           <el-button type="primary" @click="back">返回</el-button>
@@ -129,6 +138,9 @@ const formData = ref({
             graduationTime: '',
             desc: '',
             tenantId: 0,
+            createdBy: 0,
+            updatedBy: 0,
+            deletedBy: 0,
         })
 // 验证规则
 const rule = reactive({

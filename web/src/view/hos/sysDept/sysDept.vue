@@ -16,10 +16,6 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
-        <el-form-item label="部门名称" prop="name">
-         <el-input v-model="searchInfo.name" placeholder="搜索条件" />
-
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -53,6 +49,9 @@
         <el-table-column align="left" label="管理人id" prop="manageId" width="120" />
         <el-table-column align="left" label="上级部门" prop="parentId" width="120" />
         <el-table-column align="left" label="租户编号" prop="tenantId" width="120" />
+        <el-table-column align="left" label="创建者" prop="createdBy" width="120" />
+        <el-table-column align="left" label="更新者" prop="updatedBy" width="120" />
+        <el-table-column align="left" label="删除者" prop="deletedBy" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link icon="edit" class="table-button" @click="updateSysDeptFunc(scope.row)">变更</el-button>
@@ -108,6 +107,15 @@
             <el-form-item label="租户编号:"  prop="tenantId" >
               <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入租户编号" />
             </el-form-item>
+            <el-form-item label="创建者:"  prop="createdBy" >
+              <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入创建者" />
+            </el-form-item>
+            <el-form-item label="更新者:"  prop="updatedBy" >
+              <el-input v-model.number="formData.updatedBy" :clearable="true" placeholder="请输入更新者" />
+            </el-form-item>
+            <el-form-item label="删除者:"  prop="deletedBy" >
+              <el-input v-model.number="formData.deletedBy" :clearable="true" placeholder="请输入删除者" />
+            </el-form-item>
           </el-form>
     </el-drawer>
   </div>
@@ -142,23 +150,15 @@ const formData = ref({
         manageId: 0,
         parentId: 0,
         tenantId: 0,
+        createdBy: 0,
+        updatedBy: 0,
+        deletedBy: 0,
         })
 
 
 
 // 验证规则
 const rule = reactive({
-               name : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               },
-               {
-                   whitespace: true,
-                   message: '不能只输入空格',
-                   trigger: ['input', 'blur'],
-              }
-              ],
 })
 
 const searchRule = reactive({
@@ -339,6 +339,9 @@ const closeDialog = () => {
         manageId: 0,
         parentId: 0,
         tenantId: 0,
+        createdBy: 0,
+        updatedBy: 0,
+        deletedBy: 0,
         }
 }
 // 弹窗确定

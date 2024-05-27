@@ -2,8 +2,10 @@ package hos
 
 import (
 	"devops-manage/global"
+	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"github.com/gin-gonic/gin"
 )
 
 type SysDeptService struct {
@@ -11,53 +13,50 @@ type SysDeptService struct {
 
 // CreateSysDept 创建sysDept表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (sysDeptService *SysDeptService) CreateSysDept(sysDept *hos.SysDept) (err error) {
-	err = global.GVA_DB.Create(sysDept).Error
+func (sysDeptService *SysDeptService) CreateSysDept(sysDept *hos.SysDept, ctx *gin.Context) (err error) {
+	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysDept).Error
 	return err
 }
 
 // DeleteSysDept 删除sysDept表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (sysDeptService *SysDeptService) DeleteSysDept(ID string) (err error) {
-	err = global.GVA_DB.Delete(&hos.SysDept{}, "id = ?", ID).Error
+func (sysDeptService *SysDeptService) DeleteSysDept(ID string, ctx *gin.Context) (err error) {
+	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&hos.SysDept{}, "id = ?", ID).Error
 	return err
 }
 
 // DeleteSysDeptByIds 批量删除sysDept表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (sysDeptService *SysDeptService) DeleteSysDeptByIds(IDs []string) (err error) {
-	err = global.GVA_DB.Delete(&[]hos.SysDept{}, "id in ?", IDs).Error
+func (sysDeptService *SysDeptService) DeleteSysDeptByIds(IDs []string, ctx *gin.Context) (err error) {
+	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&[]hos.SysDept{}, "id in ?", IDs).Error
 	return err
 }
 
 // UpdateSysDept 更新sysDept表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (sysDeptService *SysDeptService) UpdateSysDept(sysDept hos.SysDept) (err error) {
-	err = global.GVA_DB.Model(&hos.SysDept{}).Where("id = ?", sysDept.ID).Updates(&sysDept).Error
+func (sysDeptService *SysDeptService) UpdateSysDept(sysDept hos.SysDept, ctx *gin.Context) (err error) {
+	err = global.GVA_DB.Model(&hos.SysDept{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", sysDept.ID).Updates(&sysDept).Error
 	return err
 }
 
 // GetSysDept 根据ID获取sysDept表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (sysDeptService *SysDeptService) GetSysDept(ID string) (sysDept hos.SysDept, err error) {
-	err = global.GVA_DB.Where("id = ?", ID).First(&sysDept).Error
+func (sysDeptService *SysDeptService) GetSysDept(ID string, ctx *gin.Context) (sysDept hos.SysDept, err error) {
+	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Where("id = ?", ID).First(&sysDept).Error
 	return
 }
 
 // GetSysDeptInfoList 分页获取sysDept表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (sysDeptService *SysDeptService) GetSysDeptInfoList(info hosReq.SysDeptSearch) (list []hos.SysDept, total int64, err error) {
+func (sysDeptService *SysDeptService) GetSysDeptInfoList(info hosReq.SysDeptSearch, ctx *gin.Context) (list []hos.SysDept, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := global.GVA_DB.Model(&hos.SysDept{})
+	db := global.GVA_DB.Model(&hos.SysDept{}).Scopes(scope.TenantScope(ctx))
 	var sysDepts []hos.SysDept
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
-	}
-	if info.Name != "" {
-		db = db.Where("name LIKE ?", "%"+info.Name+"%")
 	}
 	err = db.Count(&total).Error
 	if err != nil {

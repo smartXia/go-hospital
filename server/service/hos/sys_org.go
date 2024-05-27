@@ -56,9 +56,6 @@ func (sysOrgService *SysOrgService) GetSysOrgInfoList(info hosReq.SysOrgSearch) 
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.Name != "" {
-		db = db.Where("name LIKE ?", "%"+info.Name+"%")
-	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

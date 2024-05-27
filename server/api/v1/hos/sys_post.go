@@ -32,7 +32,7 @@ func (sysPostApi *SysPostApi) CreateSysPost(c *gin.Context) {
 		return
 	}
 
-	if err := sysPostService.CreateSysPost(&sysPost); err != nil {
+	if err := sysPostService.CreateSysPost(&sysPost, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
@@ -51,7 +51,7 @@ func (sysPostApi *SysPostApi) CreateSysPost(c *gin.Context) {
 // @Router /sysPost/deleteSysPost [delete]
 func (sysPostApi *SysPostApi) DeleteSysPost(c *gin.Context) {
 	ID := c.Query("ID")
-	if err := sysPostService.DeleteSysPost(ID); err != nil {
+	if err := sysPostService.DeleteSysPost(ID, c); err != nil {
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
@@ -69,7 +69,7 @@ func (sysPostApi *SysPostApi) DeleteSysPost(c *gin.Context) {
 // @Router /sysPost/deleteSysPostByIds [delete]
 func (sysPostApi *SysPostApi) DeleteSysPostByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
-	if err := sysPostService.DeleteSysPostByIds(IDs); err != nil {
+	if err := sysPostService.DeleteSysPostByIds(IDs, c); err != nil {
 		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
@@ -94,7 +94,7 @@ func (sysPostApi *SysPostApi) UpdateSysPost(c *gin.Context) {
 		return
 	}
 
-	if err := sysPostService.UpdateSysPost(sysPost); err != nil {
+	if err := sysPostService.UpdateSysPost(sysPost, c); err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
@@ -113,7 +113,7 @@ func (sysPostApi *SysPostApi) UpdateSysPost(c *gin.Context) {
 // @Router /sysPost/findSysPost [get]
 func (sysPostApi *SysPostApi) FindSysPost(c *gin.Context) {
 	ID := c.Query("ID")
-	if resysPost, err := sysPostService.GetSysPost(ID); err != nil {
+	if resysPost, err := sysPostService.GetSysPost(ID, c); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
@@ -137,7 +137,7 @@ func (sysPostApi *SysPostApi) GetSysPostList(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	if list, total, err := sysPostService.GetSysPostInfoList(pageInfo); err != nil {
+	if list, total, err := sysPostService.GetSysPostInfoList(pageInfo, c); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {

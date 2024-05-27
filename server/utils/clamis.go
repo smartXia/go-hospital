@@ -44,6 +44,13 @@ func GetToken(c *gin.Context) string {
 	return token
 }
 
+func GetTenantId(c *gin.Context) string {
+	token, _ := c.Cookie("X-Tenant-ID")
+	if token == "" {
+		token = c.Request.Header.Get("X-Tenant-ID")
+	}
+	return token
+}
 func GetClaims(c *gin.Context) (*systemReq.CustomClaims, error) {
 	token := GetToken(c)
 	j := NewJWT()

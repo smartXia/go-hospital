@@ -8,6 +8,9 @@
         <el-form-item label="描述:" prop="desc">
           <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入描述" />
        </el-form-item>
+        <el-form-item label="图标:" prop="img">
+          <el-input v-model="formData.img" :clearable="true"  placeholder="请输入图标" />
+       </el-form-item>
         <el-form-item label="详细地址:" prop="address">
           <el-input v-model="formData.address" :clearable="true"  placeholder="请输入详细地址" />
        </el-form-item>
@@ -68,6 +71,7 @@ const type = ref('')
 const formData = ref({
             name: '',
             desc: '',
+            img: '',
             address: '',
             enable: 0,
             sort: 0,
@@ -80,11 +84,6 @@ const formData = ref({
         })
 // 验证规则
 const rule = reactive({
-               name : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
 })
 
 const elFormRef = ref()

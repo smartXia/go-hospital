@@ -1,0 +1,10 @@
+package request
+
+import (
+	"devops-manage/model/common/request"
+)
+
+type SysDeptSearch struct {
+	Name string `json:"name" form:"name" `
+	request.PageInfo
+}

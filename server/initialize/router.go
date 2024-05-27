@@ -37,7 +37,7 @@ func Routers() *gin.Engine {
 	if gin.Mode() == gin.DebugMode {
 		Router.Use(gin.Logger())
 	}
-	InstallPlugin(Router)
+
 	systemRouter := router.RouterGroupApp.System
 	exampleRouter := router.RouterGroupApp.Example
 
@@ -59,7 +59,7 @@ func Routers() *gin.Engine {
 		systemRouter.InitInitRouter(PublicGroup)
 	}
 	PrivateGroup := Router.Group(global.GVA_CONFIG.System.RouterPrefix)
-	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler())
+	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler()).Use(middleware.TenantMiddleware())
 	{
 		systemRouter.InitApiRouter(PrivateGroup, PublicGroup)
 		systemRouter.InitJwtRouter(PrivateGroup)
@@ -81,6 +81,7 @@ func Routers() *gin.Engine {
 	}
 	{
 		hosRouter := router.RouterGroupApp.Hos
+
 		hosRouter.InitSysOrgRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitSysDeptRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitSysPostRouter(PrivateGroup, PublicGroup)

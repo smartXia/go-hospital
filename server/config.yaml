@@ -128,7 +128,7 @@ mysql:
     password: "123456"
     path: 121.37.182.90
     engine: ""
-    log-mode: error
+    log-mode: debug
     max-idle-conns: 10
     max-open-conns: 100
     singular: false

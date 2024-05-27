@@ -6,7 +6,6 @@ import (
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
 	"devops-manage/service"
-	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -32,9 +31,8 @@ func (sysUsersApi *SysUsersApi) CreateSysUsers(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	sysUsers.CreatedBy = utils.GetUserID(c)
 
-	if err := sysUsersService.CreateSysUsers(&sysUsers); err != nil {
+	if err := sysUsersService.CreateSysUsers(&sysUsers, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
@@ -53,8 +51,7 @@ func (sysUsersApi *SysUsersApi) CreateSysUsers(c *gin.Context) {
 // @Router /sysUsers/deleteSysUsers [delete]
 func (sysUsersApi *SysUsersApi) DeleteSysUsers(c *gin.Context) {
 	ID := c.Query("ID")
-	userID := utils.GetUserID(c)
-	if err := sysUsersService.DeleteSysUsers(ID, userID); err != nil {
+	if err := sysUsersService.DeleteSysUsers(ID, c); err != nil {
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
@@ -72,8 +69,7 @@ func (sysUsersApi *SysUsersApi) DeleteSysUsers(c *gin.Context) {
 // @Router /sysUsers/deleteSysUsersByIds [delete]
 func (sysUsersApi *SysUsersApi) DeleteSysUsersByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
-	userID := utils.GetUserID(c)
-	if err := sysUsersService.DeleteSysUsersByIds(IDs, userID); err != nil {
+	if err := sysUsersService.DeleteSysUsersByIds(IDs, c); err != nil {
 		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
@@ -97,9 +93,8 @@ func (sysUsersApi *SysUsersApi) UpdateSysUsers(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	sysUsers.UpdatedBy = utils.GetUserID(c)
 
-	if err := sysUsersService.UpdateSysUsers(sysUsers); err != nil {
+	if err := sysUsersService.UpdateSysUsers(sysUsers, c); err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
@@ -118,7 +113,7 @@ func (sysUsersApi *SysUsersApi) UpdateSysUsers(c *gin.Context) {
 // @Router /sysUsers/findSysUsers [get]
 func (sysUsersApi *SysUsersApi) FindSysUsers(c *gin.Context) {
 	ID := c.Query("ID")
-	if resysUsers, err := sysUsersService.GetSysUsers(ID); err != nil {
+	if resysUsers, err := sysUsersService.GetSysUsers(ID, c); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
@@ -142,7 +137,7 @@ func (sysUsersApi *SysUsersApi) GetSysUsersList(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	if list, total, err := sysUsersService.GetSysUsersInfoList(pageInfo); err != nil {
+	if list, total, err := sysUsersService.GetSysUsersInfoList(pageInfo, c); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
