@@ -25,6 +25,7 @@ func (s *SysDeptRouter) InitSysDeptRouter(Router *gin.RouterGroup, PublicRouter 
 	{
 		sysDeptRouterWithoutRecord.GET("findSysDept", sysDeptApi.FindSysDept)       // 根据ID获取sysDept表
 		sysDeptRouterWithoutRecord.GET("getSysDeptList", sysDeptApi.GetSysDeptList) // 获取sysDept表列表
+		sysDeptRouterWithoutRecord.GET("tree", sysDeptApi.Tree)                     // 获取sysDept表列表
 	}
 	{
 		sysDeptRouterWithoutAuth.GET("getSysDeptPublic", sysDeptApi.GetSysDeptPublic) // 获取sysDept表列表

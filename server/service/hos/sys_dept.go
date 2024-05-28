@@ -70,3 +70,17 @@ func (sysDeptService *SysDeptService) GetSysDeptInfoList(info hosReq.SysDeptSear
 	err = db.Find(&sysDepts).Error
 	return sysDepts, total, err
 }
+
+// GetSysDeptInfoList 分页获取sysDept表记录
+
+func (sysDeptService *SysDeptService) Tree(info hosReq.SysDeptSearch, ctx *gin.Context) (list []*hos.SysDept, err error) {
+	// 创建db
+	db := global.GVA_DB.Model(&hos.SysDept{}).Scopes(scope.TenantScope(ctx))
+	var sysDepts []*hos.SysDept
+	// 如果有条件搜索 下方会自动创建搜索语句
+	err = db.Find(&sysDepts).Error
+	sysDepts = hos.BuildDeptTree(sysDepts)
+	//tree := utils.BuildTree(sysDepts)
+	//println(tree)
+	return sysDepts, err
+}

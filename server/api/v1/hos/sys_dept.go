@@ -165,3 +165,29 @@ func (sysDeptApi *SysDeptApi) GetSysDeptPublic(c *gin.Context) {
 		"info": "不需要鉴权的sysDept表接口信息",
 	}, "获取成功", c)
 }
+
+// GetSysDeptList 分页获取sysDept表列表
+// @Tags Tree
+// @Summary 分页获取sysDept表列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query hosReq.SysDeptSearch true "分页获取sysDept表列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /sysDept/getSysDeptList [get]
+func (sysDeptApi *SysDeptApi) Tree(c *gin.Context) {
+	var pageInfo hosReq.SysDeptSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, err := sysDeptService.Tree(pageInfo, c); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List: list,
+		}, "获取成功", c)
+	}
+}

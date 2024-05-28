@@ -59,7 +59,8 @@ func Routers() *gin.Engine {
 		systemRouter.InitInitRouter(PublicGroup)
 	}
 	PrivateGroup := Router.Group(global.GVA_CONFIG.System.RouterPrefix)
-	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler()).Use(middleware.TenantMiddleware())
+	//PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler()).Use(middleware.TenantMiddleware())
+	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.TenantMiddleware())
 	{
 		systemRouter.InitApiRouter(PrivateGroup, PublicGroup)
 		systemRouter.InitJwtRouter(PrivateGroup)
