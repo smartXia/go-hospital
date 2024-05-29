@@ -5,4 +5,5 @@ type RouterGroup struct {
 	SysDeptRouter
 	SysPostRouter
 	SysUsersRouter
+	SysOperationRecordsRouter
 }

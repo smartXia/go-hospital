@@ -19,6 +19,10 @@ type SysOperationRecord struct {
 	ErrorMessage string        `json:"error_message" form:"error_message" gorm:"column:error_message;comment:错误信息"`  // 错误信息
 	Body         string        `json:"body" form:"body" gorm:"type:text;column:body;comment:请求Body"`                 // 请求Body
 	Resp         string        `json:"resp" form:"resp" gorm:"type:text;column:resp;comment:响应Body"`                 // 响应Body
-	UserID       int           `json:"user_id" form:"user_id" gorm:"column:user_id;comment:用户id"`                    // 用户id
+	UserID       int           `json:"user_id" form:"user_id" gorm:"column:user_id;comment:用户id"`
+	Action       string        `json:"action" form:"action" gorm:"column:action;comment:操作;size:255;"`         //操作
+	Browser      string        `json:"browser" form:"browser" gorm:"column:browser;comment:浏览器;size:255;"`     //浏览器
+	TenantId     *int          `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户id;size:10;"` //租户id
+	Os           string        `json:"os" form:"os" gorm:"column:os;comment:系统;size:255;"`                     //系统 // 用户id
 	User         SysUser       `json:"user"`
 }

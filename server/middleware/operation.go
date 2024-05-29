@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"bytes"
+	"devops-manage/core/constants"
 	"devops-manage/global"
 	"devops-manage/model/system"
 	"devops-manage/service"
@@ -73,8 +74,12 @@ func OperationRecord() gin.HandlerFunc {
 			Agent:  c.Request.UserAgent(),
 			Body:   "",
 			UserID: userId,
+			Action: constants.QUERYStr,
+			Os:     constants.WinOs,
 		}
-
+		if c.Request.URL.Path == "/api/base/login" {
+			record.Action = constants.AUTHStr
+		}
 		// 上传文件时候 中间件日志进行裁断操作
 		if strings.Contains(c.GetHeader("Content-Type"), "multipart/form-data") {
 			record.Body = "[文件]"

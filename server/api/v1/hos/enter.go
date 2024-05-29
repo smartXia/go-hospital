@@ -5,4 +5,5 @@ type ApiGroup struct {
 	SysDeptApi
 	SysPostApi
 	SysUsersApi
+	SysOperationRecordsApi
 }

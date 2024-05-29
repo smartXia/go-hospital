@@ -59,7 +59,7 @@ func Routers() *gin.Engine {
 		systemRouter.InitInitRouter(PublicGroup)
 	}
 	PrivateGroup := Router.Group(global.GVA_CONFIG.System.RouterPrefix)
-	//PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler()).Use(middleware.TenantMiddleware())
+
 	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.TenantMiddleware())
 	{
 		systemRouter.InitApiRouter(PrivateGroup, PublicGroup)
@@ -87,6 +87,8 @@ func Routers() *gin.Engine {
 		hosRouter.InitSysDeptRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitSysPostRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitSysUsersRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitSysOperationRecordsRouter(PrivateGroup, PublicGroup)
+
 	}
 
 	global.GVA_LOG.Info("router register success")

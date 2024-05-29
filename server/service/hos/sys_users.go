@@ -58,6 +58,10 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
+	if info.Username != "" {
+		db = db.Where("username LIKE ?", "%"+info.Username+"%")
+	}
+	db = db.Where("authority_id  = ?", 0)
 	err = db.Count(&total).Error
 	if err != nil {
 		return
