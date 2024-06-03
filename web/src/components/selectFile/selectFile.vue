@@ -9,6 +9,7 @@
       :file-list="fileList"
       :limit="limit"
       :accept="accept"
+      :headers="{}"
       class="upload-btn"
     >
       <el-button type="primary">上传文件</el-button>
@@ -45,7 +46,11 @@ const path = ref(import.meta.env.VITE_BASE_API)
 
 const userStore = useUserStore()
 const fullscreenLoading = ref(false)
-
+const haders  = {
+   'Content-Type': 'application/json',
+      'x-token': userStore.token,
+      'x-user-id': userStore.userInfo.ID,
+}
 const fileList = ref(props.modelValue)
 
 const emits = defineEmits(['update:modelValue'])

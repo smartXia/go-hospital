@@ -6,6 +6,7 @@
       :on-error="uploadError"
       :on-success="uploadSuccess"
       :show-file-list="false"
+      :headers="headers"
       class="upload-btn"
     >
       <el-button type="primary">普通上传</el-button>
@@ -18,6 +19,7 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { isVideoMime, isImageMime } from '@/utils/image'
+import { useUserStore } from '@/pinia/modules/user'
 
 defineOptions({
   name: 'UploadCommon',
@@ -27,7 +29,11 @@ const emit = defineEmits(['on-success'])
 const path = ref(import.meta.env.VITE_BASE_API)
 
 const fullscreenLoading = ref(false)
-
+const userStore = useUserStore()
+const headers  = {
+      'x-token':  userStore.token,
+      'x-user-id': userStore.userInfo.ID,
+}
 const checkFile = (file) => {
   fullscreenLoading.value = true
   const isLt500K = file.size / 1024 / 1024 < 0.5 // 500K, @todo 应支持在项目中设置

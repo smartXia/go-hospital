@@ -7,6 +7,7 @@
       :on-success="handleImageSuccess"
       :before-upload="beforeImageUpload"
       :multiple="false"
+      :headers="headers"
     >
       <el-button type="primary">压缩上传</el-button>
     </el-upload>
@@ -42,7 +43,10 @@ const props = defineProps({
 const path = ref(import.meta.env.VITE_BASE_API)
 
 const userStore = useUserStore()
-
+const headers  = {
+      'x-token':  userStore.token,
+      'x-user-id': userStore.userInfo.ID,
+}
 const beforeImageUpload = (file) => {
   const isJPG = file.type === 'image/jpeg'
   const isPng = file.type === 'image/png'
