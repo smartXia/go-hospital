@@ -16,20 +16,28 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="用户UUID" prop="uuid">
+         <el-input v-model="searchInfo.uuid" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="用户登录名" prop="username">
+         <el-input v-model="searchInfo.username" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="用户昵称" prop="nickName">
+         <el-input v-model="searchInfo.nickName" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item label="用户手机号" prop="phone">
          <el-input v-model="searchInfo.phone" placeholder="搜索条件" />
 
         </el-form-item>
-        <el-form-item label="归属医院" prop="hospital">
-         <el-input v-model="searchInfo.hospital" placeholder="搜索条件" />
+        <el-form-item label="监护人手机号" prop="jianhuPhone">
+         <el-input v-model="searchInfo.jianhuPhone" placeholder="搜索条件" />
 
         </el-form-item>
-        <el-form-item label="部门" prop="dept">
-         <el-input v-model="searchInfo.dept" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="职务" prop="post">
-         <el-input v-model="searchInfo.post" placeholder="搜索条件" />
+        <el-form-item label="监护人" prop="jianhuren">
+         <el-input v-model="searchInfo.jianhuren" placeholder="搜索条件" />
 
         </el-form-item>
         <el-form-item>
@@ -61,44 +69,37 @@
         <el-table-column align="left" label="用户登录名" prop="username" width="120" />
         <el-table-column align="left" label="用户登录密码" prop="password" width="120" />
         <el-table-column align="left" label="用户昵称" prop="nickName" width="120" />
-        <el-table-column align="left" label="用户侧边主题" prop="sideMode" width="120" />
         <el-table-column align="left" label="用户头像" prop="headerImg" width="120" />
-        <el-table-column align="left" label="基础颜色" prop="baseColor" width="120" />
-        <el-table-column align="left" label="用户角色ID" prop="authorityId" width="120" />
         <el-table-column align="left" label="用户手机号" prop="phone" width="120" />
+        <el-table-column align="left" label="监护人手机号" prop="jianhuPhone" width="120" />
+        <el-table-column align="left" label="监护人" prop="jianhuren" width="120" />
+        <el-table-column align="left" label="微信uuid" prop="wxUuid" width="120" />
         <el-table-column align="left" label="用户邮箱" prop="email" width="120" />
         <el-table-column align="left" label="用户是否被冻结 1正常 2冻结" prop="enable" width="120" />
-        <el-table-column align="left" label="归属医院" prop="hospital" width="120">
-          <template #default="scope">
-          {{ filterDataSource(dataSource.hospital,scope.row.hospital) }}
-         </template>
-         </el-table-column>
-        <el-table-column align="left" label="部门" prop="dept" width="120">
-          <template #default="scope">
-          {{ filterDataSource(dataSource.dept,scope.row.dept) }}
-         </template>
-         </el-table-column>
-        <el-table-column align="left" label="职务" prop="post" width="120">
-          <template #default="scope">
-          {{ filterDataSource(dataSource.post,scope.row.post) }}
-         </template>
-         </el-table-column>
         <el-table-column align="left" label="生日" prop="birthday" width="120" />
         <el-table-column align="left" label="性别" prop="sex" width="120" />
         <el-table-column align="left" label="住址" prop="address" width="120" />
         <el-table-column align="left" label="籍贯" prop="hometown" width="120" />
         <el-table-column align="left" label="学历" prop="education" width="120" />
-        <el-table-column align="left" label="专业" prop="profession" width="120" />
-        <el-table-column align="left" label="毕业院校" prop="school" width="120" />
-        <el-table-column align="left" label="毕业时间" prop="graduationTime" width="120" />
-        <el-table-column align="left" label="个人简介" prop="desc" width="120" />
+        <el-table-column align="left" label="身份证号码" prop="cardNo" width="120" />
+        <el-table-column align="left" label="年龄" prop="age" width="120" />
+        <el-table-column align="left" label="女性初潮日期" prop="womanPeriodDate" width="120" />
+        <el-table-column align="left" label="身高" prop="height" width="120" />
+        <el-table-column align="left" label="体重" prop="weight" width="120" />
+        <el-table-column align="left" label="第一次登记医院" prop="registerHos" width="120">
+          <template #default="scope">
+          {{ filterDataSource(dataSource.registerHos,scope.row.registerHos) }}
+         </template>
+         </el-table-column>
+        <el-table-column align="left" label="近一次登记医院" prop="latelyHos" width="120">
+          <template #default="scope">
+          {{ filterDataSource(dataSource.latelyHos,scope.row.latelyHos) }}
+         </template>
+         </el-table-column>
         <el-table-column align="left" label="租户id" prop="tenantId" width="120" />
-        <el-table-column align="left" label="创建者" prop="createdBy" width="120" />
-        <el-table-column align="left" label="更新者" prop="updatedBy" width="120" />
-        <el-table-column align="left" label="删除者" prop="deletedBy" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
-            <el-button type="primary" link icon="edit" class="table-button" @click="updateSysUsersFunc(scope.row)">变更</el-button>
+            <el-button type="primary" link icon="edit" class="table-button" @click="updateHosUsersFunc(scope.row)">变更</el-button>
             <el-button type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
             </template>
         </el-table-column>
@@ -139,41 +140,26 @@
             <el-form-item label="用户昵称:"  prop="nickName" >
               <el-input v-model="formData.nickName" :clearable="true"  placeholder="请输入用户昵称" />
             </el-form-item>
-            <el-form-item label="用户侧边主题:"  prop="sideMode" >
-              <el-input v-model="formData.sideMode" :clearable="true"  placeholder="请输入用户侧边主题" />
-            </el-form-item>
             <el-form-item label="用户头像:"  prop="headerImg" >
               <el-input v-model="formData.headerImg" :clearable="true"  placeholder="请输入用户头像" />
             </el-form-item>
-            <el-form-item label="基础颜色:"  prop="baseColor" >
-              <el-input v-model="formData.baseColor" :clearable="true"  placeholder="请输入基础颜色" />
-            </el-form-item>
-            <el-form-item label="用户角色ID:"  prop="authorityId" >
-              <el-input v-model.number="formData.authorityId" :clearable="true" placeholder="请输入用户角色ID" />
-            </el-form-item>
             <el-form-item label="用户手机号:"  prop="phone" >
               <el-input v-model="formData.phone" :clearable="true"  placeholder="请输入用户手机号" />
+            </el-form-item>
+            <el-form-item label="监护人手机号:"  prop="jianhuPhone" >
+              <el-input v-model="formData.jianhuPhone" :clearable="true"  placeholder="请输入监护人手机号" />
+            </el-form-item>
+            <el-form-item label="监护人:"  prop="jianhuren" >
+              <el-input v-model="formData.jianhuren" :clearable="true"  placeholder="请输入监护人" />
+            </el-form-item>
+            <el-form-item label="微信uuid:"  prop="wxUuid" >
+              <el-input v-model="formData.wxUuid" :clearable="true"  placeholder="请输入微信uuid" />
             </el-form-item>
             <el-form-item label="用户邮箱:"  prop="email" >
               <el-input v-model="formData.email" :clearable="true"  placeholder="请输入用户邮箱" />
             </el-form-item>
             <el-form-item label="用户是否被冻结 1正常 2冻结:"  prop="enable" >
               <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入用户是否被冻结 1正常 2冻结" />
-            </el-form-item>
-            <el-form-item label="归属医院:"  prop="hospital" >
-            <el-select v-model="formData.hospital" placeholder="请选择归属医院" style="width:100%" :clearable="true" >
-              <el-option v-for="(item,key) in dataSource.hospital" :key="key" :label="item.label" :value="item.value" />
-            </el-select>
-            </el-form-item>
-            <el-form-item label="部门:"  prop="dept" >
-            <el-select v-model="formData.dept" placeholder="请选择部门" style="width:100%" :clearable="true" >
-              <el-option v-for="(item,key) in dataSource.dept" :key="key" :label="item.label" :value="item.value" />
-            </el-select>
-            </el-form-item>
-            <el-form-item label="职务:"  prop="post" >
-            <el-select v-model="formData.post" placeholder="请选择职务" style="width:100%" :clearable="true" >
-              <el-option v-for="(item,key) in dataSource.post" :key="key" :label="item.label" :value="item.value" />
-            </el-select>
             </el-form-item>
             <el-form-item label="生日:"  prop="birthday" >
               <el-input v-model="formData.birthday" :clearable="true"  placeholder="请输入生日" />
@@ -190,29 +176,33 @@
             <el-form-item label="学历:"  prop="education" >
               <el-input v-model="formData.education" :clearable="true"  placeholder="请输入学历" />
             </el-form-item>
-            <el-form-item label="专业:"  prop="profession" >
-              <el-input v-model="formData.profession" :clearable="true"  placeholder="请输入专业" />
+            <el-form-item label="身份证号码:"  prop="cardNo" >
+              <el-input v-model="formData.cardNo" :clearable="true"  placeholder="请输入身份证号码" />
             </el-form-item>
-            <el-form-item label="毕业院校:"  prop="school" >
-              <el-input v-model="formData.school" :clearable="true"  placeholder="请输入毕业院校" />
+            <el-form-item label="年龄:"  prop="age" >
+              <el-input v-model="formData.age" :clearable="true"  placeholder="请输入年龄" />
             </el-form-item>
-            <el-form-item label="毕业时间:"  prop="graduationTime" >
-              <el-input v-model="formData.graduationTime" :clearable="true"  placeholder="请输入毕业时间" />
+            <el-form-item label="女性初潮日期:"  prop="womanPeriodDate" >
+              <el-input v-model="formData.womanPeriodDate" :clearable="true"  placeholder="请输入女性初潮日期" />
             </el-form-item>
-            <el-form-item label="个人简介:"  prop="desc" >
-              <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入个人简介" />
+            <el-form-item label="身高:"  prop="height" >
+              <el-input v-model="formData.height" :clearable="true"  placeholder="请输入身高" />
+            </el-form-item>
+            <el-form-item label="体重:"  prop="weight" >
+              <el-input v-model="formData.weight" :clearable="true"  placeholder="请输入体重" />
+            </el-form-item>
+            <el-form-item label="第一次登记医院:"  prop="registerHos" >
+            <el-select v-model="formData.registerHos" placeholder="请选择第一次登记医院" style="width:100%" :clearable="true" >
+              <el-option v-for="(item,key) in dataSource.registerHos" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
+            </el-form-item>
+            <el-form-item label="近一次登记医院:"  prop="latelyHos" >
+            <el-select v-model="formData.latelyHos" placeholder="请选择近一次登记医院" style="width:100%" :clearable="true" >
+              <el-option v-for="(item,key) in dataSource.latelyHos" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
             </el-form-item>
             <el-form-item label="租户id:"  prop="tenantId" >
               <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入租户id" />
-            </el-form-item>
-            <el-form-item label="创建者:"  prop="createdBy" >
-              <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入创建者" />
-            </el-form-item>
-            <el-form-item label="更新者:"  prop="updatedBy" >
-              <el-input v-model.number="formData.updatedBy" :clearable="true" placeholder="请输入更新者" />
-            </el-form-item>
-            <el-form-item label="删除者:"  prop="deletedBy" >
-              <el-input v-model.number="formData.deletedBy" :clearable="true" placeholder="请输入删除者" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -221,14 +211,14 @@
 
 <script setup>
 import {
-    getSysUsersDataSource,
-  createSysUsers,
-  deleteSysUsers,
-  deleteSysUsersByIds,
-  updateSysUsers,
-  findSysUsers,
-  getSysUsersList
-} from '@/api/hos/sysUsers'
+    getHosUsersDataSource,
+  createHosUsers,
+  deleteHosUsers,
+  deleteHosUsersByIds,
+  updateHosUsers,
+  findHosUsers,
+  getHosUsersList
+} from '@/api/hos/hosUsers'
 
 // 全量引入格式化工具 请按需保留
 import { getDictFunc, formatDate, formatBoolean, filterDict,filterDataSource, ReturnArrImg, onDownloadFile } from '@/utils/format'
@@ -236,7 +226,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, reactive } from 'vue'
 
 defineOptions({
-    name: 'SysUsers'
+    name: 'HosUsers'
 })
 
 // 自动化生成的字典（可能为空）以及字段
@@ -245,33 +235,30 @@ const formData = ref({
         username: '',
         password: '',
         nickName: '',
-        sideMode: '',
         headerImg: '',
-        baseColor: '',
-        authorityId: 0,
         phone: '',
+        jianhuPhone: '',
+        jianhuren: '',
+        wxUuid: '',
         email: '',
         enable: 0,
-        hospital: '',
-        dept: '',
-        post: '',
         birthday: '',
         sex: '',
         address: '',
         hometown: '',
         education: '',
-        profession: '',
-        school: '',
-        graduationTime: '',
-        desc: '',
+        cardNo: '',
+        age: '',
+        womanPeriodDate: '',
+        height: '',
+        weight: '',
+        registerHos: '',
+        latelyHos: '',
         tenantId: 0,
-        createdBy: 0,
-        updatedBy: 0,
-        deletedBy: 0,
         })
   const dataSource = ref([])
   const getDataSourceFunc = async()=>{
-    const res = await getSysUsersDataSource()
+    const res = await getHosUsersDataSource()
     if (res.code === 0) {
       dataSource.value = res.data
     }
@@ -340,7 +327,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async() => {
-  const table = await getSysUsersList({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
+  const table = await getHosUsersList({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
   if (table.code === 0) {
     tableData.value = table.data.list
     total.value = table.data.total
@@ -375,7 +362,7 @@ const deleteRow = (row) => {
         cancelButtonText: '取消',
         type: 'warning'
     }).then(() => {
-            deleteSysUsersFunc(row)
+            deleteHosUsersFunc(row)
         })
     }
 
@@ -398,7 +385,7 @@ const onDelete = async() => {
         multipleSelection.value.map(item => {
           IDs.push(item.ID)
         })
-      const res = await deleteSysUsersByIds({ IDs })
+      const res = await deleteHosUsersByIds({ IDs })
       if (res.code === 0) {
         ElMessage({
           type: 'success',
@@ -416,19 +403,19 @@ const onDelete = async() => {
 const type = ref('')
 
 // 更新行
-const updateSysUsersFunc = async(row) => {
-    const res = await findSysUsers({ ID: row.ID })
+const updateHosUsersFunc = async(row) => {
+    const res = await findHosUsers({ ID: row.ID })
     type.value = 'update'
     if (res.code === 0) {
-        formData.value = res.data.resysUsers
+        formData.value = res.data.rehosUsers
         dialogFormVisible.value = true
     }
 }
 
 
 // 删除行
-const deleteSysUsersFunc = async (row) => {
-    const res = await deleteSysUsers({ ID: row.ID })
+const deleteHosUsersFunc = async (row) => {
+    const res = await deleteHosUsers({ ID: row.ID })
     if (res.code === 0) {
         ElMessage({
                 type: 'success',
@@ -458,29 +445,26 @@ const closeDialog = () => {
         username: '',
         password: '',
         nickName: '',
-        sideMode: '',
         headerImg: '',
-        baseColor: '',
-        authorityId: 0,
         phone: '',
+        jianhuPhone: '',
+        jianhuren: '',
+        wxUuid: '',
         email: '',
         enable: 0,
-        hospital: '',
-        dept: '',
-        post: '',
         birthday: '',
         sex: '',
         address: '',
         hometown: '',
         education: '',
-        profession: '',
-        school: '',
-        graduationTime: '',
-        desc: '',
+        cardNo: '',
+        age: '',
+        womanPeriodDate: '',
+        height: '',
+        weight: '',
+        registerHos: '',
+        latelyHos: '',
         tenantId: 0,
-        createdBy: 0,
-        updatedBy: 0,
-        deletedBy: 0,
         }
 }
 // 弹窗确定
@@ -490,13 +474,13 @@ const enterDialog = async () => {
               let res
               switch (type.value) {
                 case 'create':
-                  res = await createSysUsers(formData.value)
+                  res = await createHosUsers(formData.value)
                   break
                 case 'update':
-                  res = await updateSysUsers(formData.value)
+                  res = await updateHosUsers(formData.value)
                   break
                 default:
-                  res = await createSysUsers(formData.value)
+                  res = await createHosUsers(formData.value)
                   break
               }
               if (res.code === 0) {

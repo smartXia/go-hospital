@@ -36,19 +36,13 @@
           <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="归属医院:" prop="hospital">
-        <el-select v-model="formData.hospital" placeholder="请选择归属医院" style="width:100%" :clearable="true" >
-          <el-option v-for="(item,key) in dataSource.hospital" :key="key" :label="item.label" :value="item.value" />
-        </el-select>
+          <el-input v-model="formData.hospital" :clearable="true"  placeholder="请输入归属医院" />
        </el-form-item>
         <el-form-item label="部门:" prop="dept">
-        <el-select v-model="formData.dept" placeholder="请选择部门" style="width:100%" :clearable="true" >
-          <el-option v-for="(item,key) in dataSource.dept" :key="key" :label="item.label" :value="item.value" />
-        </el-select>
+          <el-input v-model="formData.dept" :clearable="true"  placeholder="请输入部门" />
        </el-form-item>
         <el-form-item label="职务:" prop="post">
-        <el-select v-model="formData.post" placeholder="请选择职务" style="width:100%" :clearable="true" >
-          <el-option v-for="(item,key) in dataSource.post" :key="key" :label="item.label" :value="item.value" />
-        </el-select>
+          <el-input v-model="formData.post" :clearable="true"  placeholder="请输入职务" />
        </el-form-item>
         <el-form-item label="生日:" prop="birthday">
           <el-input v-model="formData.birthday" :clearable="true"  placeholder="请输入生日" />
@@ -77,6 +71,27 @@
         <el-form-item label="个人简介:" prop="desc">
           <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入个人简介" />
        </el-form-item>
+        <el-form-item label="身份证号码:" prop="cardNo">
+          <el-input v-model="formData.cardNo" :clearable="true"  placeholder="请输入身份证号码" />
+       </el-form-item>
+        <el-form-item label="年龄:" prop="age">
+          <el-input v-model="formData.age" :clearable="true"  placeholder="请输入年龄" />
+       </el-form-item>
+        <el-form-item label="女性初潮日期:" prop="womanPeriodDate">
+          <el-input v-model="formData.womanPeriodDate" :clearable="true"  placeholder="请输入女性初潮日期" />
+       </el-form-item>
+        <el-form-item label="身高:" prop="height">
+          <el-input v-model="formData.height" :clearable="true"  placeholder="请输入身高" />
+       </el-form-item>
+        <el-form-item label="体重:" prop="weight">
+          <el-input v-model="formData.weight" :clearable="true"  placeholder="请输入体重" />
+       </el-form-item>
+        <el-form-item label="第一次登记医院:" prop="registerHos">
+          <el-input v-model="formData.registerHos" :clearable="true"  placeholder="请输入第一次登记医院" />
+       </el-form-item>
+        <el-form-item label="近一次登记医院:" prop="latelyHos">
+          <el-input v-model="formData.latelyHos" :clearable="true"  placeholder="请输入近一次登记医院" />
+       </el-form-item>
         <el-form-item label="租户id:" prop="tenantId">
           <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入" />
        </el-form-item>
@@ -100,7 +115,6 @@
 
 <script setup>
 import {
-    getSysUsersDataSource,
   createSysUsers,
   updateSysUsers,
   findSysUsers
@@ -144,6 +158,13 @@ const formData = ref({
             school: '',
             graduationTime: '',
             desc: '',
+            cardNo: '',
+            age: '',
+            womanPeriodDate: '',
+            height: '',
+            weight: '',
+            registerHos: '',
+            latelyHos: '',
             tenantId: 0,
             createdBy: 0,
             updatedBy: 0,
@@ -154,14 +175,6 @@ const rule = reactive({
 })
 
 const elFormRef = ref()
-  const dataSource = ref([])
-  const getDataSourceFunc = async()=>{
-    const res = await getSysUsersDataSource()
-    if (res.code === 0) {
-      dataSource.value = res.data
-    }
-  }
-  getDataSourceFunc()
 
 // 初始化方法
 const init = async () => {

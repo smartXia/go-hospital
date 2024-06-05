@@ -95,16 +95,3 @@ export const getSysUsersList = (params) => {
     params
   })
 }
-// @Tags SysUsers
-// @Summary 获取数据源
-// @Security ApiKeyAuth
-// @accept application/json
-// @Produce application/json
-// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
-// @Router /sysUsers/findSysUsersDataSource [get]
-export const getSysUsersDataSource = () => {
-  return service({
-    url: '/sysUsers/getSysUsersDataSource',
-    method: 'get',
-  })
-}
