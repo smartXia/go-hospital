@@ -58,10 +58,18 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.Username != "" {
-		db = db.Where("username LIKE ?", "%"+info.Username+"%")
+	if info.Phone != "" {
+		db = db.Where("phone = ?", info.Phone)
 	}
-	db = db.Where("authority_id  = ?", 0)
+	if info.Hospital != "" {
+		db = db.Where("hospital = ?", info.Hospital)
+	}
+	if info.Dept != "" {
+		db = db.Where("dept = ?", info.Dept)
+	}
+	if info.Post != "" {
+		db = db.Where("post = ?", info.Post)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -73,4 +81,18 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 
 	err = db.Find(&sysUserss).Error
 	return sysUserss, total, err
+}
+func (sysUsersService *SysUsersService) GetSysUsersDataSource() (res map[string][]map[string]any, err error) {
+	res = make(map[string][]map[string]any)
+
+	dept := make([]map[string]any, 0)
+	global.GVA_DB.Table("sys_dept").Select("name as label,id as value").Scan(&dept)
+	res["dept"] = dept
+	hospital := make([]map[string]any, 0)
+	global.GVA_DB.Table("sys_org").Select("name as label,id as value").Scan(&hospital)
+	res["hospital"] = hospital
+	post := make([]map[string]any, 0)
+	global.GVA_DB.Table("sys_post").Select("name as label,id as value").Scan(&post)
+	res["post"] = post
+	return
 }

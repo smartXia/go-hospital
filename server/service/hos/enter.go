@@ -4,6 +4,15 @@ type ServiceGroup struct {
 	SysOrgService
 	SysDeptService
 	SysPostService
-	SysUsersService
 	SysOperationRecordsService
+	HosScaleService
+	HosLoaclAskService
+	HosSportModeService
+	HosSportAdviceService
+	HosSportClockService
+	HosSportClockCommitService
+	HosUserPointService
+	HosFlowService
+	SysUsersService
+	HosUsersService
 }

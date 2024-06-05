@@ -4,6 +4,15 @@ type ApiGroup struct {
 	SysOrgApi
 	SysDeptApi
 	SysPostApi
-	SysUsersApi
 	SysOperationRecordsApi
+	HosScaleApi
+	HosLoaclAskApi
+	HosSportModeApi
+	HosSportAdviceApi
+	HosSportClockApi
+	HosSportClockCommitApi
+	HosUserPointApi
+	HosFlowApi
+	SysUsersApi
+	HosUsersApi
 }

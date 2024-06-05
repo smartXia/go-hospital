@@ -5,13 +5,11 @@ import (
 	"time"
 )
 
-type SysUsersSearch struct {
+type HosSportClockSearch struct {
 	StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
 	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
 
-	Phone    string `json:"phone" form:"phone" `
-	Hospital string `json:"hospital" form:"hospital" `
-	Dept     string `json:"dept" form:"dept" `
-	Post     string `json:"post" form:"post" `
+	Uid    string `json:"uid" form:"uid" `
+	FlowId string `json:"flowId" form:"flowId" `
 	request.PageInfo
 }

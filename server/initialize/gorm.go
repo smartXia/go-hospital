@@ -52,7 +52,7 @@ func RegisterTables() {
 		example.ExaFile{},
 		example.ExaCustomer{},
 		example.ExaFileChunk{},
-		example.ExaFileUploadAndDownload{}, hos.SysOrg{}, hos.SysDept{}, hos.SysPost{}, hos.SysUsers{}, hos.SysOperationRecords{},
+		example.ExaFileUploadAndDownload{}, hos.SysOrg{}, hos.SysDept{}, hos.SysPost{}, hos.SysOperationRecords{}, hos.HosScale{}, hos.HosLoaclAsk{}, hos.HosSportMode{}, hos.HosSportAdvice{}, hos.HosSportClock{}, hos.HosSportClockCommit{}, hos.HosUserPoint{}, hos.HosFlow{}, hos.SysUsers{}, hos.HosUsers{},
 	)
 	if err != nil {
 		global.GVA_LOG.Error("register table failed", zap.Error(err))

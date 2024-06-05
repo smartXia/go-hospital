@@ -27,6 +27,7 @@ func (s *SysUsersRouter) InitSysUsersRouter(Router *gin.RouterGroup, PublicRoute
 		sysUsersRouterWithoutRecord.GET("getSysUsersList", sysUsersApi.GetSysUsersList) // 获取sysUsers表列表
 	}
 	{
-		sysUsersRouterWithoutAuth.GET("getSysUsersPublic", sysUsersApi.GetSysUsersPublic) // 获取sysUsers表列表
+		sysUsersRouterWithoutAuth.GET("getSysUsersDataSource", sysUsersApi.GetSysUsersDataSource) // 获取sysUsers表数据源
+		sysUsersRouterWithoutAuth.GET("getSysUsersPublic", sysUsersApi.GetSysUsersPublic)         // 获取sysUsers表列表
 	}
 }

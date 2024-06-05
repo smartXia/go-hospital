@@ -10,29 +10,29 @@ import (
 	"go.uber.org/zap"
 )
 
-type SysUsersApi struct {
+type HosUsersApi struct {
 }
 
-var sysUsersService = service.ServiceGroupApp.HosServiceGroup.SysUsersService
+var hosUsersService = service.ServiceGroupApp.HosServiceGroup.HosUsersService
 
-// CreateSysUsers 创建sysUsers表
-// @Tags SysUsers
-// @Summary 创建sysUsers表
+// CreateHosUsers 创建hosUsers表
+// @Tags HosUsers
+// @Summary 创建hosUsers表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body hos.SysUsers true "创建sysUsers表"
+// @Param data body hos.HosUsers true "创建hosUsers表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
-// @Router /sysUsers/createSysUsers [post]
-func (sysUsersApi *SysUsersApi) CreateSysUsers(c *gin.Context) {
-	var sysUsers hos.SysUsers
-	err := c.ShouldBindJSON(&sysUsers)
+// @Router /hosUsers/createHosUsers [post]
+func (hosUsersApi *HosUsersApi) CreateHosUsers(c *gin.Context) {
+	var hosUsers hos.HosUsers
+	err := c.ShouldBindJSON(&hosUsers)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	if err := sysUsersService.CreateSysUsers(&sysUsers, c); err != nil {
+	if err := hosUsersService.CreateHosUsers(&hosUsers, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
@@ -40,18 +40,18 @@ func (sysUsersApi *SysUsersApi) CreateSysUsers(c *gin.Context) {
 	}
 }
 
-// DeleteSysUsers 删除sysUsers表
-// @Tags SysUsers
-// @Summary 删除sysUsers表
+// DeleteHosUsers 删除hosUsers表
+// @Tags HosUsers
+// @Summary 删除hosUsers表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body hos.SysUsers true "删除sysUsers表"
+// @Param data body hos.HosUsers true "删除hosUsers表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
-// @Router /sysUsers/deleteSysUsers [delete]
-func (sysUsersApi *SysUsersApi) DeleteSysUsers(c *gin.Context) {
+// @Router /hosUsers/deleteHosUsers [delete]
+func (hosUsersApi *HosUsersApi) DeleteHosUsers(c *gin.Context) {
 	ID := c.Query("ID")
-	if err := sysUsersService.DeleteSysUsers(ID, c); err != nil {
+	if err := hosUsersService.DeleteHosUsers(ID, c); err != nil {
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
@@ -59,17 +59,17 @@ func (sysUsersApi *SysUsersApi) DeleteSysUsers(c *gin.Context) {
 	}
 }
 
-// DeleteSysUsersByIds 批量删除sysUsers表
-// @Tags SysUsers
-// @Summary 批量删除sysUsers表
+// DeleteHosUsersByIds 批量删除hosUsers表
+// @Tags HosUsers
+// @Summary 批量删除hosUsers表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"批量删除成功"}"
-// @Router /sysUsers/deleteSysUsersByIds [delete]
-func (sysUsersApi *SysUsersApi) DeleteSysUsersByIds(c *gin.Context) {
+// @Router /hosUsers/deleteHosUsersByIds [delete]
+func (hosUsersApi *HosUsersApi) DeleteHosUsersByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
-	if err := sysUsersService.DeleteSysUsersByIds(IDs, c); err != nil {
+	if err := hosUsersService.DeleteHosUsersByIds(IDs, c); err != nil {
 		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
@@ -77,24 +77,24 @@ func (sysUsersApi *SysUsersApi) DeleteSysUsersByIds(c *gin.Context) {
 	}
 }
 
-// UpdateSysUsers 更新sysUsers表
-// @Tags SysUsers
-// @Summary 更新sysUsers表
+// UpdateHosUsers 更新hosUsers表
+// @Tags HosUsers
+// @Summary 更新hosUsers表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body hos.SysUsers true "更新sysUsers表"
+// @Param data body hos.HosUsers true "更新hosUsers表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
-// @Router /sysUsers/updateSysUsers [put]
-func (sysUsersApi *SysUsersApi) UpdateSysUsers(c *gin.Context) {
-	var sysUsers hos.SysUsers
-	err := c.ShouldBindJSON(&sysUsers)
+// @Router /hosUsers/updateHosUsers [put]
+func (hosUsersApi *HosUsersApi) UpdateHosUsers(c *gin.Context) {
+	var hosUsers hos.HosUsers
+	err := c.ShouldBindJSON(&hosUsers)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	if err := sysUsersService.UpdateSysUsers(sysUsers, c); err != nil {
+	if err := hosUsersService.UpdateHosUsers(hosUsers, c); err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
@@ -102,42 +102,42 @@ func (sysUsersApi *SysUsersApi) UpdateSysUsers(c *gin.Context) {
 	}
 }
 
-// FindSysUsers 用id查询sysUsers表
-// @Tags SysUsers
-// @Summary 用id查询sysUsers表
+// FindHosUsers 用id查询hosUsers表
+// @Tags HosUsers
+// @Summary 用id查询hosUsers表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query hos.SysUsers true "用id查询sysUsers表"
+// @Param data query hos.HosUsers true "用id查询hosUsers表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
-// @Router /sysUsers/findSysUsers [get]
-func (sysUsersApi *SysUsersApi) FindSysUsers(c *gin.Context) {
+// @Router /hosUsers/findHosUsers [get]
+func (hosUsersApi *HosUsersApi) FindHosUsers(c *gin.Context) {
 	ID := c.Query("ID")
-	if resysUsers, err := sysUsersService.GetSysUsers(ID, c); err != nil {
+	if rehosUsers, err := hosUsersService.GetHosUsers(ID, c); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
-		response.OkWithData(gin.H{"resysUsers": resysUsers}, c)
+		response.OkWithData(gin.H{"rehosUsers": rehosUsers}, c)
 	}
 }
 
-// GetSysUsersList 分页获取sysUsers表列表
-// @Tags SysUsers
-// @Summary 分页获取sysUsers表列表
+// GetHosUsersList 分页获取hosUsers表列表
+// @Tags HosUsers
+// @Summary 分页获取hosUsers表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query hosReq.SysUsersSearch true "分页获取sysUsers表列表"
+// @Param data query hosReq.HosUsersSearch true "分页获取hosUsers表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /sysUsers/getSysUsersList [get]
-func (sysUsersApi *SysUsersApi) GetSysUsersList(c *gin.Context) {
-	var pageInfo hosReq.SysUsersSearch
+// @Router /hosUsers/getHosUsersList [get]
+func (hosUsersApi *HosUsersApi) GetHosUsersList(c *gin.Context) {
+	var pageInfo hosReq.HosUsersSearch
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	if list, total, err := sysUsersService.GetSysUsersInfoList(pageInfo, c); err != nil {
+	if list, total, err := hosUsersService.GetHosUsersInfoList(pageInfo, c); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
@@ -150,16 +150,16 @@ func (sysUsersApi *SysUsersApi) GetSysUsersList(c *gin.Context) {
 	}
 }
 
-// GetSysUsersDataSource 获取SysUsers的数据源
-// @Tags SysUsers
-// @Summary 获取SysUsers的数据源
+// GetHosUsersDataSource 获取HosUsers的数据源
+// @Tags HosUsers
+// @Summary 获取HosUsers的数据源
 // @accept application/json
 // @Produce application/json
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /sysUsers/getSysUsersDataSource [get]
-func (sysUsersApi *SysUsersApi) GetSysUsersDataSource(c *gin.Context) {
+// @Router /hosUsers/getHosUsersDataSource [get]
+func (hosUsersApi *HosUsersApi) GetHosUsersDataSource(c *gin.Context) {
 	// 此接口为获取数据源定义的数据
-	if dataSource, err := sysUsersService.GetSysUsersDataSource(); err != nil {
+	if dataSource, err := hosUsersService.GetHosUsersDataSource(); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
@@ -167,18 +167,18 @@ func (sysUsersApi *SysUsersApi) GetSysUsersDataSource(c *gin.Context) {
 	}
 }
 
-// GetSysUsersPublic 不需要鉴权的sysUsers表接口
-// @Tags SysUsers
-// @Summary 不需要鉴权的sysUsers表接口
+// GetHosUsersPublic 不需要鉴权的hosUsers表接口
+// @Tags HosUsers
+// @Summary 不需要鉴权的hosUsers表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query hosReq.SysUsersSearch true "分页获取sysUsers表列表"
+// @Param data query hosReq.HosUsersSearch true "分页获取hosUsers表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /sysUsers/getSysUsersPublic [get]
-func (sysUsersApi *SysUsersApi) GetSysUsersPublic(c *gin.Context) {
+// @Router /hosUsers/getHosUsersPublic [get]
+func (hosUsersApi *HosUsersApi) GetHosUsersPublic(c *gin.Context) {
 	// 此接口不需要鉴权
 	// 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
 	response.OkWithDetailed(gin.H{
-		"info": "不需要鉴权的sysUsers表接口信息",
+		"info": "不需要鉴权的hosUsers表接口信息",
 	}, "获取成功", c)
 }

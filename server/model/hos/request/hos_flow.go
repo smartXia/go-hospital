@@ -5,13 +5,13 @@ import (
 	"time"
 )
 
-type SysUsersSearch struct {
+type HosFlowSearch struct {
 	StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
 	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
 
-	Phone    string `json:"phone" form:"phone" `
-	Hospital string `json:"hospital" form:"hospital" `
-	Dept     string `json:"dept" form:"dept" `
-	Post     string `json:"post" form:"post" `
+	Name     string `json:"name" form:"name" `
+	Uuid     string `json:"uuid" form:"uuid" `
+	AskId    *int   `json:"askId" form:"askId" `
+	AdviceId *int   `json:"adviceId" form:"adviceId" `
 	request.PageInfo
 }

@@ -4,6 +4,15 @@ type RouterGroup struct {
 	SysOrgRouter
 	SysDeptRouter
 	SysPostRouter
-	SysUsersRouter
 	SysOperationRecordsRouter
+	HosScaleRouter
+	HosLoaclAskRouter
+	HosSportModeRouter
+	HosSportAdviceRouter
+	HosSportClockRouter
+	HosSportClockCommitRouter
+	HosUserPointRouter
+	HosFlowRouter
+	SysUsersRouter
+	HosUsersRouter
 }
