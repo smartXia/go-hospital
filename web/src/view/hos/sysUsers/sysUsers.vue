@@ -59,9 +59,16 @@
         
         <el-table-column align="left" label="用户UUID" prop="uuid" width="120" />
         <el-table-column align="left" label="用户登录名" prop="username" width="120" />
-        <el-table-column align="left" label="用户登录密码" prop="password" width="120" />
         <el-table-column align="left" label="用户昵称" prop="nickName" width="120" />
-        <el-table-column align="left" label="用户侧边主题" prop="sideMode" width="120" />
+        <el-table-column align="left" label="头像" min-width="75">
+          <template #default="scope">
+            <CustomPic
+              style="margin-top:8px"
+              :pic-src="scope.row.headerImg"
+            />
+          </template>
+        </el-table-column>
+        
         <el-table-column align="left" label="用户头像" prop="headerImg" width="120" />
         <el-table-column align="left" label="基础颜色" prop="baseColor" width="120" />
         <el-table-column align="left" label="用户角色ID" prop="authorityId" width="120" />
@@ -234,6 +241,7 @@ import {
 import { getDictFunc, formatDate, formatBoolean, filterDict,filterDataSource, ReturnArrImg, onDownloadFile } from '@/utils/format'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, reactive } from 'vue'
+import CustomPic from '@/components/customPic/index.vue'
 
 defineOptions({
     name: 'SysUsers'

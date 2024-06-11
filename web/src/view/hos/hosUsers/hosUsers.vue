@@ -224,6 +224,7 @@ import {
 import { getDictFunc, formatDate, formatBoolean, filterDict,filterDataSource, ReturnArrImg, onDownloadFile } from '@/utils/format'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, reactive } from 'vue'
+import CustomPic from '@/components/customPic/index.vue'
 
 defineOptions({
     name: 'HosUsers'
