@@ -5,6 +5,7 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +15,7 @@ type HosFlowService struct {
 // CreateHosFlow 创建hosFlow表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosFlowService *HosFlowService) CreateHosFlow(hosFlow *hos.HosFlow, ctx *gin.Context) (err error) {
+	hosFlow.Uuid = utils.UniqueId()
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosFlow).Error
 	return err
 }

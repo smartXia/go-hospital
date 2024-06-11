@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gofrs/uuid/v5"
 	"net"
+	"strconv"
 )
 
 func ClearToken(c *gin.Context) {
@@ -44,12 +45,16 @@ func GetToken(c *gin.Context) string {
 	return token
 }
 
-func GetTenantId(c *gin.Context) string {
+func GetTenantId(c *gin.Context) int {
 	token, _ := c.Cookie("X-Tenant-ID")
 	if token == "" {
 		token = c.Request.Header.Get("X-Tenant-ID")
 	}
-	return token
+	atoi, err := strconv.Atoi(token)
+	if err != nil {
+		return 0
+	}
+	return atoi
 }
 func GetClaims(c *gin.Context) (*systemReq.CustomClaims, error) {
 	token := GetToken(c)

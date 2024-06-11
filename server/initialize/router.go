@@ -1,13 +1,10 @@
 package initialize
 
 import (
-	"devops-manage/docs"
 	"devops-manage/global"
 	"devops-manage/middleware"
 	"devops-manage/router"
 	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"
 	"os"
 )
@@ -41,10 +38,8 @@ func Routers() *gin.Engine {
 	systemRouter := router.RouterGroupApp.System
 	exampleRouter := router.RouterGroupApp.Example
 
-	Router.StaticFS(global.GVA_CONFIG.Local.StorePath, justFilesFilesystem{http.Dir(global.GVA_CONFIG.Local.StorePath)})
+	//	Router.StaticFS(global.GVA_CONFIG.Local.StorePath, justFilesFilesystem{http.Dir(global.GVA_CONFIG.Local.StorePath)})
 
-	docs.SwaggerInfo.BasePath = global.GVA_CONFIG.System.RouterPrefix
-	Router.GET(global.GVA_CONFIG.System.RouterPrefix+"/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	global.GVA_LOG.Info("register swagger handler")
 
 	PublicGroup := Router.Group(global.GVA_CONFIG.System.RouterPrefix)

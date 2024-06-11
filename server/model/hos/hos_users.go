@@ -29,8 +29,8 @@ type HosUsers struct {
 	WomanPeriodDate string `json:"womanPeriodDate" form:"womanPeriodDate" gorm:"column:woman_period_date;comment:女性初潮日期;size:255;"` //女性初潮日期
 	Height          string `json:"height" form:"height" gorm:"column:height;comment:身高;size:255;"`                                  //身高
 	Weight          string `json:"weight" form:"weight" gorm:"column:weight;comment:体重;size:255;"`                                  //体重
-	RegisterHos     string `json:"registerHos" form:"registerHos" gorm:"column:register_hos;comment:第一次登记医院;size:255;"`             //第一次登记医院
-	LatelyHos       string `json:"latelyHos" form:"latelyHos" gorm:"column:lately_hos;comment:近一次登记医院;size:255;"`                   //近一次登记医院
+	RegisterHos     *int   `json:"registerHos" form:"registerHos" gorm:"column:register_hos;comment:第一次登记医院;size:255;"`             //第一次登记医院
+	LatelyHos       *int   `json:"latelyHos" form:"latelyHos" gorm:"column:lately_hos;comment:近一次登记医院;size:255;"`                   //近一次登记医院
 	TenantId        *int   `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户id;"`                                  //租户id
 	CreatedBy       *int   `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                        //创建者
 	UpdatedBy       *int   `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                        //更新者
