@@ -92,10 +92,10 @@ func (hosUsersService *HosUsersService) GetHosUsersDataSource() (res map[string]
 	res = make(map[string][]map[string]any)
 
 	latelyHos := make([]map[string]any, 0)
-	global.GVA_DB.Table("sys_org").Select("name as label,id as value").Scan(&latelyHos)
+	global.GVA_DB.Table("sys_org").Select("name as label,id as value").Where("deleted_at IS  NULL").Find(&latelyHos)
 	res["latelyHos"] = latelyHos
 	registerHos := make([]map[string]any, 0)
-	global.GVA_DB.Table("sys_org").Select("name as label,id as value").Scan(&registerHos)
+	global.GVA_DB.Table("sys_org").Select("name as label,id as value").Where("deleted_at IS  NULL").Scan(&registerHos)
 	res["registerHos"] = registerHos
 	return
 }

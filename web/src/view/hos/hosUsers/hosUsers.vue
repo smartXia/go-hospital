@@ -253,8 +253,8 @@ const formData = ref({
         womanPeriodDate: '',
         height: '',
         weight: '',
-        registerHos: '',
-        latelyHos: '',
+        registerHos: 0,
+        latelyHos: 0,
         tenantId: 0,
         })
   const dataSource = ref([])
@@ -463,8 +463,8 @@ const closeDialog = () => {
         womanPeriodDate: '',
         height: '',
         weight: '',
-        registerHos: '',
-        latelyHos: '',
+        registerHos: 0,
+        latelyHos: 0,
         tenantId: 0,
         }
 }

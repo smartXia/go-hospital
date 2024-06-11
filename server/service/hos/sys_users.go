@@ -5,6 +5,7 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +15,7 @@ type SysUsersService struct {
 // CreateSysUsers 创建sysUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysUsersService *SysUsersService) CreateSysUsers(sysUsers *hos.SysUsers, ctx *gin.Context) (err error) {
+	sysUsers.Uuid = utils.UniqueId()
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysUsers).Error
 	return err
 }

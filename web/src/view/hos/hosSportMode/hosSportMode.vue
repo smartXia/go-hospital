@@ -72,7 +72,7 @@
         <el-table-column align="left" label="行动" prop="xingdong" width="120" />
         <el-table-column align="left" label="方向" prop="fangxiang" width="120" />
         <el-table-column align="left" label="位置" prop="weizhi" width="120" />
-        <el-table-column align="left" label="详情" prop="detail" width="120" />
+        <el-table-column align="left" label="详情" prop="detail" width="120" show-overflow-tooltip/>
         <el-table-column align="left" label="来源" prop="source" width="120" />
         <el-table-column align="left" label="描述" prop="desc" width="120" />
         <el-table-column align="left" label="状态" prop="enable" width="120" />
