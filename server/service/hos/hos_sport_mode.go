@@ -46,6 +46,50 @@ func (hosSportModeService *HosSportModeService) GetHosSportMode(ID string, ctx *
 	return
 }
 
+var Field = map[int]string{
+	1: "category",
+	2: "buwei",
+	3: "tiduan",
+	4: "xingdong",
+	5: "fangxiang",
+	6: "weizhi",
+}
+
+var FieldSort = []string{
+	"category",
+	"buwei",
+	"tiduan",
+	"xingdong",
+	"fangxiang",
+	"weizhi",
+}
+
+func (hosSportModeService *HosSportModeService) GetHosSportModeMatrix(info hosReq.HosSportModeSearch, ctx *gin.Context) (res map[string][]string, total int64, err error) {
+	//limit := info.PageSize
+	//offset := info.PageSize * (info.Page - 1)
+	// 创建db
+	tmp := make(map[string][]string, 0)
+	for _, s := range Field {
+		field, _ := getAttrByField(s)
+		tmp[s] = field
+	}
+	res = make(map[string][]string, 6)
+
+	for _, k := range FieldSort {
+		res[k] = tmp[k]
+	}
+	return res, total, err
+}
+
+func getAttrByField(field string) (res []string, count int64) {
+	db := global.GVA_DB.Model(&hos.HosSportMode{})
+	db = db.Distinct(field)
+	db.Count(&count)
+	db.Find(&res)
+
+	return res, count
+}
+
 // GetHosSportModeInfoList 分页获取hosSportMode表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosSportModeService *HosSportModeService) GetHosSportModeInfoList(info hosReq.HosSportModeSearch, ctx *gin.Context) (list []hos.HosSportMode, total int64, err error) {

@@ -150,6 +150,35 @@ func (hosSportModeApi *HosSportModeApi) GetHosSportModeList(c *gin.Context) {
 	}
 }
 
+// GetHosSportModeMatrix 分页获取hosSportMode表列表
+// @Tags HosSportMode
+// @Summary 分页获取hosSportMode表列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query hosReq.HosSportModeSearch true "分页获取hosSportMode表列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /hosSportMode/getHosSportModeList [get]
+func (hosSportModeApi *HosSportModeApi) GetHosSportModeMatrix(c *gin.Context) {
+	var pageInfo hosReq.HosSportModeSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, total, err := hosSportModeService.GetHosSportModeMatrix(pageInfo, c); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
 // GetHosSportModePublic 不需要鉴权的hosSportMode表接口
 // @Tags HosSportMode
 // @Summary 不需要鉴权的hosSportMode表接口

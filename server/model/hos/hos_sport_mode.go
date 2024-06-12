@@ -17,6 +17,7 @@ type HosSportMode struct {
 	Weizhi         string `json:"weizhi" form:"weizhi" gorm:"column:weizhi;comment:位置;size:500;"`                            //位置
 	Detail         string `json:"detail" form:"detail" gorm:"column:detail;comment:详情;"`                                     //详情
 	RelationPhotos string `json:"relationPhotos" form:"relationPhotos" gorm:"column:relation_photos;comment:关联图片;size:255;"` //关联图片
+	RelationVideos string `json:"relationVideos" form:"relationVideos" gorm:"column:relation_videos;comment:关联视频;size:255;"` //关联视频
 	Source         string `json:"source" form:"source" gorm:"column:source;comment:来源;size:255;"`                            //来源
 	Desc           string `json:"desc" form:"desc" gorm:"column:desc;comment:描述;size:500;"`                                  //描述
 	Enable         *int   `json:"enable" form:"enable" gorm:"column:enable;comment:状态;size:10;"`                             //状态

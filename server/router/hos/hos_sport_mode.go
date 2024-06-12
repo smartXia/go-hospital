@@ -23,8 +23,9 @@ func (s *HosSportModeRouter) InitHosSportModeRouter(Router *gin.RouterGroup, Pub
 		hosSportModeRouter.PUT("updateHosSportMode", hosSportModeApi.UpdateHosSportMode)              // 更新hosSportMode表
 	}
 	{
-		hosSportModeRouterWithoutRecord.GET("findHosSportMode", hosSportModeApi.FindHosSportMode)       // 根据ID获取hosSportMode表
-		hosSportModeRouterWithoutRecord.GET("getHosSportModeList", hosSportModeApi.GetHosSportModeList) // 获取hosSportMode表列表
+		hosSportModeRouterWithoutRecord.GET("findHosSportMode", hosSportModeApi.FindHosSportMode)           // 根据ID获取hosSportMode表
+		hosSportModeRouterWithoutRecord.GET("getHosSportModeList", hosSportModeApi.GetHosSportModeList)     // 获取hosSportMode表列表
+		hosSportModeRouterWithoutRecord.GET("getHosSportModeMatrix", hosSportModeApi.GetHosSportModeMatrix) // 获取hosSportMode表列表
 	}
 	{
 		hosSportModeRouterWithoutAuth.GET("getHosSportModePublic", hosSportModeApi.GetHosSportModePublic) // 获取hosSportMode表列表
