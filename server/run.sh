@@ -13,7 +13,7 @@ usage() {
 is_exist(){
  # shellcheck disable=SC2006
  # shellcheck disable=SC2009
- pid=`ps -ef|grep devops-manage_linux_amd64|grep -v grep|awk '{print $2}' `
+ pid=`ps -ef|grep devops-manage_linux_amd64|grep -v grep|awk '{print $1}' `
  #如果不存在返回1，存在返回0
  if [ -z "${pid}" ]; then
  return 1
