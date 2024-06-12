@@ -6,6 +6,7 @@ import (
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
 	"github.com/gin-gonic/gin"
+	"strings"
 )
 
 type HosSportModeService struct {
@@ -99,24 +100,28 @@ func (hosSportModeService *HosSportModeService) GetHosSportModeInfoList(info hos
 	db := global.GVA_DB.Model(&hos.HosSportMode{}).Scopes(scope.TenantScope(ctx))
 	var hosSportModes []hos.HosSportMode
 	// 如果有条件搜索 下方会自动创建搜索语句
-	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
-	}
 	if info.Category != "" {
-		db = db.Where("category = ?", info.Category)
+		category := strings.Split(info.Category, ",")
+		db = db.Where("category in ?", category)
 	}
 	if info.Buwei != "" {
-		db = db.Where("buwei = ?", info.Buwei)
+		buwei := strings.Split(info.Buwei, ",")
+		db = db.Where("buwei in ?", buwei)
 	}
 	if info.Tiduan != "" {
-		db = db.Where("tiduan = ?", info.Tiduan)
+		tidaun := strings.Split(info.Tiduan, ",")
+		db = db.Where("tiduan in ?", tidaun)
 	}
 	if info.Fangxiang != "" {
-		db = db.Where("fangxiang = ?", info.Fangxiang)
+		fangxiang := strings.Split(info.Fangxiang, ",")
+		db = db.Where("fangxiang in ?", fangxiang)
 	}
 	if info.Weizhi != "" {
-		db = db.Where("weizhi = ?", info.Weizhi)
+		weizhi := strings.Split(info.Weizhi, ",")
+
+		db = db.Where("weizhi in ?", weizhi)
 	}
+
 	if info.Source != "" {
 		db = db.Where("source = ?", info.Source)
 	}
