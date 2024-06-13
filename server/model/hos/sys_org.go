@@ -17,9 +17,9 @@ type SysOrg struct {
 	ManageId  *int   `json:"manageId" form:"manageId" gorm:"column:manage_id;comment:管理人id;"`     //管理人id
 	ParentId  *int   `json:"parentId" form:"parentId" gorm:"column:parent_id;comment:parentId;"`  //parentId
 	TenantId  *int   `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户编号;"`      //租户编号
-	CreatedBy *int   `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;"`    //创建者
-	UpdatedBy *int   `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;"`    //更新者
-	DeletedBy *int   `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;"`    //删除者
+	CreatedBy *uint  `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;"`    //创建者
+	UpdatedBy *uint  `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;"`    //更新者
+	DeletedBy *uint  `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;"`    //删除者
 }
 
 // TableName sysOrg表 SysOrg自定义表名 sys_org

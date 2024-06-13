@@ -14,6 +14,7 @@ type HosLoaclAskService struct {
 // CreateHosLoaclAsk 创建hosLoaclAsk表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosLoaclAskService *HosLoaclAskService) CreateHosLoaclAsk(hosLoaclAsk *hos.HosLoaclAsk, ctx *gin.Context) (err error, h *hos.HosLoaclAsk) {
+
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosLoaclAsk).Error
 	return err, hosLoaclAsk
 }

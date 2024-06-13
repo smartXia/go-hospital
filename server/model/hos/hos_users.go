@@ -34,9 +34,9 @@ type HosUsers struct {
 	RegisterHos     *int   `json:"registerHos" form:"registerHos" gorm:"column:register_hos;comment:第一次登记医院;"`                      //第一次登记医院 todo
 	LatelyHos       *int   `json:"latelyHos" form:"latelyHos" gorm:"column:lately_hos;comment:近一次登记医院;"`                            //近一次登记医院
 	TenantId        *int   `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户id;"`                                  //租户id
-	CreatedBy       *int   `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                        //创建者
-	UpdatedBy       *int   `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                        //更新者
-	DeletedBy       *int   `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                        //删除者
+	CreatedBy       *uint  `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                        //创建者
+	UpdatedBy       *uint  `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                        //更新者
+	DeletedBy       *uint  `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                        //删除者
 }
 
 // TableName hosUsers表 HosUsers自定义表名 hos_users

@@ -32,9 +32,9 @@ type SysUsers struct {
 	GraduationTime string `json:"graduationTime" form:"graduationTime" gorm:"column:graduation_time;comment:毕业时间;size:255;"` //毕业时间
 	Desc           string `json:"desc" form:"desc" gorm:"column:desc;comment:个人简介;size:2000;"`                               //个人简介
 	TenantId       *int   `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户id;"`                            //租户id
-	CreatedBy      *int   `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                  //创建者
-	UpdatedBy      *int   `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                  //更新者
-	DeletedBy      *int   `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                  //删除者
+	CreatedBy      *uint  `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                  //创建者
+	UpdatedBy      *uint  `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                  //更新者
+	DeletedBy      *uint  `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                  //删除者
 }
 
 // TableName sysUsers表 SysUsers自定义表名 sys_users

@@ -133,7 +133,7 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Get{{.StructName}}InfoLis
     {{- end}}
 
 	if limit != 0 {
-       db = db.Limit(limit).Offset(offset)
+       db = db.Limit(limit).Offset(offset).Order("id desc")
     }
 	
 	err = db.Find(&{{.Abbreviation}}s).Error
