@@ -32,11 +32,11 @@ func (hosUserPointApi *HosUserPointApi) CreateHosUserPoint(c *gin.Context) {
 		return
 	}
 
-	if err := hosUserPointService.CreateHosUserPoint(&hosUserPoint, c); err != nil {
+	if err, d := hosUserPointService.CreateHosUserPoint(&hosUserPoint, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
-		response.OkWithMessage("创建成功", c)
+		response.OkWithData(d, c)
 	}
 }
 

@@ -13,9 +13,9 @@ type SysPostService struct {
 
 // CreateSysPost 创建sysPost表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (sysPostService *SysPostService) CreateSysPost(sysPost *hos.SysPost, ctx *gin.Context) (err error) {
+func (sysPostService *SysPostService) CreateSysPost(sysPost *hos.SysPost, ctx *gin.Context) (err error, d *hos.SysPost) {
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysPost).Error
-	return err
+	return err, sysPost
 }
 
 // DeleteSysPost 删除sysPost表记录

@@ -31,6 +31,13 @@
         <el-form-item label="监护人手机号:" prop="jianhuPhone">
           <el-input v-model="formData.jianhuPhone" :clearable="true"  placeholder="请输入监护人手机号" />
        </el-form-item>
+            <el-form-item label="预约类型:"  prop="yuyueType" >
+              <el-input v-model="formData.yuyueType" :clearable="true"  placeholder="请输入预约类型" />
+            </el-form-item>
+            <el-form-item label="预约时间:"  prop="yuyueTime" >
+              <el-input v-model="formData.yuyueTime" :clearable="true"  placeholder="请输入预约时间" />
+            </el-form-item>                        
+
         <el-form-item label="监护人:" prop="jianhuren">
           <el-input v-model="formData.jianhuren" :clearable="true"  placeholder="请输入监护人" />
        </el-form-item>
@@ -135,6 +142,8 @@ const formData = ref({
             headerImg: '',
             phone: '',
             jianhuPhone: '',
+            yuyueType: '',
+            yuyueTime: '',
             jianhuren: '',
             wxUuid: '',
             email: '',

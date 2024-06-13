@@ -11,9 +11,9 @@ type SysOrgService struct {
 
 // CreateSysOrg 创建sysOrg表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (sysOrgService *SysOrgService) CreateSysOrg(sysOrg *hos.SysOrg) (err error) {
+func (sysOrgService *SysOrgService) CreateSysOrg(sysOrg *hos.SysOrg) (err error, d *hos.SysOrg) {
 	err = global.GVA_DB.Create(sysOrg).Error
-	return err
+	return err, sysOrg
 }
 
 // DeleteSysOrg 删除sysOrg表记录

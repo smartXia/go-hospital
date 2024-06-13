@@ -5,6 +5,7 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
@@ -14,9 +15,11 @@ type HosSportModeService struct {
 
 // CreateHosSportMode 创建hosSportMode表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosSportModeService *HosSportModeService) CreateHosSportMode(hosSportMode *hos.HosSportMode, ctx *gin.Context) (err error) {
+func (hosSportModeService *HosSportModeService) CreateHosSportMode(hosSportMode *hos.HosSportMode, ctx *gin.Context) (err error, d *hos.HosSportMode) {
+	id := utils.GetUserID(ctx)
+	hosSportMode.CreatedBy = &id
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosSportMode).Error
-	return err
+	return err, hosSportMode
 }
 
 // DeleteHosSportMode 删除hosSportMode表记录
@@ -131,9 +134,9 @@ func (hosSportModeService *HosSportModeService) GetHosSportModeInfoList(info hos
 	}
 
 	if limit != 0 {
-		db = db.Limit(limit).Offset(offset)
+		db = db.Order("id desc").Limit(limit).Offset(offset).Preload("User")
 	}
 
-	err = db.Find(&hosSportModes).Error
+	err = db.Find(&hosSportModes).Debug().Error
 	return hosSportModes, total, err
 }

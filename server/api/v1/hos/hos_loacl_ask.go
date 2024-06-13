@@ -31,12 +31,11 @@ func (hosLoaclAskApi *HosLoaclAskApi) CreateHosLoaclAsk(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-
-	if err := hosLoaclAskService.CreateHosLoaclAsk(&hosLoaclAsk, c); err != nil {
+	if err, h := hosLoaclAskService.CreateHosLoaclAsk(&hosLoaclAsk, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
-		response.OkWithMessage("创建成功", c)
+		response.OkWithData(h, c)
 	}
 }
 

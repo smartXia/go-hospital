@@ -13,9 +13,9 @@ type HosSportClockCommitService struct {
 
 // CreateHosSportClockCommit 创建hosSportClockCommit表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosSportClockCommitService *HosSportClockCommitService) CreateHosSportClockCommit(hosSportClockCommit *hos.HosSportClockCommit, ctx *gin.Context) (err error) {
+func (hosSportClockCommitService *HosSportClockCommitService) CreateHosSportClockCommit(hosSportClockCommit *hos.HosSportClockCommit, ctx *gin.Context) (err error, h *hos.HosSportClockCommit) {
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosSportClockCommit).Error
-	return err
+	return err, hosSportClockCommit
 }
 
 // DeleteHosSportClockCommit 删除hosSportClockCommit表记录

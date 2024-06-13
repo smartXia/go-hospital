@@ -70,6 +70,8 @@
         <el-table-column align="left" label="用户登录密码" prop="password" width="120" />
         <el-table-column align="left" label="用户昵称" prop="nickName" width="120" />
         <el-table-column align="left" label="用户头像" prop="headerImg" width="120" />
+        <el-table-column align="left" label="预约类型" prop="yuyueType" width="120" />
+        <el-table-column align="left" label="预约时间" prop="yuyueType" width="120" />
         <el-table-column align="left" label="用户手机号" prop="phone" width="120" />
         <el-table-column align="left" label="监护人手机号" prop="jianhuPhone" width="120" />
         <el-table-column align="left" label="监护人" prop="jianhuren" width="120" />
@@ -152,6 +154,12 @@
             <el-form-item label="监护人:"  prop="jianhuren" >
               <el-input v-model="formData.jianhuren" :clearable="true"  placeholder="请输入监护人" />
             </el-form-item>
+            <el-form-item label="预约类型:"  prop="yuyueType" >
+              <el-input v-model="formData.yuyueType" :clearable="true"  placeholder="请输入预约类型" />
+            </el-form-item>
+            <el-form-item label="预约时间:"  prop="yuyueTime" >
+              <el-input v-model="formData.yuyueTime" :clearable="true"  placeholder="请输入预约时间" />
+            </el-form-item>                        
             <el-form-item label="微信uuid:"  prop="wxUuid" >
               <el-input v-model="formData.wxUuid" :clearable="true"  placeholder="请输入微信uuid" />
             </el-form-item>
@@ -448,6 +456,8 @@ const closeDialog = () => {
         nickName: '',
         headerImg: '',
         phone: '',
+        yuyueType: '',
+        yuyueTime: '',
         jianhuPhone: '',
         jianhuren: '',
         wxUuid: '',

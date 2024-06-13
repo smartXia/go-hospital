@@ -13,9 +13,9 @@ type HosUsersService struct {
 
 // CreateHosUsers 创建hosUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, ctx *gin.Context) (err error) {
+func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, ctx *gin.Context) (err error, d *hos.HosUsers) {
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosUsers).Error
-	return err
+	return err, hosUsers
 }
 
 // DeleteHosUsers 删除hosUsers表记录
@@ -82,7 +82,7 @@ func (hosUsersService *HosUsersService) GetHosUsersInfoList(info hosReq.HosUsers
 	}
 
 	if limit != 0 {
-		db = db.Limit(limit).Offset(offset)
+		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
 
 	err = db.Find(&hosUserss).Error

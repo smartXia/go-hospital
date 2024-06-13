@@ -32,11 +32,12 @@ func (sysPostApi *SysPostApi) CreateSysPost(c *gin.Context) {
 		return
 	}
 
-	if err := sysPostService.CreateSysPost(&sysPost, c); err != nil {
+	if err, d := sysPostService.CreateSysPost(&sysPost, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
-		response.OkWithMessage("创建成功", c)
+		response.OkWithData(d, c)
+
 	}
 }
 

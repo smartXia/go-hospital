@@ -23,9 +23,9 @@ type {{.StructName}}Service struct {
 
 // Create{{.StructName}} 创建{{.Description}}记录
 // Author [piexlmax](https://github.com/piexlmax)
-func ({{.Abbreviation}}Service *{{.StructName}}Service) Create{{.StructName}}({{.Abbreviation}} *{{.Package}}.{{.StructName}}, ctx *gin.Context) (err error) {
+func ({{.Abbreviation}}Service *{{.StructName}}Service) Create{{.StructName}}({{.Abbreviation}} *{{.Package}}.{{.StructName}}, ctx *gin.Context) (err error,d *{{.Package}}.{{.StructName}}) {
 	err = {{$db}}.Scopes(scope.TenantScope(ctx)).Create({{.Abbreviation}}).Error
-	return err
+	return err,{{.Abbreviation}}
 }
 
 // Delete{{.StructName}} 删除{{.Description}}记录

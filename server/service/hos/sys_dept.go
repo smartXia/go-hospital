@@ -13,9 +13,9 @@ type SysDeptService struct {
 
 // CreateSysDept 创建sysDept表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (sysDeptService *SysDeptService) CreateSysDept(sysDept *hos.SysDept, ctx *gin.Context) (err error) {
+func (sysDeptService *SysDeptService) CreateSysDept(sysDept *hos.SysDept, ctx *gin.Context) (err error, d *hos.SysDept) {
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysDept).Error
-	return err
+	return err, sysDept
 }
 
 // DeleteSysDept 删除sysDept表记录

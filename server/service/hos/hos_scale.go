@@ -13,9 +13,9 @@ type HosScaleService struct {
 
 // CreateHosScale 创建hosScale表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosScaleService *HosScaleService) CreateHosScale(hosScale *hos.HosScale, ctx *gin.Context) (err error) {
+func (hosScaleService *HosScaleService) CreateHosScale(hosScale *hos.HosScale, ctx *gin.Context) (err error, h *hos.HosScale) {
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosScale).Error
-	return err
+	return err, hosScale
 }
 
 // DeleteHosScale 删除hosScale表记录

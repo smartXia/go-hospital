@@ -14,10 +14,10 @@ type HosFlowService struct {
 
 // CreateHosFlow 创建hosFlow表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosFlowService *HosFlowService) CreateHosFlow(hosFlow *hos.HosFlow, ctx *gin.Context) (err error) {
+func (hosFlowService *HosFlowService) CreateHosFlow(hosFlow *hos.HosFlow, ctx *gin.Context) (err error, f *hos.HosFlow) {
 	hosFlow.Uuid = utils.UniqueId()
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosFlow).Error
-	return err
+	return err, hosFlow
 }
 
 // DeleteHosFlow 删除hosFlow表记录

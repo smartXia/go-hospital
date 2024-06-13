@@ -13,9 +13,9 @@ type HosSportAdviceService struct {
 
 // CreateHosSportAdvice 创建hosSportAdvice表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosSportAdviceService *HosSportAdviceService) CreateHosSportAdvice(hosSportAdvice *hos.HosSportAdvice, ctx *gin.Context) (err error) {
+func (hosSportAdviceService *HosSportAdviceService) CreateHosSportAdvice(hosSportAdvice *hos.HosSportAdvice, ctx *gin.Context) (err error, h *hos.HosSportAdvice) {
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosSportAdvice).Error
-	return err
+	return err, hosSportAdvice
 }
 
 // DeleteHosSportAdvice 删除hosSportAdvice表记录

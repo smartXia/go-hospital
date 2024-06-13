@@ -13,9 +13,9 @@ type HosUserPointService struct {
 
 // CreateHosUserPoint 创建hosUserPoint表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosUserPointService *HosUserPointService) CreateHosUserPoint(hosUserPoint *hos.HosUserPoint, ctx *gin.Context) (err error) {
+func (hosUserPointService *HosUserPointService) CreateHosUserPoint(hosUserPoint *hos.HosUserPoint, ctx *gin.Context) (err error, d *hos.HosUserPoint) {
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosUserPoint).Error
-	return err
+	return err, hosUserPoint
 }
 
 // DeleteHosUserPoint 删除hosUserPoint表记录

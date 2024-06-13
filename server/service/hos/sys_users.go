@@ -14,10 +14,10 @@ type SysUsersService struct {
 
 // CreateSysUsers 创建sysUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (sysUsersService *SysUsersService) CreateSysUsers(sysUsers *hos.SysUsers, ctx *gin.Context) (err error) {
+func (sysUsersService *SysUsersService) CreateSysUsers(sysUsers *hos.SysUsers, ctx *gin.Context) (err error, d *hos.SysUsers) {
 	sysUsers.Uuid = utils.UniqueId()
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysUsers).Error
-	return err
+	return err, sysUsers
 }
 
 // DeleteSysUsers 删除sysUsers表记录

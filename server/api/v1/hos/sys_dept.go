@@ -32,11 +32,12 @@ func (sysDeptApi *SysDeptApi) CreateSysDept(c *gin.Context) {
 		return
 	}
 
-	if err := sysDeptService.CreateSysDept(&sysDept, c); err != nil {
+	if err, d := sysDeptService.CreateSysDept(&sysDept, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
-		response.OkWithMessage("创建成功", c)
+		response.OkWithData(d, c)
+
 	}
 }
 

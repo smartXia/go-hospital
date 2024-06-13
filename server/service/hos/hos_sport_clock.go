@@ -13,9 +13,9 @@ type HosSportClockService struct {
 
 // CreateHosSportClock 创建hosSportClock表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosSportClockService *HosSportClockService) CreateHosSportClock(hosSportClock *hos.HosSportClock, ctx *gin.Context) (err error) {
+func (hosSportClockService *HosSportClockService) CreateHosSportClock(hosSportClock *hos.HosSportClock, ctx *gin.Context) (err error, h *hos.HosSportClock) {
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosSportClock).Error
-	return err
+	return err, hosSportClock
 }
 
 // DeleteHosSportClock 删除hosSportClock表记录

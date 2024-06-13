@@ -32,11 +32,11 @@ func (hosUsersApi *HosUsersApi) CreateHosUsers(c *gin.Context) {
 		return
 	}
 
-	if err := hosUsersService.CreateHosUsers(&hosUsers, c); err != nil {
+	if err, d := hosUsersService.CreateHosUsers(&hosUsers, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
-		response.OkWithMessage("创建成功", c)
+		response.OkWithData(d, c)
 	}
 }
 

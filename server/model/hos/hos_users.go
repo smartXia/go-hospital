@@ -18,6 +18,8 @@ type HosUsers struct {
 	Jianhuren       string `json:"jianhuren" form:"jianhuren" gorm:"column:jianhuren;comment:监护人;size:255;"`                        //监护人
 	WxUuid          string `json:"wxUuid" form:"wxUuid" gorm:"column:wx_uuid;comment:微信uuid;size:255;"`                             //微信uuid
 	Email           string `json:"email" form:"email" gorm:"column:email;comment:用户邮箱;size:255;"`                                   //用户邮箱
+	YuyueType       string `json:"yuyueType" form:"yuyueType" gorm:"column:yuyue_type;comment:预约类型;size:255;"`                      //预约类型
+	YuyueTime       string `json:"yuyueTime" form:"yuyueTime" gorm:"column:yuyue_time;comment:预约时间;size:255;"`                      //预约时间
 	Enable          *int   `json:"enable" form:"enable" gorm:"column:enable;comment:用户是否被冻结 1正常 2冻结;size:19;"`                      //用户是否被冻结 1正常 2冻结
 	Birthday        string `json:"birthday" form:"birthday" gorm:"column:birthday;comment:生日;size:255;"`                            //生日
 	Sex             string `json:"sex" form:"sex" gorm:"column:sex;comment:性别;size:255;"`                                           //性别
