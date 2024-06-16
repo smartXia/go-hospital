@@ -16,10 +16,6 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
-        <el-form-item label="用户UUID" prop="uuid">
-         <el-input v-model="searchInfo.uuid" placeholder="搜索条件" />
-
-        </el-form-item>
         <el-form-item label="用户登录名" prop="username">
          <el-input v-model="searchInfo.username" placeholder="搜索条件" />
 
@@ -36,8 +32,8 @@
          <el-input v-model="searchInfo.jianhuPhone" placeholder="搜索条件" />
 
         </el-form-item>
-        <el-form-item label="监护人" prop="jianhuren">
-         <el-input v-model="searchInfo.jianhuren" placeholder="搜索条件" />
+        <el-form-item label="身份证号码" prop="cardNo">
+         <el-input v-model="searchInfo.cardNo" placeholder="搜索条件" />
 
         </el-form-item>
         <el-form-item>
@@ -70,17 +66,19 @@
         <el-table-column align="left" label="用户登录密码" prop="password" width="120" />
         <el-table-column align="left" label="用户昵称" prop="nickName" width="120" />
         <el-table-column align="left" label="用户头像" prop="headerImg" width="120" />
-        <el-table-column align="left" label="预约类型" prop="yuyueType" width="120" />
-        <el-table-column align="left" label="预约时间" prop="yuyueType" width="120" />
         <el-table-column align="left" label="用户手机号" prop="phone" width="120" />
         <el-table-column align="left" label="监护人手机号" prop="jianhuPhone" width="120" />
         <el-table-column align="left" label="监护人" prop="jianhuren" width="120" />
         <el-table-column align="left" label="微信uuid" prop="wxUuid" width="120" />
         <el-table-column align="left" label="用户邮箱" prop="email" width="120" />
         <el-table-column align="left" label="用户是否被冻结 1正常 2冻结" prop="enable" width="120" />
+        <el-table-column align="left" label="预约类型" prop="yuyueType" width="120" />
+        <el-table-column align="left" label="预约时间" prop="yuyueTime" width="120" />
         <el-table-column align="left" label="生日" prop="birthday" width="120" />
         <el-table-column align="left" label="性别" prop="sex" width="120" />
         <el-table-column align="left" label="住址" prop="address" width="120" />
+        <el-table-column align="left" label="省" prop="province" width="120" />
+        <el-table-column align="left" label="市" prop="city" width="120" />
         <el-table-column align="left" label="籍贯" prop="hometown" width="120" />
         <el-table-column align="left" label="学历" prop="education" width="120" />
         <el-table-column align="left" label="身份证号码" prop="cardNo" width="120" />
@@ -99,6 +97,9 @@
          </template>
          </el-table-column>
         <el-table-column align="left" label="租户id" prop="tenantId" width="120" />
+        <el-table-column align="left" label="创建者" prop="createdBy" width="120" />
+        <el-table-column align="left" label="更新者" prop="updatedBy" width="120" />
+        <el-table-column align="left" label="删除者" prop="deletedBy" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link icon="edit" class="table-button" @click="updateHosUsersFunc(scope.row)">变更</el-button>
@@ -154,12 +155,6 @@
             <el-form-item label="监护人:"  prop="jianhuren" >
               <el-input v-model="formData.jianhuren" :clearable="true"  placeholder="请输入监护人" />
             </el-form-item>
-            <el-form-item label="预约类型:"  prop="yuyueType" >
-              <el-input v-model="formData.yuyueType" :clearable="true"  placeholder="请输入预约类型" />
-            </el-form-item>
-            <el-form-item label="预约时间:"  prop="yuyueTime" >
-              <el-input v-model="formData.yuyueTime" :clearable="true"  placeholder="请输入预约时间" />
-            </el-form-item>                        
             <el-form-item label="微信uuid:"  prop="wxUuid" >
               <el-input v-model="formData.wxUuid" :clearable="true"  placeholder="请输入微信uuid" />
             </el-form-item>
@@ -169,6 +164,12 @@
             <el-form-item label="用户是否被冻结 1正常 2冻结:"  prop="enable" >
               <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入用户是否被冻结 1正常 2冻结" />
             </el-form-item>
+            <el-form-item label="预约类型:"  prop="yuyueType" >
+              <el-input v-model="formData.yuyueType" :clearable="true"  placeholder="请输入预约类型" />
+            </el-form-item>
+            <el-form-item label="预约时间:"  prop="yuyueTime" >
+              <el-input v-model="formData.yuyueTime" :clearable="true"  placeholder="请输入预约时间" />
+            </el-form-item>
             <el-form-item label="生日:"  prop="birthday" >
               <el-input v-model="formData.birthday" :clearable="true"  placeholder="请输入生日" />
             </el-form-item>
@@ -177,6 +178,12 @@
             </el-form-item>
             <el-form-item label="住址:"  prop="address" >
               <el-input v-model="formData.address" :clearable="true"  placeholder="请输入住址" />
+            </el-form-item>
+            <el-form-item label="省:"  prop="province" >
+              <el-input v-model="formData.province" :clearable="true"  placeholder="请输入省" />
+            </el-form-item>
+            <el-form-item label="市:"  prop="city" >
+              <el-input v-model="formData.city" :clearable="true"  placeholder="请输入市" />
             </el-form-item>
             <el-form-item label="籍贯:"  prop="hometown" >
               <el-input v-model="formData.hometown" :clearable="true"  placeholder="请输入籍贯" />
@@ -212,6 +219,15 @@
             <el-form-item label="租户id:"  prop="tenantId" >
               <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入租户id" />
             </el-form-item>
+            <el-form-item label="创建者:"  prop="createdBy" >
+              <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入创建者" />
+            </el-form-item>
+            <el-form-item label="更新者:"  prop="updatedBy" >
+              <el-input v-model.number="formData.updatedBy" :clearable="true" placeholder="请输入更新者" />
+            </el-form-item>
+            <el-form-item label="删除者:"  prop="deletedBy" >
+              <el-input v-model.number="formData.deletedBy" :clearable="true" placeholder="请输入删除者" />
+            </el-form-item>
           </el-form>
     </el-drawer>
   </div>
@@ -232,7 +248,6 @@ import {
 import { getDictFunc, formatDate, formatBoolean, filterDict,filterDataSource, ReturnArrImg, onDownloadFile } from '@/utils/format'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, reactive } from 'vue'
-import CustomPic from '@/components/customPic/index.vue'
 
 defineOptions({
     name: 'HosUsers'
@@ -251,9 +266,13 @@ const formData = ref({
         wxUuid: '',
         email: '',
         enable: 0,
+        yuyueType: '',
+        yuyueTime: '',
         birthday: '',
         sex: '',
         address: '',
+        province: '',
+        city: '',
         hometown: '',
         education: '',
         cardNo: '',
@@ -261,9 +280,12 @@ const formData = ref({
         womanPeriodDate: '',
         height: '',
         weight: '',
-        registerHos: 0,
-        latelyHos: 0,
+        registerHos: '',
+        latelyHos: '',
         tenantId: 0,
+        createdBy: 0,
+        updatedBy: 0,
+        deletedBy: 0,
         })
   const dataSource = ref([])
   const getDataSourceFunc = async()=>{
@@ -456,16 +478,18 @@ const closeDialog = () => {
         nickName: '',
         headerImg: '',
         phone: '',
-        yuyueType: '',
-        yuyueTime: '',
         jianhuPhone: '',
         jianhuren: '',
         wxUuid: '',
         email: '',
         enable: 0,
+        yuyueType: '',
+        yuyueTime: '',
         birthday: '',
         sex: '',
         address: '',
+        province: '',
+        city: '',
         hometown: '',
         education: '',
         cardNo: '',
@@ -473,9 +497,12 @@ const closeDialog = () => {
         womanPeriodDate: '',
         height: '',
         weight: '',
-        registerHos: 0,
-        latelyHos: 0,
+        registerHos: '',
+        latelyHos: '',
         tenantId: 0,
+        createdBy: 0,
+        updatedBy: 0,
+        deletedBy: 0,
         }
 }
 // 弹窗确定

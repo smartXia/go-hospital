@@ -6,6 +6,7 @@ import (
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
 	"devops-manage/service"
+	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -31,6 +32,7 @@ func (hosUsersApi *HosUsersApi) CreateHosUsers(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+	hosUsers.CreatedBy = utils.GetUserID(c)
 
 	if err, d := hosUsersService.CreateHosUsers(&hosUsers, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
@@ -51,7 +53,8 @@ func (hosUsersApi *HosUsersApi) CreateHosUsers(c *gin.Context) {
 // @Router /hosUsers/deleteHosUsers [delete]
 func (hosUsersApi *HosUsersApi) DeleteHosUsers(c *gin.Context) {
 	ID := c.Query("ID")
-	if err := hosUsersService.DeleteHosUsers(ID, c); err != nil {
+	userID := utils.GetUserID(c)
+	if err := hosUsersService.DeleteHosUsers(ID, userID, c); err != nil {
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
@@ -69,7 +72,8 @@ func (hosUsersApi *HosUsersApi) DeleteHosUsers(c *gin.Context) {
 // @Router /hosUsers/deleteHosUsersByIds [delete]
 func (hosUsersApi *HosUsersApi) DeleteHosUsersByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
-	if err := hosUsersService.DeleteHosUsersByIds(IDs, c); err != nil {
+	userID := utils.GetUserID(c)
+	if err := hosUsersService.DeleteHosUsersByIds(IDs, userID, c); err != nil {
 		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
@@ -93,7 +97,7 @@ func (hosUsersApi *HosUsersApi) UpdateHosUsers(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-
+	hosUsers.UpdatedBy = utils.GetUserID(c)
 	if err := hosUsersService.UpdateHosUsers(hosUsers, c); err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)

@@ -7,12 +7,11 @@ type ServiceGroup struct {
 	SysOperationRecordsService
 	HosScaleService
 	HosLoaclAskService
-	HosSportModeService
-	HosSportAdviceService
 	HosSportClockService
 	HosSportClockCommitService
 	HosUserPointService
 	HosFlowService
 	SysUsersService
 	HosUsersService
+	HosSportAdviceService
 }

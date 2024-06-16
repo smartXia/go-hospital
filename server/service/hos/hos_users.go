@@ -6,6 +6,7 @@ import (
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type HosUsersService struct {
@@ -20,15 +21,31 @@ func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, c
 
 // DeleteHosUsers 删除hosUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosUsersService *HosUsersService) DeleteHosUsers(ID string, ctx *gin.Context) (err error) {
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&hos.HosUsers{}, "id = ?", ID).Error
+func (hosUsersService *HosUsersService) DeleteHosUsers(ID string, userID uint, ctx *gin.Context) (err error) {
+	err = global.GVA_DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Model(&hos.HosUsers{}).Where("id = ?", ID).Update("deleted_by", userID).Error; err != nil {
+			return err
+		}
+		if err = tx.Delete(&hos.HosUsers{}, "id = ?", ID).Error; err != nil {
+			return err
+		}
+		return nil
+	})
 	return err
 }
 
 // DeleteHosUsersByIds 批量删除hosUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosUsersService *HosUsersService) DeleteHosUsersByIds(IDs []string, ctx *gin.Context) (err error) {
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&[]hos.HosUsers{}, "id in ?", IDs).Error
+func (hosUsersService *HosUsersService) DeleteHosUsersByIds(IDs []string, deleted_by uint, ctx *gin.Context) (err error) {
+	err = global.GVA_DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Model(&hos.HosUsers{}).Where("id in ?", IDs).Update("deleted_by", deleted_by).Error; err != nil {
+			return err
+		}
+		if err := tx.Where("id in ?", IDs).Delete(&hos.HosUsers{}).Error; err != nil {
+			return err
+		}
+		return nil
+	})
 	return err
 }
 
@@ -58,9 +75,6 @@ func (hosUsersService *HosUsersService) GetHosUsersInfoList(info hosReq.HosUsers
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.Uuid != "" {
-		db = db.Where("uuid = ?", info.Uuid)
-	}
 	if info.Username != "" {
 		db = db.Where("username = ?", info.Username)
 	}
@@ -73,8 +87,8 @@ func (hosUsersService *HosUsersService) GetHosUsersInfoList(info hosReq.HosUsers
 	if info.JianhuPhone != "" {
 		db = db.Where("jianhu_phone = ?", info.JianhuPhone)
 	}
-	if info.Jianhuren != "" {
-		db = db.Where("jianhuren = ?", info.Jianhuren)
+	if info.CardNo != "" {
+		db = db.Where("card_no LIKE ?", "%"+info.CardNo+"%")
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -92,10 +106,10 @@ func (hosUsersService *HosUsersService) GetHosUsersDataSource() (res map[string]
 	res = make(map[string][]map[string]any)
 
 	latelyHos := make([]map[string]any, 0)
-	global.GVA_DB.Table("sys_org").Select("name as label,id as value").Where("deleted_at IS  NULL").Find(&latelyHos)
+	global.GVA_DB.Table("sys_org").Select("name as label,id as value").Scan(&latelyHos)
 	res["latelyHos"] = latelyHos
 	registerHos := make([]map[string]any, 0)
-	global.GVA_DB.Table("sys_org").Select("name as label,id as value").Where("deleted_at IS  NULL").Scan(&registerHos)
+	global.GVA_DB.Table("sys_org").Select("name as label,id as value").Scan(&registerHos)
 	res["registerHos"] = registerHos
 	return
 }

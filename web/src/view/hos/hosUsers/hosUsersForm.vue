@@ -17,27 +17,12 @@
         <el-form-item label="用户头像:" prop="headerImg">
           <el-input v-model="formData.headerImg" :clearable="true"  placeholder="请输入用户头像" />
        </el-form-item>
-        <el-table-column  label="头像" min-width="75">
-          <template #default="scope">
-            <CustomPic
-              style="margin-top:8px"
-              :pic-src="scope.row.headerImg"
-            />
-          </template>
-        </el-table-column>
         <el-form-item label="用户手机号:" prop="phone">
           <el-input v-model="formData.phone" :clearable="true"  placeholder="请输入用户手机号" />
        </el-form-item>
         <el-form-item label="监护人手机号:" prop="jianhuPhone">
           <el-input v-model="formData.jianhuPhone" :clearable="true"  placeholder="请输入监护人手机号" />
        </el-form-item>
-            <el-form-item label="预约类型:"  prop="yuyueType" >
-              <el-input v-model="formData.yuyueType" :clearable="true"  placeholder="请输入预约类型" />
-            </el-form-item>
-            <el-form-item label="预约时间:"  prop="yuyueTime" >
-              <el-input v-model="formData.yuyueTime" :clearable="true"  placeholder="请输入预约时间" />
-            </el-form-item>                        
-
         <el-form-item label="监护人:" prop="jianhuren">
           <el-input v-model="formData.jianhuren" :clearable="true"  placeholder="请输入监护人" />
        </el-form-item>
@@ -50,6 +35,12 @@
         <el-form-item label="用户是否被冻结 1正常 2冻结:" prop="enable">
           <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入" />
        </el-form-item>
+        <el-form-item label="预约类型:" prop="yuyueType">
+          <el-input v-model="formData.yuyueType" :clearable="true"  placeholder="请输入预约类型" />
+       </el-form-item>
+        <el-form-item label="预约时间:" prop="yuyueTime">
+          <el-input v-model="formData.yuyueTime" :clearable="true"  placeholder="请输入预约时间" />
+       </el-form-item>
         <el-form-item label="生日:" prop="birthday">
           <el-input v-model="formData.birthday" :clearable="true"  placeholder="请输入生日" />
        </el-form-item>
@@ -58,6 +49,12 @@
        </el-form-item>
         <el-form-item label="住址:" prop="address">
           <el-input v-model="formData.address" :clearable="true"  placeholder="请输入住址" />
+       </el-form-item>
+        <el-form-item label="省:" prop="province">
+          <el-input v-model="formData.province" :clearable="true"  placeholder="请输入省" />
+       </el-form-item>
+        <el-form-item label="市:" prop="city">
+          <el-input v-model="formData.city" :clearable="true"  placeholder="请输入市" />
        </el-form-item>
         <el-form-item label="籍贯:" prop="hometown">
           <el-input v-model="formData.hometown" :clearable="true"  placeholder="请输入籍贯" />
@@ -128,7 +125,6 @@ import { getDictFunc } from '@/utils/format'
 import { useRoute, useRouter } from "vue-router"
 import { ElMessage } from 'element-plus'
 import { ref, reactive } from 'vue'
-import CustomPic from '@/components/customPic/index.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -142,15 +138,17 @@ const formData = ref({
             headerImg: '',
             phone: '',
             jianhuPhone: '',
-            yuyueType: '',
-            yuyueTime: '',
             jianhuren: '',
             wxUuid: '',
             email: '',
             enable: 0,
+            yuyueType: '',
+            yuyueTime: '',
             birthday: '',
             sex: '',
             address: '',
+            province: '',
+            city: '',
             hometown: '',
             education: '',
             cardNo: '',
@@ -159,7 +157,7 @@ const formData = ref({
             height: '',
             weight: '',
             registerHos: '',
-            latelyHos: 0,
+            latelyHos: '',
             tenantId: 0,
             createdBy: 0,
             updatedBy: 0,

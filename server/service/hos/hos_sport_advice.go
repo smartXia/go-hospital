@@ -13,7 +13,7 @@ type HosSportAdviceService struct {
 
 // CreateHosSportAdvice 创建hosSportAdvice表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosSportAdviceService *HosSportAdviceService) CreateHosSportAdvice(hosSportAdvice *hos.HosSportAdvice, ctx *gin.Context) (err error, h *hos.HosSportAdvice) {
+func (hosSportAdviceService *HosSportAdviceService) CreateHosSportAdvice(hosSportAdvice *hos.HosSportAdvice, ctx *gin.Context) (err error, d *hos.HosSportAdvice) {
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosSportAdvice).Error
 	return err, hosSportAdvice
 }
@@ -61,11 +61,17 @@ func (hosSportAdviceService *HosSportAdviceService) GetHosSportAdviceInfoList(in
 	if info.FlowId != nil {
 		db = db.Where("flow_id = ?", info.FlowId)
 	}
-	if info.Name != "" {
-		db = db.Where("name = ?", info.Name)
+	if info.UserId != nil {
+		db = db.Where("user_id = ?", info.UserId)
+	}
+	if info.Period != "" {
+		db = db.Where("period = ?", info.Period)
 	}
 	if info.Source != "" {
 		db = db.Where("source = ?", info.Source)
+	}
+	if info.SyncWx != nil {
+		db = db.Where("sync_wx = ?", info.SyncWx)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -73,7 +79,7 @@ func (hosSportAdviceService *HosSportAdviceService) GetHosSportAdviceInfoList(in
 	}
 
 	if limit != 0 {
-		db = db.Limit(limit).Offset(offset)
+		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
 
 	err = db.Find(&hosSportAdvices).Error

@@ -21,12 +21,22 @@
              <el-input v-model.number="searchInfo.flowId" placeholder="搜索条件" />
 
         </el-form-item>
-        <el-form-item label="名称" prop="name">
-         <el-input v-model="searchInfo.name" placeholder="搜索条件" />
+        <el-form-item label="患者id" prop="userId">
+            
+             <el-input v-model.number="searchInfo.userId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="周期" prop="period">
+         <el-input v-model="searchInfo.period" placeholder="搜索条件" />
 
         </el-form-item>
         <el-form-item label="来源（self-system）" prop="source">
          <el-input v-model="searchInfo.source" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="是否同步微信" prop="syncWx">
+            
+             <el-input v-model.number="searchInfo.syncWx" placeholder="搜索条件" />
 
         </el-form-item>
         <el-form-item>
@@ -55,6 +65,7 @@
         </el-table-column>
         
         <el-table-column align="left" label="流程id" prop="flowId" width="120" />
+        <el-table-column align="left" label="患者id" prop="userId" width="120" />
         <el-table-column align="left" label="名称" prop="name" width="120" />
         <el-table-column align="left" label="周期" prop="period" width="120" />
         <el-table-column align="left" label="建议" prop="sportMode" width="120" />
@@ -63,7 +74,12 @@
         <el-table-column align="left" label="来源（self-system）" prop="source" width="120" />
         <el-table-column align="left" label="描述" prop="desc" width="120" />
         <el-table-column align="left" label="状态" prop="enable" width="120" />
+        <el-table-column align="left" label="排序" prop="sort" width="120" />
+        <el-table-column align="left" label="是否同步微信" prop="syncWx" width="120" />
         <el-table-column align="left" label="租户编号" prop="tenantId" width="120" />
+        <el-table-column align="left" label="创建者" prop="createdBy" width="120" />
+        <el-table-column align="left" label="更新者" prop="updatedBy" width="120" />
+        <el-table-column align="left" label="删除者" prop="deletedBy" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link icon="edit" class="table-button" @click="updateHosSportAdviceFunc(scope.row)">变更</el-button>
@@ -98,6 +114,9 @@
             <el-form-item label="流程id:"  prop="flowId" >
               <el-input v-model.number="formData.flowId" :clearable="true" placeholder="请输入流程id" />
             </el-form-item>
+            <el-form-item label="患者id:"  prop="userId" >
+              <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入患者id" />
+            </el-form-item>
             <el-form-item label="名称:"  prop="name" >
               <el-input v-model="formData.name" :clearable="true"  placeholder="请输入名称" />
             </el-form-item>
@@ -122,8 +141,23 @@
             <el-form-item label="状态:"  prop="enable" >
               <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入状态" />
             </el-form-item>
+            <el-form-item label="排序:"  prop="sort" >
+              <el-input v-model.number="formData.sort" :clearable="true" placeholder="请输入排序" />
+            </el-form-item>
+            <el-form-item label="是否同步微信:"  prop="syncWx" >
+              <el-input v-model.number="formData.syncWx" :clearable="true" placeholder="请输入是否同步微信" />
+            </el-form-item>
             <el-form-item label="租户编号:"  prop="tenantId" >
               <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入租户编号" />
+            </el-form-item>
+            <el-form-item label="创建者:"  prop="createdBy" >
+              <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入创建者" />
+            </el-form-item>
+            <el-form-item label="更新者:"  prop="updatedBy" >
+              <el-input v-model.number="formData.updatedBy" :clearable="true" placeholder="请输入更新者" />
+            </el-form-item>
+            <el-form-item label="删除者:"  prop="deletedBy" >
+              <el-input v-model.number="formData.deletedBy" :clearable="true" placeholder="请输入删除者" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -152,6 +186,7 @@ defineOptions({
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
         flowId: 0,
+        userId: 0,
         name: '',
         period: '',
         sportMode: '',
@@ -160,13 +195,47 @@ const formData = ref({
         source: '',
         desc: '',
         enable: 0,
+        sort: 0,
+        syncWx: 0,
         tenantId: 0,
+        createdBy: 0,
+        updatedBy: 0,
+        deletedBy: 0,
         })
 
 
 
 // 验证规则
 const rule = reactive({
+               flowId : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+              ],
+               userId : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+              ],
+               period : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+               {
+                   whitespace: true,
+                   message: '不能只输入空格',
+                   trigger: ['input', 'blur'],
+              }
+              ],
+               syncWx : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+              ],
 })
 
 const searchRule = reactive({
@@ -340,6 +409,7 @@ const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
         flowId: 0,
+        userId: 0,
         name: '',
         period: '',
         sportMode: '',
@@ -348,7 +418,12 @@ const closeDialog = () => {
         source: '',
         desc: '',
         enable: 0,
+        sort: 0,
+        syncWx: 0,
         tenantId: 0,
+        createdBy: 0,
+        updatedBy: 0,
+        deletedBy: 0,
         }
 }
 // 弹窗确定

@@ -7,12 +7,11 @@ type ApiGroup struct {
 	SysOperationRecordsApi
 	HosScaleApi
 	HosLoaclAskApi
-	HosSportModeApi
-	HosSportAdviceApi
 	HosSportClockApi
 	HosSportClockCommitApi
 	HosUserPointApi
 	HosFlowApi
 	SysUsersApi
 	HosUsersApi
+	HosSportAdviceApi
 }

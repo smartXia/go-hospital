@@ -5,6 +5,9 @@
         <el-form-item label="流程id:" prop="flowId">
           <el-input v-model.number="formData.flowId" :clearable="true" placeholder="请输入" />
        </el-form-item>
+        <el-form-item label="患者id:" prop="userId">
+          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
+       </el-form-item>
         <el-form-item label="名称:" prop="name">
           <el-input v-model="formData.name" :clearable="true"  placeholder="请输入名称" />
        </el-form-item>
@@ -31,6 +34,9 @@
        </el-form-item>
         <el-form-item label="排序:" prop="sort">
           <el-input v-model.number="formData.sort" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="是否同步微信:" prop="syncWx">
+          <el-input v-model.number="formData.syncWx" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="租户编号:" prop="tenantId">
           <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入" />
@@ -76,6 +82,7 @@ const router = useRouter()
 const type = ref('')
 const formData = ref({
             flowId: 0,
+            userId: 0,
             name: '',
             period: '',
             sportMode: '',
@@ -85,6 +92,7 @@ const formData = ref({
             desc: '',
             enable: 0,
             sort: 0,
+            syncWx: 0,
             tenantId: 0,
             createdBy: 0,
             updatedBy: 0,
@@ -92,6 +100,26 @@ const formData = ref({
         })
 // 验证规则
 const rule = reactive({
+               flowId : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
+               userId : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
+               period : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
+               syncWx : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
 })
 
 const elFormRef = ref()

@@ -10,7 +10,9 @@ type HosSportAdviceSearch struct {
 	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
 
 	FlowId *int   `json:"flowId" form:"flowId" `
-	Name   string `json:"name" form:"name" `
+	UserId *int   `json:"userId" form:"userId" `
+	Period string `json:"period" form:"period" `
 	Source string `json:"source" form:"source" `
+	SyncWx *int   `json:"syncWx" form:"syncWx" `
 	request.PageInfo
 }

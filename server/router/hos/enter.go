@@ -7,12 +7,11 @@ type RouterGroup struct {
 	SysOperationRecordsRouter
 	HosScaleRouter
 	HosLoaclAskRouter
-	HosSportModeRouter
-	HosSportAdviceRouter
 	HosSportClockRouter
 	HosSportClockCommitRouter
 	HosUserPointRouter
 	HosFlowRouter
 	SysUsersRouter
 	HosUsersRouter
+	HosSportAdviceRouter
 }

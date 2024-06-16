@@ -38,8 +38,6 @@ func Routers() *gin.Engine {
 	systemRouter := router.RouterGroupApp.System
 	exampleRouter := router.RouterGroupApp.Example
 
-	//	Router.StaticFS(global.GVA_CONFIG.Local.StorePath, justFilesFilesystem{http.Dir(global.GVA_CONFIG.Local.StorePath)})
-
 	global.GVA_LOG.Info("register swagger handler")
 
 	PublicGroup := Router.Group(global.GVA_CONFIG.System.RouterPrefix)
@@ -86,14 +84,14 @@ func Routers() *gin.Engine {
 
 		hosRouter.InitHosScaleRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitHosLoaclAskRouter(PrivateGroup, PublicGroup)
-		hosRouter.InitHosSportModeRouter(PrivateGroup, PublicGroup)
-		hosRouter.InitHosSportAdviceRouter(PrivateGroup, PublicGroup)
+
 		hosRouter.InitHosSportClockRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitHosSportClockCommitRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitHosUserPointRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitHosFlowRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitSysUsersRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitHosUsersRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitHosSportAdviceRouter(PrivateGroup, PublicGroup)
 
 	}
 
