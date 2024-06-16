@@ -14,6 +14,7 @@ type SysDeptService struct {
 // CreateSysDept 创建sysDept表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysDeptService *SysDeptService) CreateSysDept(sysDept *hos.SysDept, ctx *gin.Context) (err error, d *hos.SysDept) {
+
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysDept).Error
 	return err, sysDept
 }
@@ -58,13 +59,19 @@ func (sysDeptService *SysDeptService) GetSysDeptInfoList(info hosReq.SysDeptSear
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
+	if info.Name != "" {
+		db = db.Where("name = ?", info.Name)
+	}
+	if info.ManageId != "" {
+		db = db.Where("manage_id = ?", info.ManageId)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return
 	}
 
 	if limit != 0 {
-		db = db.Limit(limit).Offset(offset)
+		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
 
 	err = db.Find(&sysDepts).Error

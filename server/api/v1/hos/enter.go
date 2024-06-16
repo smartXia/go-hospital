@@ -1,9 +1,6 @@
 package hos
 
 type ApiGroup struct {
-	SysOrgApi
-	SysDeptApi
-	SysPostApi
 	SysOperationRecordsApi
 	HosScaleApi
 	HosLoaclAskApi
@@ -12,6 +9,10 @@ type ApiGroup struct {
 	HosUserPointApi
 	HosFlowApi
 	SysUsersApi
-	HosUsersApi
+	HosSportModeApi
 	HosSportAdviceApi
+	HosUsersApi
+	SysDeptApi
+	SysOrgApi
+	SysPostApi
 }

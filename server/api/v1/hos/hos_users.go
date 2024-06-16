@@ -32,8 +32,6 @@ func (hosUsersApi *HosUsersApi) CreateHosUsers(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	hosUsers.CreatedBy = utils.GetUserID(c)
-
 	if err, d := hosUsersService.CreateHosUsers(&hosUsers, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
@@ -97,7 +95,6 @@ func (hosUsersApi *HosUsersApi) UpdateHosUsers(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	hosUsers.UpdatedBy = utils.GetUserID(c)
 	if err := hosUsersService.UpdateHosUsers(hosUsers, c); err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)

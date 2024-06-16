@@ -29,16 +29,16 @@ type HosUsers struct {
 	Hometown        string `json:"hometown" form:"hometown" gorm:"column:hometown;comment:籍贯;size:255;"`                            //籍贯
 	Education       string `json:"education" form:"education" gorm:"column:education;comment:学历;size:255;"`                         //学历
 	CardNo          string `json:"cardNo" form:"cardNo" gorm:"column:card_no;comment:身份证号码;size:255;"`                              //身份证号码
-	Age             string `json:"age" form:"age" gorm:"column:age;comment:年龄;size:255;"`                                           //年龄
+	Age             *int   `json:"age" form:"age" gorm:"column:age;comment:年龄;size:255;"`                                           //年龄
 	WomanPeriodDate string `json:"womanPeriodDate" form:"womanPeriodDate" gorm:"column:woman_period_date;comment:女性初潮日期;size:255;"` //女性初潮日期
-	Height          string `json:"height" form:"height" gorm:"column:height;comment:身高;size:255;"`                                  //身高
-	Weight          string `json:"weight" form:"weight" gorm:"column:weight;comment:体重;size:255;"`                                  //体重
+	Height          *int   `json:"height" form:"height" gorm:"column:height;comment:身高;size:255;"`                                  //身高
+	Weight          *int   `json:"weight" form:"weight" gorm:"column:weight;comment:体重;size:255;"`                                  //体重
 	RegisterHos     string `json:"registerHos" form:"registerHos" gorm:"column:register_hos;comment:第一次登记医院;size:255;"`             //第一次登记医院
 	LatelyHos       string `json:"latelyHos" form:"latelyHos" gorm:"column:lately_hos;comment:近一次登记医院;size:255;"`                   //近一次登记医院
 	TenantId        *int   `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户id;"`                                  //租户id
-	CreatedBy       uint   `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                        //创建者
-	UpdatedBy       uint   `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                        //更新者
-	DeletedBy       uint   `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                        //删除者
+	CreatedBy       *int   `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                        //创建者
+	UpdatedBy       *int   `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                        //更新者
+	DeletedBy       *int   `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                        //删除者
 }
 
 // TableName hosUsers表 HosUsers自定义表名 hos_users

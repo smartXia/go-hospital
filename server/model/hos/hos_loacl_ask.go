@@ -9,6 +9,7 @@ import (
 type HosLoaclAsk struct {
 	global.GVA_MODEL
 	Name                 string `json:"name" form:"name" gorm:"column:name;comment:名称;size:255;"`                                           //名称
+	HosUserId            *int   `json:"hos_user_id" form:"hos_user_id" gorm:"column:hos_user_id;comment:关联用户id;size:10;"`                   //关联用户id
 	Jizhucewan           string `json:"jizhucewan" form:"jizhucewan" gorm:"column:jizhucewan;comment:脊柱侧弯;"`                                //脊柱侧弯
 	Shizhuangmianzhangai string `json:"shizhuangmianzhangai" form:"shizhuangmianzhangai" gorm:"column:shizhuangmianzhangai;comment:矢状面障碍;"` //矢状面障碍
 	Jizhuihuatuo         string `json:"jizhuihuatuo" form:"jizhuihuatuo" gorm:"column:jizhuihuatuo;comment:脊椎滑脱;"`                          //脊椎滑脱

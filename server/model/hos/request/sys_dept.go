@@ -9,5 +9,7 @@ type SysDeptSearch struct {
 	StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
 	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
 
+	Name     string `json:"name" form:"name" `
+	ManageId string `json:"manageId" form:"manageId" `
 	request.PageInfo
 }

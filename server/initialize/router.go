@@ -76,10 +76,6 @@ func Routers() *gin.Engine {
 	{
 		hosRouter := router.RouterGroupApp.Hos
 
-		hosRouter.InitSysOrgRouter(PrivateGroup, PublicGroup)
-		hosRouter.InitSysDeptRouter(PrivateGroup, PublicGroup)
-		hosRouter.InitSysPostRouter(PrivateGroup, PublicGroup)
-
 		hosRouter.InitSysOperationRecordsRouter(PrivateGroup, PublicGroup)
 
 		hosRouter.InitHosScaleRouter(PrivateGroup, PublicGroup)
@@ -90,8 +86,13 @@ func Routers() *gin.Engine {
 		hosRouter.InitHosUserPointRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitHosFlowRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitSysUsersRouter(PrivateGroup, PublicGroup)
-		hosRouter.InitHosUsersRouter(PrivateGroup, PublicGroup)
+
+		hosRouter.InitHosSportModeRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitHosSportAdviceRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitHosUsersRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitSysDeptRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitSysOrgRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitSysPostRouter(PrivateGroup, PublicGroup)
 
 	}
 

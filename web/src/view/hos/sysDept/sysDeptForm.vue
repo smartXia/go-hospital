@@ -2,29 +2,29 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
-        <el-form-item label="部门名称:" prop="name">
-          <el-input v-model="formData.name" :clearable="true"  placeholder="请输入部门名称" />
+        <el-form-item label="岗位名称:" prop="name">
+          <el-input v-model="formData.name" :clearable="true"  placeholder="请输入岗位名称" />
        </el-form-item>
         <el-form-item label="描述:" prop="desc">
           <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入描述" />
        </el-form-item>
-        <el-form-item label="详细地址:" prop="address">
-          <el-input v-model="formData.address" :clearable="true"  placeholder="请输入详细地址" />
+        <el-form-item label="地址:" prop="address">
+          <el-input v-model="formData.address" :clearable="true"  placeholder="请输入地址" />
        </el-form-item>
-        <el-form-item label="状态:" prop="enable">
-          <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="排序:" prop="sort">
-          <el-input v-model.number="formData.sort" :clearable="true" placeholder="请输入" />
-       </el-form-item>
-        <el-form-item label="管理人id:" prop="manageId">
-          <el-input v-model.number="formData.manageId" :clearable="true" placeholder="请输入" />
+        <el-form-item label="用户id:" prop="manageId">
+          <el-input v-model="formData.manageId" :clearable="true"  placeholder="请输入用户id" />
        </el-form-item>
         <el-form-item label="上级部门:" prop="parentId">
           <el-input v-model.number="formData.parentId" :clearable="true" placeholder="请输入" />
        </el-form-item>
-        <el-form-item label="租户编号:" prop="tenantId">
-          <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入" />
+        <el-form-item label="排序:" prop="sort">
+          <el-input v-model.number="formData.sort" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="启用:" prop="enable">
+          <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="备注:" prop="remark">
+          <el-input v-model="formData.remark" :clearable="true"  placeholder="请输入备注" />
        </el-form-item>
         <el-form-item label="创建者:" prop="createdBy">
           <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入" />
@@ -34,6 +34,9 @@
        </el-form-item>
         <el-form-item label="删除者:" prop="deletedBy">
           <el-input v-model.number="formData.deletedBy" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="租户id:" prop="tenantId">
+          <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
@@ -69,14 +72,15 @@ const formData = ref({
             name: '',
             desc: '',
             address: '',
-            enable: 0,
-            sort: 0,
-            manageId: 0,
+            manageId: '',
             parentId: 0,
-            tenantId: 0,
+            sort: 0,
+            enable: 0,
+            remark: '',
             createdBy: 0,
             updatedBy: 0,
             deletedBy: 0,
+            tenantId: 0,
         })
 // 验证规则
 const rule = reactive({

@@ -9,6 +9,7 @@ import (
 type HosScale struct {
 	global.GVA_MODEL
 	Name           string `json:"name" form:"name" gorm:"column:name;comment:名称;size:500;"`                                  //名称
+	HosUserId      *int   `json:"hos_user_id" form:"hos_user_id" gorm:"column:hos_user_id;comment:关联用户id;size:10;"`          //关联用户id
 	BirthStatus    string `json:"birthStatus" form:"birthStatus" gorm:"column:birth_status;comment:出生状态;size:500;"`          //出生状态
 	BirthMode      string `json:"birthMode" form:"birthMode" gorm:"column:birth_mode;comment:出生方式;size:500;"`                //出生方式
 	GrowStatus     string `json:"growStatus" form:"growStatus" gorm:"column:grow_status;comment:发育状态;size:500;"`             //发育状态

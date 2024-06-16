@@ -1,9 +1,6 @@
 package hos
 
 type RouterGroup struct {
-	SysOrgRouter
-	SysDeptRouter
-	SysPostRouter
 	SysOperationRecordsRouter
 	HosScaleRouter
 	HosLoaclAskRouter
@@ -12,6 +9,10 @@ type RouterGroup struct {
 	HosUserPointRouter
 	HosFlowRouter
 	SysUsersRouter
-	HosUsersRouter
+	HosSportModeRouter
 	HosSportAdviceRouter
+	HosUsersRouter
+	SysDeptRouter
+	SysOrgRouter
+	SysPostRouter
 }

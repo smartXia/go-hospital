@@ -61,14 +61,17 @@ func (hosSportAdviceService *HosSportAdviceService) GetHosSportAdviceInfoList(in
 	if info.FlowId != nil {
 		db = db.Where("flow_id = ?", info.FlowId)
 	}
-	if info.UserId != nil {
-		db = db.Where("user_id = ?", info.UserId)
+	if info.HosUserId != "" {
+		db = db.Where("hos_user_id = ?", info.HosUserId)
 	}
-	if info.Period != "" {
-		db = db.Where("period = ?", info.Period)
+	if info.SportModeId != nil {
+		db = db.Where("sport_mode_id = ?", info.SportModeId)
 	}
-	if info.Source != "" {
-		db = db.Where("source = ?", info.Source)
+	if info.Name != "" {
+		db = db.Where("name = ?", info.Name)
+	}
+	if info.Fuzhenriqi != "" {
+		db = db.Where("fuzhenriqi = ?", info.Fuzhenriqi)
 	}
 	if info.SyncWx != nil {
 		db = db.Where("sync_wx = ?", info.SyncWx)

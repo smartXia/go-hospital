@@ -5,17 +5,23 @@
         <el-form-item label="流程id:" prop="flowId">
           <el-input v-model.number="formData.flowId" :clearable="true" placeholder="请输入" />
        </el-form-item>
-        <el-form-item label="患者id:" prop="userId">
-          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
+        <el-form-item label="患者id:" prop="hosUserId">
+          <el-input v-model="formData.hosUserId" :clearable="true"  placeholder="请输入患者id" />
+       </el-form-item>
+        <el-form-item label="模型 id:" prop="sportModeId">
+          <el-input v-model.number="formData.sportModeId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="名称:" prop="name">
           <el-input v-model="formData.name" :clearable="true"  placeholder="请输入名称" />
        </el-form-item>
-        <el-form-item label="周期:" prop="period">
-          <el-input v-model="formData.period" :clearable="true"  placeholder="请输入周期" />
+        <el-form-item label="建议起止时间:" prop="jianyitime">
+          <el-input v-model="formData.jianyitime" :clearable="true"  placeholder="请输入建议起止时间" />
        </el-form-item>
-        <el-form-item label="建议:" prop="sportMode">
-          <el-input v-model="formData.sportMode" :clearable="true"  placeholder="请输入建议" />
+        <el-form-item label="建议周期:" prop="jianyizhouqi">
+          <el-input v-model="formData.jianyizhouqi" :clearable="true"  placeholder="请输入建议周期" />
+       </el-form-item>
+        <el-form-item label="复诊时间:" prop="fuzhenriqi">
+          <el-input v-model="formData.fuzhenriqi" :clearable="true"  placeholder="请输入复诊时间" />
        </el-form-item>
         <el-form-item label="建议详情:" prop="detail">
           <el-input v-model="formData.detail" :clearable="true"  placeholder="请输入建议详情" />
@@ -25,6 +31,12 @@
        </el-form-item>
         <el-form-item label="来源（self-system）:" prop="source">
           <el-input v-model="formData.source" :clearable="true"  placeholder="请输入来源（self-system）" />
+       </el-form-item>
+        <el-form-item label="建议:" prop="sportMode">
+          <el-input v-model="formData.sportMode" :clearable="true"  placeholder="请输入建议" />
+       </el-form-item>
+        <el-form-item label="周期:" prop="period">
+          <el-input v-model="formData.period" :clearable="true"  placeholder="请输入周期" />
        </el-form-item>
         <el-form-item label="描述:" prop="desc">
           <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入描述" />
@@ -82,13 +94,17 @@ const router = useRouter()
 const type = ref('')
 const formData = ref({
             flowId: 0,
-            userId: 0,
+            hosUserId: '',
+            sportModeId: 0,
             name: '',
-            period: '',
-            sportMode: '',
+            jianyitime: '',
+            jianyizhouqi: '',
+            fuzhenriqi: '',
             detail: '',
             images: '',
             source: '',
+            sportMode: '',
+            period: '',
             desc: '',
             enable: 0,
             sort: 0,
@@ -100,26 +116,6 @@ const formData = ref({
         })
 // 验证规则
 const rule = reactive({
-               flowId : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
-               userId : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
-               period : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
-               syncWx : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
 })
 
 const elFormRef = ref()

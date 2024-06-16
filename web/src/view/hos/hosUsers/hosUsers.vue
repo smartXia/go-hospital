@@ -195,16 +195,16 @@
               <el-input v-model="formData.cardNo" :clearable="true"  placeholder="请输入身份证号码" />
             </el-form-item>
             <el-form-item label="年龄:"  prop="age" >
-              <el-input v-model="formData.age" :clearable="true"  placeholder="请输入年龄" />
+              <el-input v-model.number="formData.age" :clearable="true"  placeholder="请输入年龄" />
             </el-form-item>
             <el-form-item label="女性初潮日期:"  prop="womanPeriodDate" >
               <el-input v-model="formData.womanPeriodDate" :clearable="true"  placeholder="请输入女性初潮日期" />
             </el-form-item>
             <el-form-item label="身高:"  prop="height" >
-              <el-input v-model="formData.height" :clearable="true"  placeholder="请输入身高" />
+              <el-input v-model.number="formData.height" :clearable="true"  placeholder="请输入身高" />
             </el-form-item>
             <el-form-item label="体重:"  prop="weight" >
-              <el-input v-model="formData.weight" :clearable="true"  placeholder="请输入体重" />
+              <el-input v-model.number="formData.weight" :clearable="true"  placeholder="请输入体重" />
             </el-form-item>
             <el-form-item label="第一次登记医院:"  prop="registerHos" >
             <el-select v-model="formData.registerHos" placeholder="请选择第一次登记医院" style="width:100%" :clearable="true" >
@@ -276,10 +276,10 @@ const formData = ref({
         hometown: '',
         education: '',
         cardNo: '',
-        age: '',
+        age: 0,
         womanPeriodDate: '',
-        height: '',
-        weight: '',
+        height: 0,
+        weight: 0,
         registerHos: '',
         latelyHos: '',
         tenantId: 0,

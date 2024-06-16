@@ -8,7 +8,7 @@ import (
 // hosSportClock表 结构体  HosSportClock
 type HosSportClock struct {
 	global.GVA_MODEL
-	Uid            string `json:"uid" form:"uid" gorm:"column:uid;comment:用户id;size:500;"`                                   //用户id
+	HosUserId      *int   `json:"hos_user_id" form:"hos_user_id" gorm:"column:hos_user_id;comment:关联用户id;size:10;"`          //关联用户id
 	FlowId         string `json:"flowId" form:"flowId" gorm:"column:flow_id;comment:流程id;size:500;"`                         //流程id
 	Name           string `json:"name" form:"name" gorm:"column:name;comment:名称;size:500;"`                                  //名称
 	RelationPhotos string `json:"relationPhotos" form:"relationPhotos" gorm:"column:relation_photos;comment:打卡图片;size:255;"` //打卡图片

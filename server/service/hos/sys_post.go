@@ -14,6 +14,7 @@ type SysPostService struct {
 // CreateSysPost 创建sysPost表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysPostService *SysPostService) CreateSysPost(sysPost *hos.SysPost, ctx *gin.Context) (err error, d *hos.SysPost) {
+
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysPost).Error
 	return err, sysPost
 }
@@ -58,13 +59,19 @@ func (sysPostService *SysPostService) GetSysPostInfoList(info hosReq.SysPostSear
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
+	if info.Name != "" {
+		db = db.Where("name LIKE ?", "%"+info.Name+"%")
+	}
+	if info.Desc != "" {
+		db = db.Where("desc LIKE ?", "%"+info.Desc+"%")
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return
 	}
 
 	if limit != 0 {
-		db = db.Limit(limit).Offset(offset)
+		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
 
 	err = db.Find(&sysPosts).Error

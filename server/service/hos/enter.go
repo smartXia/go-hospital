@@ -1,9 +1,6 @@
 package hos
 
 type ServiceGroup struct {
-	SysOrgService
-	SysDeptService
-	SysPostService
 	SysOperationRecordsService
 	HosScaleService
 	HosLoaclAskService
@@ -12,6 +9,10 @@ type ServiceGroup struct {
 	HosUserPointService
 	HosFlowService
 	SysUsersService
-	HosUsersService
+	HosSportModeService
 	HosSportAdviceService
+	HosUsersService
+	SysDeptService
+	SysOrgService
+	SysPostService
 }

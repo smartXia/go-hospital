@@ -16,6 +16,14 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
+        <el-form-item label="岗位名称" prop="name">
+         <el-input v-model="searchInfo.name" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="用户id" prop="manageId">
+         <el-input v-model="searchInfo.manageId" placeholder="搜索条件" />
+
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -41,17 +49,18 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="部门名称" prop="name" width="120" />
+        <el-table-column align="left" label="岗位名称" prop="name" width="120" />
         <el-table-column align="left" label="描述" prop="desc" width="120" />
-        <el-table-column align="left" label="详细地址" prop="address" width="120" />
-        <el-table-column align="left" label="状态" prop="enable" width="120" />
-        <el-table-column align="left" label="排序" prop="sort" width="120" />
-        <el-table-column align="left" label="管理人id" prop="manageId" width="120" />
+        <el-table-column align="left" label="地址" prop="address" width="120" />
+        <el-table-column align="left" label="用户id" prop="manageId" width="120" />
         <el-table-column align="left" label="上级部门" prop="parentId" width="120" />
-        <el-table-column align="left" label="租户编号" prop="tenantId" width="120" />
+        <el-table-column align="left" label="排序" prop="sort" width="120" />
+        <el-table-column align="left" label="启用" prop="enable" width="120" />
+        <el-table-column align="left" label="备注" prop="remark" width="120" />
         <el-table-column align="left" label="创建者" prop="createdBy" width="120" />
         <el-table-column align="left" label="更新者" prop="updatedBy" width="120" />
         <el-table-column align="left" label="删除者" prop="deletedBy" width="120" />
+        <el-table-column align="left" label="租户id" prop="tenantId" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link icon="edit" class="table-button" @click="updateSysDeptFunc(scope.row)">变更</el-button>
@@ -83,29 +92,29 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="部门名称:"  prop="name" >
-              <el-input v-model="formData.name" :clearable="true"  placeholder="请输入部门名称" />
+            <el-form-item label="岗位名称:"  prop="name" >
+              <el-input v-model="formData.name" :clearable="true"  placeholder="请输入岗位名称" />
             </el-form-item>
             <el-form-item label="描述:"  prop="desc" >
               <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入描述" />
             </el-form-item>
-            <el-form-item label="详细地址:"  prop="address" >
-              <el-input v-model="formData.address" :clearable="true"  placeholder="请输入详细地址" />
+            <el-form-item label="地址:"  prop="address" >
+              <el-input v-model="formData.address" :clearable="true"  placeholder="请输入地址" />
             </el-form-item>
-            <el-form-item label="状态:"  prop="enable" >
-              <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入状态" />
-            </el-form-item>
-            <el-form-item label="排序:"  prop="sort" >
-              <el-input v-model.number="formData.sort" :clearable="true" placeholder="请输入排序" />
-            </el-form-item>
-            <el-form-item label="管理人id:"  prop="manageId" >
-              <el-input v-model.number="formData.manageId" :clearable="true" placeholder="请输入管理人id" />
+            <el-form-item label="用户id:"  prop="manageId" >
+              <el-input v-model="formData.manageId" :clearable="true"  placeholder="请输入用户id" />
             </el-form-item>
             <el-form-item label="上级部门:"  prop="parentId" >
               <el-input v-model.number="formData.parentId" :clearable="true" placeholder="请输入上级部门" />
             </el-form-item>
-            <el-form-item label="租户编号:"  prop="tenantId" >
-              <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入租户编号" />
+            <el-form-item label="排序:"  prop="sort" >
+              <el-input v-model.number="formData.sort" :clearable="true" placeholder="请输入排序" />
+            </el-form-item>
+            <el-form-item label="启用:"  prop="enable" >
+              <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入启用" />
+            </el-form-item>
+            <el-form-item label="备注:"  prop="remark" >
+              <el-input v-model="formData.remark" :clearable="true"  placeholder="请输入备注" />
             </el-form-item>
             <el-form-item label="创建者:"  prop="createdBy" >
               <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入创建者" />
@@ -115,6 +124,9 @@
             </el-form-item>
             <el-form-item label="删除者:"  prop="deletedBy" >
               <el-input v-model.number="formData.deletedBy" :clearable="true" placeholder="请输入删除者" />
+            </el-form-item>
+            <el-form-item label="租户id:"  prop="tenantId" >
+              <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入租户id" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -145,14 +157,15 @@ const formData = ref({
         name: '',
         desc: '',
         address: '',
-        enable: 0,
-        sort: 0,
-        manageId: 0,
+        manageId: '',
         parentId: 0,
-        tenantId: 0,
+        sort: 0,
+        enable: 0,
+        remark: '',
         createdBy: 0,
         updatedBy: 0,
         deletedBy: 0,
+        tenantId: 0,
         })
 
 
@@ -334,14 +347,15 @@ const closeDialog = () => {
         name: '',
         desc: '',
         address: '',
-        enable: 0,
-        sort: 0,
-        manageId: 0,
+        manageId: '',
         parentId: 0,
-        tenantId: 0,
+        sort: 0,
+        enable: 0,
+        remark: '',
         createdBy: 0,
         updatedBy: 0,
         deletedBy: 0,
+        tenantId: 0,
         }
 }
 // 弹窗确定

@@ -58,8 +58,8 @@ func (hosUserPointService *HosUserPointService) GetHosUserPointInfoList(info hos
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.Uid != "" {
-		db = db.Where("uid = ?", info.Uid)
+	if info.HosUserId != "" {
+		db = db.Where("hos_user_id = ?", info.HosUserId)
 	}
 	if info.FlowId != "" {
 		db = db.Where("flow_id = ?", info.FlowId)

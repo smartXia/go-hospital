@@ -37,7 +37,6 @@ func (sysPostApi *SysPostApi) CreateSysPost(c *gin.Context) {
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithData(d, c)
-
 	}
 }
 

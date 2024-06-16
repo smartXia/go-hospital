@@ -61,9 +61,9 @@
         
         <el-table-column align="left" label="名称" prop="name" width="120" />
         <el-table-column align="left" label="uuid" prop="uuid" width="120" />
-        <el-table-column align="left" label="关联用户id" prop="uid" width="120">
+        <el-table-column align="left" label="关联患者id" prop="hos_user_id" width="120">
           <template #default="scope">
-          {{ filterDataSource(dataSource.uid,scope.row.uid) }}
+          {{ filterDataSource(dataSource.hos_user_id,scope.row.hos_user_id) }}
          </template>
          </el-table-column>
         <el-table-column align="left" label="类型（快速/普通）" prop="type" width="120" />

@@ -32,12 +32,11 @@ func (sysOrgApi *SysOrgApi) CreateSysOrg(c *gin.Context) {
 		return
 	}
 
-	if err, d := sysOrgService.CreateSysOrg(&sysOrg); err != nil {
+	if err, d := sysOrgService.CreateSysOrg(&sysOrg, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithData(d, c)
-
 	}
 }
 
@@ -52,7 +51,7 @@ func (sysOrgApi *SysOrgApi) CreateSysOrg(c *gin.Context) {
 // @Router /sysOrg/deleteSysOrg [delete]
 func (sysOrgApi *SysOrgApi) DeleteSysOrg(c *gin.Context) {
 	ID := c.Query("ID")
-	if err := sysOrgService.DeleteSysOrg(ID); err != nil {
+	if err := sysOrgService.DeleteSysOrg(ID, c); err != nil {
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
@@ -70,7 +69,7 @@ func (sysOrgApi *SysOrgApi) DeleteSysOrg(c *gin.Context) {
 // @Router /sysOrg/deleteSysOrgByIds [delete]
 func (sysOrgApi *SysOrgApi) DeleteSysOrgByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
-	if err := sysOrgService.DeleteSysOrgByIds(IDs); err != nil {
+	if err := sysOrgService.DeleteSysOrgByIds(IDs, c); err != nil {
 		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
@@ -95,7 +94,7 @@ func (sysOrgApi *SysOrgApi) UpdateSysOrg(c *gin.Context) {
 		return
 	}
 
-	if err := sysOrgService.UpdateSysOrg(sysOrg); err != nil {
+	if err := sysOrgService.UpdateSysOrg(sysOrg, c); err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
@@ -114,7 +113,7 @@ func (sysOrgApi *SysOrgApi) UpdateSysOrg(c *gin.Context) {
 // @Router /sysOrg/findSysOrg [get]
 func (sysOrgApi *SysOrgApi) FindSysOrg(c *gin.Context) {
 	ID := c.Query("ID")
-	if resysOrg, err := sysOrgService.GetSysOrg(ID); err != nil {
+	if resysOrg, err := sysOrgService.GetSysOrg(ID, c); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
@@ -138,7 +137,7 @@ func (sysOrgApi *SysOrgApi) GetSysOrgList(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	if list, total, err := sysOrgService.GetSysOrgInfoList(pageInfo); err != nil {
+	if list, total, err := sysOrgService.GetSysOrgInfoList(pageInfo, c); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
