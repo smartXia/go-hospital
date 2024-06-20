@@ -463,3 +463,37 @@ func (b *BaseApi) ResetPassword(c *gin.Context) {
 	}
 	response.OkWithMessage("重置成功", c)
 }
+
+func (b *BaseApi) LoginByPhone(c *gin.Context) {
+	var l systemReq.LoginByPhone
+	err := c.ShouldBindJSON(&l)
+	key := c.ClientIP()
+
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(l, utils.LoginByPhoneVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	s := &system.SysUser{Phone: l.Phone}
+	user, err := userService.LoginByPhone(s)
+	if err != nil {
+		global.GVA_LOG.Error("登陆失败! 手机号不存在!", zap.Error(err))
+		// 验证码次数+1
+		global.BlackCache.Increment(key, 1)
+		response.FailWithMessage("手机号不存在", c)
+		return
+	}
+	if user.Enable != 1 {
+		global.GVA_LOG.Error("登陆失败! 用户被禁止登录!")
+		// 验证码次数+1
+		global.BlackCache.Increment(key, 1)
+		response.FailWithMessage("用户被禁止登录", c)
+		return
+	}
+	b.TokenNext(c, *user)
+	return
+}

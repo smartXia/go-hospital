@@ -5,6 +5,7 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +15,7 @@ type HosSportClockService struct {
 // CreateHosSportClock 创建hosSportClock表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosSportClockService *HosSportClockService) CreateHosSportClock(hosSportClock *hos.HosSportClock, ctx *gin.Context) (err error, h *hos.HosSportClock) {
+	hosSportClock.CreatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosSportClock).Error
 	return err, hosSportClock
 }
@@ -35,6 +37,7 @@ func (hosSportClockService *HosSportClockService) DeleteHosSportClockByIds(IDs [
 // UpdateHosSportClock 更新hosSportClock表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosSportClockService *HosSportClockService) UpdateHosSportClock(hosSportClock hos.HosSportClock, ctx *gin.Context) (err error) {
+	hosSportClock.UpdatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", hosSportClock.ID).Updates(&hosSportClock).Error
 	return err
 }

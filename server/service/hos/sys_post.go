@@ -5,6 +5,7 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +15,7 @@ type SysPostService struct {
 // CreateSysPost 创建sysPost表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysPostService *SysPostService) CreateSysPost(sysPost *hos.SysPost, ctx *gin.Context) (err error, d *hos.SysPost) {
-
+	sysPost.CreatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysPost).Error
 	return err, sysPost
 }
@@ -36,6 +37,7 @@ func (sysPostService *SysPostService) DeleteSysPostByIds(IDs []string, ctx *gin.
 // UpdateSysPost 更新sysPost表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysPostService *SysPostService) UpdateSysPost(sysPost hos.SysPost, ctx *gin.Context) (err error) {
+	sysPost.UpdatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Model(&hos.SysPost{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", sysPost.ID).Updates(&sysPost).Error
 	return err
 }

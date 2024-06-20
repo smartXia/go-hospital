@@ -24,7 +24,7 @@ type {{.StructName}}Service struct {
 // Create{{.StructName}} 创建{{.Description}}记录
 // Author [piexlmax](https://github.com/piexlmax)
 func ({{.Abbreviation}}Service *{{.StructName}}Service) Create{{.StructName}}({{.Abbreviation}} *{{.Package}}.{{.StructName}}, ctx *gin.Context) (err error,d *{{.Package}}.{{.StructName}}) {
-
+	{{.StructName}}.CreatedBy = utils.GetUserID(ctx)
 	err = {{$db}}.Scopes(scope.TenantScope(ctx)).Create({{.Abbreviation}}).Error
 	return err,{{.Abbreviation}}
 }
@@ -70,6 +70,7 @@ func ({{.Abbreviation}}Service *{{.StructName}}Service)Delete{{.StructName}}ById
 // Update{{.StructName}} 更新{{.Description}}记录
 // Author [piexlmax](https://github.com/piexlmax)
 func ({{.Abbreviation}}Service *{{.StructName}}Service)Update{{.StructName}}({{.Abbreviation}} {{.Package}}.{{.StructName}}, ctx *gin.Context) (err error) {
+    {{.StructName}}.UpdatedBy = utils.GetUserID(ctx)
 	err = {{$db}}.Model(&{{.Package}}.{{.StructName}}{}).Scopes(scope.TenantScope(ctx)).Where("{{.PrimaryField.ColumnName}} = ?",{{.Abbreviation}}.{{.PrimaryField.FieldName}}).Updates(&{{.Abbreviation}}).Error
 	return err
 }

@@ -16,8 +16,7 @@ type HosFlowService struct {
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosFlowService *HosFlowService) CreateHosFlow(hosFlow *hos.HosFlow, ctx *gin.Context) (err error, f *hos.HosFlow) {
 	hosFlow.Uuid = utils.UniqueId()
-	id := utils.GetUserID(ctx)
-	hosFlow.CreatedBy = &id
+	hosFlow.CreatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosFlow).Error
 	return err, hosFlow
 }
@@ -39,6 +38,7 @@ func (hosFlowService *HosFlowService) DeleteHosFlowByIds(IDs []string, ctx *gin.
 // UpdateHosFlow 更新hosFlow表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosFlowService *HosFlowService) UpdateHosFlow(hosFlow hos.HosFlow, ctx *gin.Context) (err error) {
+	hosFlow.UpdatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Model(&hos.HosFlow{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", hosFlow.ID).Updates(&hosFlow).Error
 	return err
 }

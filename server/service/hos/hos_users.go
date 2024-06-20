@@ -5,6 +5,7 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -15,6 +16,7 @@ type HosUsersService struct {
 // CreateHosUsers 创建hosUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, ctx *gin.Context) (err error, d *hos.HosUsers) {
+	hosUsers.CreatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosUsers).Error
 	return err, hosUsers
 }
@@ -52,6 +54,7 @@ func (hosUsersService *HosUsersService) DeleteHosUsersByIds(IDs []string, delete
 // UpdateHosUsers 更新hosUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosUsersService *HosUsersService) UpdateHosUsers(hosUsers hos.HosUsers, ctx *gin.Context) (err error) {
+	hosUsers.UpdatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Model(&hos.HosUsers{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", hosUsers.ID).Updates(&hosUsers).Error
 	return err
 }

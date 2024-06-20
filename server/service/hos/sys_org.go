@@ -5,6 +5,7 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +15,7 @@ type SysOrgService struct {
 // CreateSysOrg 创建sysOrg表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysOrgService *SysOrgService) CreateSysOrg(sysOrg *hos.SysOrg, ctx *gin.Context) (err error, d *hos.SysOrg) {
+	sysOrg.CreatedBy = utils.GetUserID(ctx)
 
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysOrg).Error
 	return err, sysOrg
@@ -36,6 +38,8 @@ func (sysOrgService *SysOrgService) DeleteSysOrgByIds(IDs []string, ctx *gin.Con
 // UpdateSysOrg 更新sysOrg表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysOrgService *SysOrgService) UpdateSysOrg(sysOrg hos.SysOrg, ctx *gin.Context) (err error) {
+	sysOrg.UpdatedBy = utils.GetUserID(ctx)
+
 	err = global.GVA_DB.Model(&hos.SysOrg{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", sysOrg.ID).Updates(&sysOrg).Error
 	return err
 }

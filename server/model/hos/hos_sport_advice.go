@@ -25,8 +25,8 @@ type HosSportAdvice struct {
 	Sort         *int   `json:"sort" form:"sort" gorm:"column:sort;comment:排序;size:10;"`                            //排序
 	SyncWx       *int   `json:"syncWx" form:"syncWx" gorm:"column:sync_wx;comment:是否同步微信;size:10;"`                 //是否同步微信
 	TenantId     *int   `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户编号;size:10;"`             //租户编号
-	CreatedBy    *int   `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`           //创建者
-	UpdatedBy    *int   `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`           //更新者
+	CreatedBy    uint   `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`           //创建者
+	UpdatedBy    uint   `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`           //更新者
 	DeletedBy    *int   `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`           //删除者
 }
 

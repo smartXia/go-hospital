@@ -1,0 +1,33 @@
+package hos
+
+import (
+	"devops-manage/api/v1"
+	"devops-manage/middleware"
+	"github.com/gin-gonic/gin"
+)
+
+type SysDeptRouter struct {
+}
+
+// InitSysDeptRouter 初始化 sysDept表 路由信息
+func (s *SysDeptRouter) InitSysDeptRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
+	sysDeptRouter := Router.Group("sysDept").Use(middleware.OperationRecord())
+	sysDeptRouterWithoutRecord := Router.Group("sysDept")
+	sysDeptRouterWithoutAuth := PublicRouter.Group("sysDept")
+
+	var sysDeptApi = v1.ApiGroupApp.HosApiGroup.SysDeptApi
+	{
+		sysDeptRouter.POST("createSysDept", sysDeptApi.CreateSysDept)             // 新建sysDept表
+		sysDeptRouter.DELETE("deleteSysDept", sysDeptApi.DeleteSysDept)           // 删除sysDept表
+		sysDeptRouter.DELETE("deleteSysDeptByIds", sysDeptApi.DeleteSysDeptByIds) // 批量删除sysDept表
+		sysDeptRouter.PUT("updateSysDept", sysDeptApi.UpdateSysDept)              // 更新sysDept表
+	}
+	{
+		sysDeptRouterWithoutRecord.GET("findSysDept", sysDeptApi.FindSysDept)       // 根据ID获取sysDept表
+		sysDeptRouterWithoutRecord.GET("getSysDeptList", sysDeptApi.GetSysDeptList) // 获取sysDept表列表
+		sysDeptRouterWithoutRecord.GET("tree", sysDeptApi.Tree)                     // 获取sysDept表列表
+	}
+	{
+		sysDeptRouterWithoutAuth.GET("getSysDeptPublic", sysDeptApi.GetSysDeptPublic) // 获取sysDept表列表
+	}
+}

@@ -22,6 +22,9 @@ type Login struct {
 	Captcha   string `json:"captcha"`   // 验证码
 	CaptchaId string `json:"captchaId"` // 验证码ID
 }
+type LoginByPhone struct {
+	Phone string `json:"phone"` // 用户名
+}
 
 // Modify password structure
 type ChangePasswordReq struct {

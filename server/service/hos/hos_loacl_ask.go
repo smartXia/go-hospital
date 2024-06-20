@@ -5,6 +5,7 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +15,7 @@ type HosLoaclAskService struct {
 // CreateHosLoaclAsk 创建hosLoaclAsk表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosLoaclAskService *HosLoaclAskService) CreateHosLoaclAsk(hosLoaclAsk *hos.HosLoaclAsk, ctx *gin.Context) (err error, h *hos.HosLoaclAsk) {
-
+	hosLoaclAsk.CreatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosLoaclAsk).Error
 	return err, hosLoaclAsk
 }
@@ -36,6 +37,7 @@ func (hosLoaclAskService *HosLoaclAskService) DeleteHosLoaclAskByIds(IDs []strin
 // UpdateHosLoaclAsk 更新hosLoaclAsk表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosLoaclAskService *HosLoaclAskService) UpdateHosLoaclAsk(hosLoaclAsk hos.HosLoaclAsk, ctx *gin.Context) (err error) {
+	hosLoaclAsk.UpdatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Model(&hos.HosLoaclAsk{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", hosLoaclAsk.ID).Updates(&hosLoaclAsk).Error
 	return err
 }

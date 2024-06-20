@@ -5,6 +5,7 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +15,7 @@ type SysDeptService struct {
 // CreateSysDept 创建sysDept表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysDeptService *SysDeptService) CreateSysDept(sysDept *hos.SysDept, ctx *gin.Context) (err error, d *hos.SysDept) {
-
+	sysDept.CreatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysDept).Error
 	return err, sysDept
 }
@@ -36,6 +37,7 @@ func (sysDeptService *SysDeptService) DeleteSysDeptByIds(IDs []string, ctx *gin.
 // UpdateSysDept 更新sysDept表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysDeptService *SysDeptService) UpdateSysDept(sysDept hos.SysDept, ctx *gin.Context) (err error) {
+	sysDept.UpdatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Model(&hos.SysDept{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", sysDept.ID).Updates(&sysDept).Error
 	return err
 }

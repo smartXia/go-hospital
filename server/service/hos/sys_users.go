@@ -16,6 +16,7 @@ type SysUsersService struct {
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysUsersService *SysUsersService) CreateSysUsers(sysUsers *hos.SysUsers, ctx *gin.Context) (err error, d *hos.SysUsers) {
 	sysUsers.Uuid = utils.UniqueId()
+	sysUsers.CreatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysUsers).Error
 	return err, sysUsers
 }
@@ -37,6 +38,7 @@ func (sysUsersService *SysUsersService) DeleteSysUsersByIds(IDs []string, ctx *g
 // UpdateSysUsers 更新sysUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysUsersService *SysUsersService) UpdateSysUsers(sysUsers hos.SysUsers, ctx *gin.Context) (err error) {
+	sysUsers.UpdatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Model(&hos.SysUsers{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", sysUsers.ID).Updates(&sysUsers).Error
 	return err
 }
