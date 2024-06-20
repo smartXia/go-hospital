@@ -73,7 +73,7 @@ func (hosSportClockService *HosSportClockService) GetHosSportClockInfoList(info 
 	}
 
 	if limit != 0 {
-		db = db.Limit(limit).Offset(offset)
+		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
 
 	err = db.Find(&hosSportClocks).Error

@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type HosLoaclAskSearch struct {
+type HosLocalAskSearch struct {
 	StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
 	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
 

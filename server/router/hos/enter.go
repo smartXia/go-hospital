@@ -3,7 +3,7 @@ package hos
 type RouterGroup struct {
 	SysOperationRecordsRouter
 	HosScaleRouter
-	HosLoaclAskRouter
+	HosLocalAskRouter
 	HosSportClockRouter
 	HosSportClockCommitRouter
 	HosUserPointRouter

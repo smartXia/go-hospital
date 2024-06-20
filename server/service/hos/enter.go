@@ -3,7 +3,7 @@ package hos
 type ServiceGroup struct {
 	SysOperationRecordsService
 	HosScaleService
-	HosLoaclAskService
+	HosLocalAskService
 	HosSportClockService
 	HosSportClockCommitService
 	HosUserPointService

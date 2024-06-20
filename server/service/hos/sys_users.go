@@ -58,10 +58,6 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	// 创建db
 	db := global.GVA_DB.Model(&hos.SysUsers{}).Scopes(scope.TenantScope(ctx))
 	var sysUserss []hos.SysUsers
-	// 如果有条件搜索 下方会自动创建搜索语句
-	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
-	}
 	if info.Phone != "" {
 		db = db.Where("phone = ?", info.Phone)
 	}
@@ -80,7 +76,7 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	}
 
 	if limit != 0 {
-		db = db.Limit(limit).Offset(offset)
+		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
 
 	err = db.Find(&sysUserss).Error

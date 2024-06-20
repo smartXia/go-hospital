@@ -1,12 +1,12 @@
-// 自动生成模板HosLoaclAsk
+// 自动生成模板HosLocalAsk
 package hos
 
 import (
 	"devops-manage/global"
 )
 
-// hosLoaclAsk表 结构体  HosLoaclAsk
-type HosLoaclAsk struct {
+// hosLocalAsk表 结构体  HosLocalAsk
+type HosLocalAsk struct {
 	global.GVA_MODEL
 	Name                 string `json:"name" form:"name" gorm:"column:name;comment:名称;size:255;"`                                           //名称
 	HosUserId            *int   `json:"hos_user_id" form:"hos_user_id" gorm:"column:hos_user_id;comment:关联用户id;size:10;"`                   //关联用户id
@@ -25,12 +25,12 @@ type HosLoaclAsk struct {
 	DeletedBy            *uint  `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                           //删除者
 }
 
-// TableName hosLoaclAsk表 HosLoaclAsk自定义表名 hos_loacl_ask
-func (HosLoaclAsk) TableName() string {
+// TableName hosLocalAsk表 HosLocalAsk自定义表名 hos_loacl_ask
+func (HosLocalAsk) TableName() string {
 	return "hos_loacl_ask"
 }
 
-//func (h *HosLoaclAsk) BeforeCreate(tx *gorm.DB) (err error) {
+//func (h *HosLocalAsk) BeforeCreate(tx *gorm.DB) (err error) {
 //	ctx := tx.Statement.Context
 //	userID := utils.GetUserID(ctx)
 //	h.CreatedBy = userID

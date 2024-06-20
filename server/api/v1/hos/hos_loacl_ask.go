@@ -10,28 +10,28 @@ import (
 	"go.uber.org/zap"
 )
 
-type HosLoaclAskApi struct {
+type HosLocalAskApi struct {
 }
 
-var hosLoaclAskService = service.ServiceGroupApp.HosServiceGroup.HosLoaclAskService
+var hosLocalAskService = service.ServiceGroupApp.HosServiceGroup.HosLocalAskService
 
-// CreateHosLoaclAsk 创建hosLoaclAsk表
-// @Tags HosLoaclAsk
-// @Summary 创建hosLoaclAsk表
+// CreateHosLocalAsk 创建hosLocalAsk表
+// @Tags HosLocalAsk
+// @Summary 创建hosLocalAsk表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body hos.HosLoaclAsk true "创建hosLoaclAsk表"
+// @Param data body hos.HosLocalAsk true "创建hosLocalAsk表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"创建成功"}"
-// @Router /hosLoaclAsk/createHosLoaclAsk [post]
-func (hosLoaclAskApi *HosLoaclAskApi) CreateHosLoaclAsk(c *gin.Context) {
-	var hosLoaclAsk hos.HosLoaclAsk
-	err := c.ShouldBindJSON(&hosLoaclAsk)
+// @Router /hosLocalAsk/createHosLocalAsk [post]
+func (hosLocalAskApi *HosLocalAskApi) CreateHosLocalAsk(c *gin.Context) {
+	var hosLocalAsk hos.HosLocalAsk
+	err := c.ShouldBindJSON(&hosLocalAsk)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	if err, h := hosLoaclAskService.CreateHosLoaclAsk(&hosLoaclAsk, c); err != nil {
+	if err, h := hosLocalAskService.CreateHosLocalAsk(&hosLocalAsk, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
@@ -39,18 +39,18 @@ func (hosLoaclAskApi *HosLoaclAskApi) CreateHosLoaclAsk(c *gin.Context) {
 	}
 }
 
-// DeleteHosLoaclAsk 删除hosLoaclAsk表
-// @Tags HosLoaclAsk
-// @Summary 删除hosLoaclAsk表
+// DeleteHosLocalAsk 删除hosLocalAsk表
+// @Tags HosLocalAsk
+// @Summary 删除hosLocalAsk表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body hos.HosLoaclAsk true "删除hosLoaclAsk表"
+// @Param data body hos.HosLocalAsk true "删除hosLocalAsk表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
-// @Router /hosLoaclAsk/deleteHosLoaclAsk [delete]
-func (hosLoaclAskApi *HosLoaclAskApi) DeleteHosLoaclAsk(c *gin.Context) {
+// @Router /hosLocalAsk/deleteHosLocalAsk [delete]
+func (hosLocalAskApi *HosLocalAskApi) DeleteHosLocalAsk(c *gin.Context) {
 	ID := c.Query("ID")
-	if err := hosLoaclAskService.DeleteHosLoaclAsk(ID, c); err != nil {
+	if err := hosLocalAskService.DeleteHosLocalAsk(ID, c); err != nil {
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
@@ -58,17 +58,17 @@ func (hosLoaclAskApi *HosLoaclAskApi) DeleteHosLoaclAsk(c *gin.Context) {
 	}
 }
 
-// DeleteHosLoaclAskByIds 批量删除hosLoaclAsk表
-// @Tags HosLoaclAsk
-// @Summary 批量删除hosLoaclAsk表
+// DeleteHosLocalAskByIds 批量删除hosLocalAsk表
+// @Tags HosLocalAsk
+// @Summary 批量删除hosLocalAsk表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"批量删除成功"}"
-// @Router /hosLoaclAsk/deleteHosLoaclAskByIds [delete]
-func (hosLoaclAskApi *HosLoaclAskApi) DeleteHosLoaclAskByIds(c *gin.Context) {
+// @Router /hosLocalAsk/deleteHosLocalAskByIds [delete]
+func (hosLocalAskApi *HosLocalAskApi) DeleteHosLocalAskByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
-	if err := hosLoaclAskService.DeleteHosLoaclAskByIds(IDs, c); err != nil {
+	if err := hosLocalAskService.DeleteHosLocalAskByIds(IDs, c); err != nil {
 		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
@@ -76,24 +76,24 @@ func (hosLoaclAskApi *HosLoaclAskApi) DeleteHosLoaclAskByIds(c *gin.Context) {
 	}
 }
 
-// UpdateHosLoaclAsk 更新hosLoaclAsk表
-// @Tags HosLoaclAsk
-// @Summary 更新hosLoaclAsk表
+// UpdateHosLocalAsk 更新hosLocalAsk表
+// @Tags HosLocalAsk
+// @Summary 更新hosLocalAsk表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body hos.HosLoaclAsk true "更新hosLoaclAsk表"
+// @Param data body hos.HosLocalAsk true "更新hosLocalAsk表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
-// @Router /hosLoaclAsk/updateHosLoaclAsk [put]
-func (hosLoaclAskApi *HosLoaclAskApi) UpdateHosLoaclAsk(c *gin.Context) {
-	var hosLoaclAsk hos.HosLoaclAsk
-	err := c.ShouldBindJSON(&hosLoaclAsk)
+// @Router /hosLocalAsk/updateHosLocalAsk [put]
+func (hosLocalAskApi *HosLocalAskApi) UpdateHosLocalAsk(c *gin.Context) {
+	var hosLocalAsk hos.HosLocalAsk
+	err := c.ShouldBindJSON(&hosLocalAsk)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	if err := hosLoaclAskService.UpdateHosLoaclAsk(hosLoaclAsk, c); err != nil {
+	if err := hosLocalAskService.UpdateHosLocalAsk(hosLocalAsk, c); err != nil {
 		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
@@ -101,42 +101,42 @@ func (hosLoaclAskApi *HosLoaclAskApi) UpdateHosLoaclAsk(c *gin.Context) {
 	}
 }
 
-// FindHosLoaclAsk 用id查询hosLoaclAsk表
-// @Tags HosLoaclAsk
-// @Summary 用id查询hosLoaclAsk表
+// FindHosLocalAsk 用id查询hosLocalAsk表
+// @Tags HosLocalAsk
+// @Summary 用id查询hosLocalAsk表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query hos.HosLoaclAsk true "用id查询hosLoaclAsk表"
+// @Param data query hos.HosLocalAsk true "用id查询hosLocalAsk表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
-// @Router /hosLoaclAsk/findHosLoaclAsk [get]
-func (hosLoaclAskApi *HosLoaclAskApi) FindHosLoaclAsk(c *gin.Context) {
+// @Router /hosLocalAsk/findHosLocalAsk [get]
+func (hosLocalAskApi *HosLocalAskApi) FindHosLocalAsk(c *gin.Context) {
 	ID := c.Query("ID")
-	if rehosLoaclAsk, err := hosLoaclAskService.GetHosLoaclAsk(ID, c); err != nil {
+	if rehosLocalAsk, err := hosLocalAskService.GetHosLocalAsk(ID, c); err != nil {
 		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
-		response.OkWithData(gin.H{"rehosLoaclAsk": rehosLoaclAsk}, c)
+		response.OkWithData(gin.H{"rehosLocalAsk": rehosLocalAsk}, c)
 	}
 }
 
-// GetHosLoaclAskList 分页获取hosLoaclAsk表列表
-// @Tags HosLoaclAsk
-// @Summary 分页获取hosLoaclAsk表列表
+// GetHosLocalAskList 分页获取hosLocalAsk表列表
+// @Tags HosLocalAsk
+// @Summary 分页获取hosLocalAsk表列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data query hosReq.HosLoaclAskSearch true "分页获取hosLoaclAsk表列表"
+// @Param data query hosReq.HosLocalAskSearch true "分页获取hosLocalAsk表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /hosLoaclAsk/getHosLoaclAskList [get]
-func (hosLoaclAskApi *HosLoaclAskApi) GetHosLoaclAskList(c *gin.Context) {
-	var pageInfo hosReq.HosLoaclAskSearch
+// @Router /hosLocalAsk/getHosLocalAskList [get]
+func (hosLocalAskApi *HosLocalAskApi) GetHosLocalAskList(c *gin.Context) {
+	var pageInfo hosReq.HosLocalAskSearch
 	err := c.ShouldBindQuery(&pageInfo)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	if list, total, err := hosLoaclAskService.GetHosLoaclAskInfoList(pageInfo, c); err != nil {
+	if list, total, err := hosLocalAskService.GetHosLocalAskInfoList(pageInfo, c); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
@@ -149,18 +149,18 @@ func (hosLoaclAskApi *HosLoaclAskApi) GetHosLoaclAskList(c *gin.Context) {
 	}
 }
 
-// GetHosLoaclAskPublic 不需要鉴权的hosLoaclAsk表接口
-// @Tags HosLoaclAsk
-// @Summary 不需要鉴权的hosLoaclAsk表接口
+// GetHosLocalAskPublic 不需要鉴权的hosLocalAsk表接口
+// @Tags HosLocalAsk
+// @Summary 不需要鉴权的hosLocalAsk表接口
 // @accept application/json
 // @Produce application/json
-// @Param data query hosReq.HosLoaclAskSearch true "分页获取hosLoaclAsk表列表"
+// @Param data query hosReq.HosLocalAskSearch true "分页获取hosLocalAsk表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /hosLoaclAsk/getHosLoaclAskPublic [get]
-func (hosLoaclAskApi *HosLoaclAskApi) GetHosLoaclAskPublic(c *gin.Context) {
+// @Router /hosLocalAsk/getHosLocalAskPublic [get]
+func (hosLocalAskApi *HosLocalAskApi) GetHosLocalAskPublic(c *gin.Context) {
 	// 此接口不需要鉴权
 	// 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
 	response.OkWithDetailed(gin.H{
-		"info": "不需要鉴权的hosLoaclAsk表接口信息",
+		"info": "不需要鉴权的hosLocalAsk表接口信息",
 	}, "获取成功", c)
 }

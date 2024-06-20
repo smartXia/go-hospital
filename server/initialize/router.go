@@ -79,7 +79,7 @@ func Routers() *gin.Engine {
 		hosRouter.InitSysOperationRecordsRouter(PrivateGroup, PublicGroup)
 
 		hosRouter.InitHosScaleRouter(PrivateGroup, PublicGroup)
-		hosRouter.InitHosLoaclAskRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitHosLocalAskRouter(PrivateGroup, PublicGroup)
 
 		hosRouter.InitHosSportClockRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitHosSportClockCommitRouter(PrivateGroup, PublicGroup)

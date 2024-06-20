@@ -9,54 +9,54 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type HosLoaclAskService struct {
+type HosLocalAskService struct {
 }
 
-// CreateHosLoaclAsk 创建hosLoaclAsk表记录
+// CreateHosLocalAsk 创建hosLocalAsk表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosLoaclAskService *HosLoaclAskService) CreateHosLoaclAsk(hosLoaclAsk *hos.HosLoaclAsk, ctx *gin.Context) (err error, h *hos.HosLoaclAsk) {
-	hosLoaclAsk.CreatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosLoaclAsk).Error
-	return err, hosLoaclAsk
+func (hosLocalAskService *HosLocalAskService) CreateHosLocalAsk(hosLocalAsk *hos.HosLocalAsk, ctx *gin.Context) (err error, h *hos.HosLocalAsk) {
+	hosLocalAsk.CreatedBy = utils.GetUserID(ctx)
+	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosLocalAsk).Error
+	return err, hosLocalAsk
 }
 
-// DeleteHosLoaclAsk 删除hosLoaclAsk表记录
+// DeleteHosLocalAsk 删除hosLocalAsk表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosLoaclAskService *HosLoaclAskService) DeleteHosLoaclAsk(ID string, ctx *gin.Context) (err error) {
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&hos.HosLoaclAsk{}, "id = ?", ID).Error
+func (hosLocalAskService *HosLocalAskService) DeleteHosLocalAsk(ID string, ctx *gin.Context) (err error) {
+	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&hos.HosLocalAsk{}, "id = ?", ID).Error
 	return err
 }
 
-// DeleteHosLoaclAskByIds 批量删除hosLoaclAsk表记录
+// DeleteHosLocalAskByIds 批量删除hosLocalAsk表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosLoaclAskService *HosLoaclAskService) DeleteHosLoaclAskByIds(IDs []string, ctx *gin.Context) (err error) {
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&[]hos.HosLoaclAsk{}, "id in ?", IDs).Error
+func (hosLocalAskService *HosLocalAskService) DeleteHosLocalAskByIds(IDs []string, ctx *gin.Context) (err error) {
+	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&[]hos.HosLocalAsk{}, "id in ?", IDs).Error
 	return err
 }
 
-// UpdateHosLoaclAsk 更新hosLoaclAsk表记录
+// UpdateHosLocalAsk 更新hosLocalAsk表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosLoaclAskService *HosLoaclAskService) UpdateHosLoaclAsk(hosLoaclAsk hos.HosLoaclAsk, ctx *gin.Context) (err error) {
-	hosLoaclAsk.UpdatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Model(&hos.HosLoaclAsk{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", hosLoaclAsk.ID).Updates(&hosLoaclAsk).Error
+func (hosLocalAskService *HosLocalAskService) UpdateHosLocalAsk(hosLocalAsk hos.HosLocalAsk, ctx *gin.Context) (err error) {
+	hosLocalAsk.UpdatedBy = utils.GetUserID(ctx)
+	err = global.GVA_DB.Model(&hos.HosLocalAsk{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", hosLocalAsk.ID).Updates(&hosLocalAsk).Error
 	return err
 }
 
-// GetHosLoaclAsk 根据ID获取hosLoaclAsk表记录
+// GetHosLocalAsk 根据ID获取hosLocalAsk表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosLoaclAskService *HosLoaclAskService) GetHosLoaclAsk(ID string, ctx *gin.Context) (hosLoaclAsk hos.HosLoaclAsk, err error) {
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Where("id = ?", ID).First(&hosLoaclAsk).Error
+func (hosLocalAskService *HosLocalAskService) GetHosLocalAsk(ID string, ctx *gin.Context) (hosLocalAsk hos.HosLocalAsk, err error) {
+	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Where("id = ?", ID).First(&hosLocalAsk).Error
 	return
 }
 
-// GetHosLoaclAskInfoList 分页获取hosLoaclAsk表记录
+// GetHosLocalAskInfoList 分页获取hosLocalAsk表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosLoaclAskService *HosLoaclAskService) GetHosLoaclAskInfoList(info hosReq.HosLoaclAskSearch, ctx *gin.Context) (list []hos.HosLoaclAsk, total int64, err error) {
+func (hosLocalAskService *HosLocalAskService) GetHosLocalAskInfoList(info hosReq.HosLocalAskSearch, ctx *gin.Context) (list []hos.HosLocalAsk, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := global.GVA_DB.Model(&hos.HosLoaclAsk{}).Scopes(scope.TenantScope(ctx))
-	var hosLoaclAsks []hos.HosLoaclAsk
+	db := global.GVA_DB.Model(&hos.HosLocalAsk{}).Scopes(scope.TenantScope(ctx))
+	var hosLocalAsks []hos.HosLocalAsk
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
@@ -70,9 +70,9 @@ func (hosLoaclAskService *HosLoaclAskService) GetHosLoaclAskInfoList(info hosReq
 	}
 
 	if limit != 0 {
-		db = db.Limit(limit).Offset(offset)
+		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
 
-	err = db.Find(&hosLoaclAsks).Error
-	return hosLoaclAsks, total, err
+	err = db.Find(&hosLocalAsks).Error
+	return hosLocalAsks, total, err
 }

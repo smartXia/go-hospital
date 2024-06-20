@@ -70,7 +70,7 @@ func (sysOperationRecordsService *SysOperationRecordsService) GetSysOperationRec
 	}
 
 	if limit != 0 {
-		db = db.Limit(limit).Offset(offset)
+		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
 
 	err = db.Find(&sysOperationRecordss).Error

@@ -3,7 +3,7 @@ package hos
 type ApiGroup struct {
 	SysOperationRecordsApi
 	HosScaleApi
-	HosLoaclAskApi
+	HosLocalAskApi
 	HosSportClockApi
 	HosSportClockCommitApi
 	HosUserPointApi
