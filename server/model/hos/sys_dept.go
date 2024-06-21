@@ -8,19 +8,20 @@ import (
 // sysDept表 结构体  SysDept
 type SysDept struct {
 	global.GVA_MODEL
-	Name      string     `json:"name" form:"name" gorm:"column:name;comment:岗位名称;size:255;"`               //岗位名称
-	Desc      string     `json:"desc" form:"desc" gorm:"column:desc;comment:描述;size:500;"`                 //描述
-	Address   string     `json:"address" form:"address" gorm:"column:address;comment:地址;size:255;"`        //地址
-	ManageId  string     `json:"manageId" form:"manageId" gorm:"column:manage_id;comment:用户id;size:255;"`  //用户id
-	ParentId  *int       `json:"parentId" form:"parentId" gorm:"column:parent_id;comment:上级部门;size:10;"`   //上级部门
-	Sort      *int       `json:"sort" form:"sort" gorm:"column:sort;comment:排序;"`                          //排序
-	Enable    *int       `json:"enable" form:"enable" gorm:"column:enable;comment:启用;"`                    //启用
-	Remark    string     `json:"remark" form:"remark" gorm:"column:remark;comment:备注;size:255;"`           //备注
-	CreatedBy uint       `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"` //创建者
-	UpdatedBy uint       `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"` //更新者
-	DeletedBy *int       `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"` //删除者
-	TenantId  *int       `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户id;size:10;"`   //租户id
-	Children  []*SysDept `json:"children" gorm:"-"`
+	Name      string       `json:"name" form:"name" gorm:"column:name;comment:岗位名称;size:255;"`               //岗位名称
+	Desc      string       `json:"desc" form:"desc" gorm:"column:desc;comment:描述;size:500;"`                 //描述
+	Address   string       `json:"address" form:"address" gorm:"column:address;comment:地址;size:255;"`        //地址
+	ManageId  string       `json:"manageId" form:"manageId" gorm:"column:manage_id;comment:用户id;size:255;"`  //用户id
+	ParentId  *int         `json:"parentId" form:"parentId" gorm:"column:parent_id;comment:上级部门;size:10;"`   //上级部门
+	Sort      *int         `json:"sort" form:"sort" gorm:"column:sort;comment:排序;"`                          //排序
+	Enable    *int         `json:"enable" form:"enable" gorm:"column:enable;comment:启用;"`                    //启用
+	Remark    string       `json:"remark" form:"remark" gorm:"column:remark;comment:备注;size:255;"`           //备注
+	CreatedBy uint         `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"` //创建者
+	UpdatedBy uint         `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"` //更新者
+	DeletedBy *int         `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"` //删除者
+	TenantId  *int         `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户id;size:10;"`   //租户id
+	SysUser   SysUsersInfo `json:"createdByInfo" form:"createdBy" gorm:"foreignKey:id;references:CreatedBy"` //创建者
+	Children  []*SysDept   `json:"children" gorm:"-"`
 }
 
 // TableName sysDept表 SysDept自定义表名 sys_dept

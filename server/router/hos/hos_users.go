@@ -23,8 +23,9 @@ func (s *HosUsersRouter) InitHosUsersRouter(Router *gin.RouterGroup, PublicRoute
 		hosUsersRouter.PUT("updateHosUsers", hosUsersApi.UpdateHosUsers)              // 更新hosUsers表
 	}
 	{
-		hosUsersRouterWithoutRecord.GET("findHosUsers", hosUsersApi.FindHosUsers)       // 根据ID获取hosUsers表
-		hosUsersRouterWithoutRecord.GET("getHosUsersList", hosUsersApi.GetHosUsersList) // 获取hosUsers表列表
+		hosUsersRouterWithoutRecord.GET("findHosUsers", hosUsersApi.FindHosUsers)                     // 根据ID获取hosUsers表
+		hosUsersRouterWithoutRecord.GET("getHosUsersList", hosUsersApi.GetHosUsersList)               // 获取hosUsers表列表
+		hosUsersRouterWithoutRecord.GET("GetCurrentHosUsersList", hosUsersApi.GetCurrentHosUsersList) // 获取hosUsers表列表
 	}
 	{
 		hosUsersRouterWithoutAuth.GET("getHosUsersDataSource", hosUsersApi.GetHosUsersDataSource) // 获取hosUsers表数据源

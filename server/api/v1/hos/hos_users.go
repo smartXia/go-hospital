@@ -151,6 +151,35 @@ func (hosUsersApi *HosUsersApi) GetHosUsersList(c *gin.Context) {
 	}
 }
 
+// GetCurrentHosUsersList 分页获取hosUsers表列表
+// @Tags HosUsers
+// @Summary 分页获取hosUsers表列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query hosReq.HosUsersSearch true "分页获取hosUsers表列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /hosUsers/getHosUsersList [get]
+func (hosUsersApi *HosUsersApi) GetCurrentHosUsersList(c *gin.Context) {
+	var pageInfo hosReq.HosUsersSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, total, err := hosUsersService.GetCurrentHosUsersList(pageInfo, c); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
 // GetHosUsersDataSource 获取HosUsers的数据源
 // @Tags HosUsers
 // @Summary 获取HosUsers的数据源

@@ -23,8 +23,9 @@ func (s *HosScaleRouter) InitHosScaleRouter(Router *gin.RouterGroup, PublicRoute
 		hosScaleRouter.PUT("updateHosScale", hosScaleApi.UpdateHosScale)              // 更新hosScale表
 	}
 	{
-		hosScaleRouterWithoutRecord.GET("findHosScale", hosScaleApi.FindHosScale)       // 根据ID获取hosScale表
-		hosScaleRouterWithoutRecord.GET("getHosScaleList", hosScaleApi.GetHosScaleList) // 获取hosScale表列表
+		hosScaleRouterWithoutRecord.GET("findHosScale", hosScaleApi.FindHosScale)                                // 根据ID获取hosScale表
+		hosScaleRouterWithoutRecord.GET("getHosScaleList", hosScaleApi.GetHosScaleList)                          // 获取hosScale表列表
+		hosScaleRouterWithoutRecord.GET("getGetCurrentUserHosScaleList", hosScaleApi.GetCurrentUserHosScaleList) // 获取当前用户的量表记录hosScale表列表
 	}
 	{
 		hosScaleRouterWithoutAuth.GET("getHosScalePublic", hosScaleApi.GetHosScalePublic) // 获取hosScale表列表

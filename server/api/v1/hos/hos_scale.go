@@ -149,6 +149,35 @@ func (hosScaleApi *HosScaleApi) GetHosScaleList(c *gin.Context) {
 	}
 }
 
+// GetCurrentUserHosScaleList 分页获取hosScale表列表
+// @Tags HosScale
+// @Summary 分页获取hosScale表列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query hosReq.HosScaleSearch true "分页获取hosScale表列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /hosScale/getHosScaleList [get]
+func (hosScaleApi *HosScaleApi) GetCurrentUserHosScaleList(c *gin.Context) {
+	var pageInfo hosReq.HosScaleSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, total, err := hosScaleService.GetCurrentUserHosScaleInfoList(pageInfo, c); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
 // GetHosScalePublic 不需要鉴权的hosScale表接口
 // @Tags HosScale
 // @Summary 不需要鉴权的hosScale表接口

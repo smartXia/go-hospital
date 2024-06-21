@@ -67,6 +67,35 @@ func (hosScaleService *HosScaleService) GetHosScaleInfoList(info hosReq.HosScale
 	}
 
 	if limit != 0 {
+		db = db.Limit(limit).Offset(offset)
+	}
+	err = db.Order("id desc").Find(&hosScales).Error
+	return hosScales, total, err
+}
+
+// GetCurrentUserHosScaleInfoList 分页获取hosScale表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (hosScaleService *HosScaleService) GetCurrentUserHosScaleInfoList(info hosReq.HosScaleSearch, ctx *gin.Context) (list []hos.HosScale, total int64, err error) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	// 创建db
+	db := global.GVA_DB.Model(&hos.HosScale{}).Scopes(scope.TenantScope(ctx))
+	var hosScales []hos.HosScale
+	// 如果有条件搜索 下方会自动创建搜索语句
+	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
+		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+	}
+
+	uid := utils.GetUserID(ctx)
+
+	db = db.Where("hos_user_id = ?", uid)
+
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+
+	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
 

@@ -79,7 +79,11 @@ func (hosFlowService *HosFlowService) GetHosFlowInfoList(info hosReq.HosFlowSear
 	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
-
+	db.Preload("HosScale").
+		Preload("HosLocalAsk").
+		Preload("HosSportAdvice").
+		Preload("SysUsers").
+		Preload("HosUsers")
 	err = db.Find(&hosFlows).Error
 	return hosFlows, total, err
 }

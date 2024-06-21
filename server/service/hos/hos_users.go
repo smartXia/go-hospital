@@ -17,6 +17,9 @@ type HosUsersService struct {
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, ctx *gin.Context) (err error, d *hos.HosUsers) {
 	hosUsers.CreatedBy = utils.GetUserID(ctx)
+	if hosUsers.Phone != "" && hosUsers.JianhuPhone == "" {
+		hosUsers.JianhuPhone = hosUsers.Phone
+	}
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosUsers).Error
 	return err, hosUsers
 }
@@ -105,6 +108,65 @@ func (hosUsersService *HosUsersService) GetHosUsersInfoList(info hosReq.HosUsers
 	err = db.Find(&hosUserss).Error
 	return hosUserss, total, err
 }
+
+// GetCurrentHosUsersList 分页获取hosUsers表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (hosUsersService *HosUsersService) GetCurrentHosUsersList(info hosReq.HosUsersSearch, ctx *gin.Context) (list []hos.HosUsers, total int64, err error) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	// 创建db
+	db := global.GVA_DB.Model(&hos.HosUsers{}).Scopes(scope.TenantScope(ctx))
+	var hosUserss []hos.HosUsers
+	// 如果有条件搜索 下方会自动创建搜索语句
+	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
+		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+	}
+	if info.Username != "" {
+		db = db.Where("username = ?", info.Username)
+	}
+	if info.NickName != "" {
+		db = db.Where("nick_name = ?", info.NickName)
+	}
+	if info.Phone != "" {
+		db = db.Where("phone = ?", info.Phone)
+	}
+
+	if info.JianhuPhone != "" {
+		db = db.Where("jianhu_phone = ?", info.JianhuPhone)
+	}
+	if info.CardNo != "" {
+		db = db.Where("card_no LIKE ?", "%"+info.CardNo+"%")
+	}
+	//UserPhone := utils.GetUserPhone(ctx)
+	//db = db.Where("jianhu_phone = ?", UserPhone)
+
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+
+	if limit != 0 {
+		db = db.Limit(limit).Offset(offset).Order("id desc")
+	}
+
+	err = db.Find(&hosUserss).Error
+	return hosUserss, total, err
+}
+
+func (hosUsersService *HosUsersService) GetHosUsersIds(info hosReq.HosUsersSearch, ctx *gin.Context) (list []int, err error) {
+	// 创建db
+	db := global.GVA_DB.Model(&hos.HosUsers{}).Scopes(scope.TenantScope(ctx))
+	var hosUserss []hos.HosUsers
+	// 如果有条件搜索 下方会自动创建搜索语句
+	// 通过搜索患者id对应的监护人创建人 获取hos_user_id
+	if info.CardNo != "" {
+		db = db.Where("card_no LIKE ?", "%"+info.CardNo+"%")
+	}
+	//global.GVA_DB.Where("hos_user_id in (?) ", MenuIds)
+	err = db.Find(&hosUserss).Error
+	return list, err
+}
+
 func (hosUsersService *HosUsersService) GetHosUsersDataSource() (res map[string][]map[string]any, err error) {
 	res = make(map[string][]map[string]any)
 

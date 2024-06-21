@@ -80,6 +80,40 @@ func GetUserID(c *gin.Context) uint {
 	}
 }
 
+// GetCurrentHosUser  从Gin的Context中获取从jwt解析出来的用户ID
+func GetCurrentHosUser(c *gin.Context) (hosIds []int) {
+	var uid uint
+	if claims, exists := c.Get("claims"); !exists {
+		if cl, err := GetClaims(c); err != nil {
+			uid = 0
+			return hosIds
+		} else {
+			uid = cl.BaseClaims.ID
+		}
+	} else {
+		waitUse := claims.(*systemReq.CustomClaims)
+		uid = waitUse.BaseClaims.ID
+	}
+	if uid != 0 {
+
+	}
+	return hosIds
+}
+
+// GetUserID 从Gin的Context中获取从jwt解析出来的用户ID
+func GetUserPhone(c *gin.Context) string {
+	if claims, exists := c.Get("claims"); !exists {
+		if cl, err := GetClaims(c); err != nil {
+			return ""
+		} else {
+			return cl.BaseClaims.Phone
+		}
+	} else {
+		waitUse := claims.(*systemReq.CustomClaims)
+		return waitUse.BaseClaims.Phone
+	}
+}
+
 // GetUserUuid 从Gin的Context中获取从jwt解析出来的用户UUID
 func GetUserUuid(c *gin.Context) uuid.UUID {
 	if claims, exists := c.Get("claims"); !exists {

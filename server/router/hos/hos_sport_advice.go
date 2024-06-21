@@ -23,8 +23,9 @@ func (s *HosSportAdviceRouter) InitHosSportAdviceRouter(Router *gin.RouterGroup,
 		hosSportAdviceRouter.PUT("updateHosSportAdvice", hosSportAdviceApi.UpdateHosSportAdvice)              // 更新hosSportAdvice表
 	}
 	{
-		hosSportAdviceRouterWithoutRecord.GET("findHosSportAdvice", hosSportAdviceApi.FindHosSportAdvice)       // 根据ID获取hosSportAdvice表
-		hosSportAdviceRouterWithoutRecord.GET("getHosSportAdviceList", hosSportAdviceApi.GetHosSportAdviceList) // 获取hosSportAdvice表列表
+		hosSportAdviceRouterWithoutRecord.GET("findHosSportAdvice", hosSportAdviceApi.FindHosSportAdvice)                     // 根据ID获取hosSportAdvice表
+		hosSportAdviceRouterWithoutRecord.GET("getHosSportAdviceList", hosSportAdviceApi.GetHosSportAdviceList)               // 获取hosSportAdvice表列表
+		hosSportAdviceRouterWithoutRecord.GET("getCurrentHosSportAdviceList", hosSportAdviceApi.GetCurrentHosSportAdviceList) // 获取hosSportAdvice表列表
 	}
 	{
 		hosSportAdviceRouterWithoutAuth.GET("getHosSportAdvicePublic", hosSportAdviceApi.GetHosSportAdvicePublic) // 获取hosSportAdvice表列表
