@@ -67,7 +67,7 @@ func (hosSportClockCommitService *HosSportClockCommitService) GetHosSportClockCo
 	if info.AdviceId != "" {
 		db = db.Where("advice_id = ?", info.AdviceId)
 	}
-	if info.HosUserId != "" {
+	if info.HosUserId != 0 {
 		db = db.Where("hos_user_id = ?", info.HosUserId)
 	}
 	err = db.Count(&total).Error

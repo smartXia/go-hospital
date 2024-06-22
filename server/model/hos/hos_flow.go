@@ -21,8 +21,8 @@ type HosFlow struct {
 	CreatedBy      uint           `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"` //创建者
 	UpdatedBy      uint           `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"` //更新者
 	DeletedBy      uint           `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"` //删除者
-	SysUsers       SysUsersInfo   `json:"createdByInfo" form:"sysUsers" gorm:"foreignKey:id;references:CreatedBy"`  //创建者
-	HosUsers       HosUsers       `json:"hosUserInfo" form:"hosUsers" gorm:"foreignKey:id;references:HosUserId"`
+	SysUser        SysUsersInfo   `json:"createdByInfo" form:"sysUsers" gorm:"foreignKey:id;references:CreatedBy"`  //创建者
+	HosUser        HosUsers       `json:"hosUserInfo" form:"hosUsers" gorm:"foreignKey:id;references:HosUserId"`
 	HosScale       HosScale       `json:"hosScaleInfo" form:"hosScale" gorm:"foreignKey:id;references:ScaleId"`              //量表录入id
 	HosLocalAsk    HosLocalAsk    `json:"hosLocalAskInfo" form:"hosLocalAsk" gorm:"foreignKey:id;references:AskId"`          //现场关联id
 	HosSportAdvice HosSportAdvice `json:"hosSportAdviceInfo" form:"hosSportAdvice" gorm:"foreignKey:id;references:AdviceId"` //运动建议id

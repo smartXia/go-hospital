@@ -20,6 +20,9 @@ func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, c
 	if hosUsers.Phone != "" && hosUsers.JianhuPhone == "" {
 		hosUsers.JianhuPhone = hosUsers.Phone
 	}
+	if hosUsers.Username != "" && hosUsers.NickName == "" {
+		hosUsers.NickName = hosUsers.Username
+	}
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosUsers).Error
 	return err, hosUsers
 }

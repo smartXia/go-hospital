@@ -9,7 +9,7 @@ import (
 type HosSportAdvice struct {
 	global.GVA_MODEL
 	FlowId       *int         `json:"flowId" form:"flowId" gorm:"column:flow_id;comment:流程id;size:10;"`                   //流程id
-	HosUserId    string       `json:"hosUserId" form:"hosUserId" gorm:"column:hos_user_id;comment:患者id;size:11;"`         //患者id
+	HosUserId    int          `json:"hosUserId" form:"hosUserId" gorm:"column:hos_user_id;comment:患者id;size:11;"`         //患者id
 	SportModeId  *int         `json:"sportModeId" form:"sportModeId" gorm:"column:sport_mode_id;comment:模型 id;size:10;"`  //模型 id
 	Name         string       `json:"name" form:"name" gorm:"column:name;comment:名称;size:500;"`                           //名称
 	Jianyitime   string       `json:"jianyitime" form:"jianyitime" gorm:"column:jianyitime;comment:建议起止时间;size:500;"`     //建议起止时间
@@ -28,7 +28,7 @@ type HosSportAdvice struct {
 	CreatedBy    uint         `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`           //创建者
 	UpdatedBy    uint         `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`           //更新者
 	DeletedBy    *int         `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`           //删除者
-	SysUsers     SysUsersInfo `json:"createdByInfo" form:"sysUsers" gorm:"foreignKey:id;references:CreatedBy"`            //创建者
+	SysUser      SysUsersInfo `json:"createdByInfo" form:"sysUsers" gorm:"foreignKey:id;references:CreatedBy"`            //创建者
 }
 
 // TableName hosSportAdvice表 HosSportAdvice自定义表名 hos_sport_advice

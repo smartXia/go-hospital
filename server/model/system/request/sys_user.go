@@ -25,6 +25,9 @@ type Login struct {
 type LoginByPhone struct {
 	Phone string `json:"phone"` // 用户名
 }
+type LoginByCode struct {
+	Code string `json:"code"` // 用户名
+}
 
 // Modify password structure
 type ChangePasswordReq struct {

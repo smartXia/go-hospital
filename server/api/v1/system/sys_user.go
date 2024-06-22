@@ -497,3 +497,48 @@ func (b *BaseApi) LoginByPhone(c *gin.Context) {
 	b.TokenNext(c, *user)
 	return
 }
+
+func (b *BaseApi) LoginByWxCode(c *gin.Context) {
+	var l systemReq.LoginByCode
+	err := c.ShouldBindJSON(&l)
+	key := c.ClientIP()
+	err = utils.Verify(l, utils.LoginByCodeVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	user, err := userService.LoginByCode(l.Code)
+	if err != nil {
+		global.GVA_LOG.Error("登陆失败! 手机号不存在!", zap.Error(err))
+		// 验证码次数+1
+		global.BlackCache.Increment(key, 1)
+		response.FailWithMessage("手机号不存在", c)
+		return
+	}
+	if user.Enable != 1 {
+		global.GVA_LOG.Error("登陆失败! 用户被禁止登录!")
+		// 验证码次数+1
+		global.BlackCache.Increment(key, 1)
+		response.FailWithMessage("用户被禁止登录", c)
+		return
+	}
+	b.TokenNext(c, *user)
+	return
+}
+
+func (b *BaseApi) LoginGetAccessToken(c *gin.Context) {
+	user, err := userService.LoginGetAccessToken()
+	if err != nil {
+		global.GVA_LOG.Error("小程序配置失败!", zap.Error(err))
+		response.FailWithMessage("小程序配置失败", c)
+
+		return
+	}
+	response.OkWithData(user, c)
+	return
+}

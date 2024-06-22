@@ -8,7 +8,7 @@ import (
 // hosUserPoint表 结构体  HosUserPoint
 type HosUserPoint struct {
 	global.GVA_MODEL
-	HosUserId string       `json:"hosUserId" form:"hosUserId" gorm:"column:hos_user_id;comment:患者id;size:11;"` //患者id
+	HosUserId int          `json:"hosUserId" form:"hosUserId" gorm:"column:hos_user_id;comment:患者id;size:11;"` //患者id
 	FlowId    string       `json:"flowId" form:"flowId" gorm:"column:flow_id;comment:流程id;size:500;"`          //流程id
 	Name      string       `json:"name" form:"name" gorm:"column:name;comment:名称;size:500;"`                   //名称
 	Event     string       `json:"event" form:"event" gorm:"column:event;comment:事件;size:500;"`                //事件

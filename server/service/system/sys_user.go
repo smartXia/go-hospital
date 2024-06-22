@@ -1,15 +1,21 @@
 package system
 
 import (
+	"bytes"
+	"devops-manage/model/system"
 	"devops-manage/utils"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/gofrs/uuid/v5"
+	"github.com/silenceper/wechat/v2"
+	wxcache "github.com/silenceper/wechat/v2/cache"
+	"github.com/silenceper/wechat/v2/miniprogram/config"
+	"net/http"
 	"time"
 
 	"devops-manage/global"
 	"devops-manage/model/common/request"
-	"devops-manage/model/system"
 	"gorm.io/gorm"
 )
 
@@ -75,6 +81,70 @@ func (userService *UserService) LoginByPhone(u *system.SysUser) (userInter *syst
 		//if ok := utils.BcryptCheck(u.Password, user.Password); !ok {
 		//	return nil, errors.New("密码错误")
 		//}
+		MenuServiceApp.UserAuthorityDefaultRouter(&user)
+	}
+	return &user, err
+}
+
+func (userService *UserService) LoginGetAccessToken() (tokenRes system.TokenRes, err error) {
+	appID := "wx228f4230fc52fc93"
+	appSecret := "2d5c8eab0c0d7d7fb76cc867c29b2bbe"
+
+	wxClient := wechat.NewWechat().GetMiniProgram(&config.Config{
+		AppID:     appID,
+		AppSecret: appSecret,
+		Cache:     wxcache.NewMemory(),
+	})
+	token, err := wxClient.GetEncryptor().GetAccessToken()
+	tokenRes.Token = token
+	return tokenRes, err
+}
+
+func (userService *UserService) LoginByCode(code string) (userInter *system.SysUser, err error) {
+	if nil == global.GVA_DB {
+		return nil, fmt.Errorf("db not init")
+	}
+	appID := "wx228f4230fc52fc93"
+	appSecret := "2d5c8eab0c0d7d7fb76cc867c29b2bbe"
+	wxClient := wechat.NewWechat().GetMiniProgram(&config.Config{
+		AppID:     appID,
+		AppSecret: appSecret,
+		Cache:     wxcache.NewMemory(),
+	})
+	token, err := wxClient.GetEncryptor().GetAccessToken()
+	if err != nil {
+		return nil, err
+	}
+	jsonData, _ := json.Marshal(map[string]string{
+		"code": code,
+	})
+
+	wxAPI := "https://api.weixin.qq.com/wxa/business/getuserphonenumber"
+	wxRequestURL := fmt.Sprintf("%s?%s", wxAPI, fmt.Sprintf("access_token=%s", token))
+	req, err := http.NewRequest("POST", wxRequestURL, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return nil, err
+	}
+	resp, err := utils.DoRequest(req)
+	//defer resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
+	var phoneResponse system.PhoneResponse
+	phoneResponse.PhoneInfo.PhoneNumber = "18260356308"
+	err = json.NewDecoder(resp.Body).Decode(&phoneResponse)
+	if err != nil {
+		fmt.Println("Error decoding JSON response:", err)
+		return nil, err
+	}
+	if phoneResponse.ErrCode != 0 {
+		//return nil, errors.New(fmt.Sprintf("code:%d,msg:%s", phoneResponse.ErrCode, phoneResponse.ErrMsg))
+	}
+	fmt.Println("Phone Number:", phoneResponse.PhoneInfo.PhoneNumber)
+	var user system.SysUser
+	err = global.GVA_DB.Where("phone = ?", phoneResponse.PhoneInfo.PhoneNumber).Preload("Authorities").Preload("Authority").First(&user).Error
+	if err == nil {
 		MenuServiceApp.UserAuthorityDefaultRouter(&user)
 	}
 	return &user, err

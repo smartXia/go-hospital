@@ -64,7 +64,7 @@ func (hosSportAdviceService *HosSportAdviceService) GetHosSportAdviceInfoList(in
 	if info.FlowId != nil {
 		db = db.Where("flow_id = ?", info.FlowId)
 	}
-	if info.HosUserId != "" {
+	if info.HosUserId != 0 {
 		db = db.Where("hos_user_id = ?", info.HosUserId)
 	}
 	if info.SportModeId != nil {
@@ -107,7 +107,7 @@ func (hosSportAdviceService *HosSportAdviceService) GetCurrentHosSportAdviceList
 	if info.FlowId != nil {
 		db = db.Where("flow_id = ?", info.FlowId)
 	}
-	if info.HosUserId != "" {
+	if info.HosUserId != 0 {
 		db = db.Where("hos_user_id = ?", info.HosUserId)
 	}
 	if info.SportModeId != nil {

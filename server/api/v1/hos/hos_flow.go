@@ -149,6 +149,26 @@ func (hosFlowApi *HosFlowApi) GetHosFlowList(c *gin.Context) {
 	}
 }
 
+func (hosFlowApi *HosFlowApi) GetCurrentHosFlowList(c *gin.Context) {
+	var pageInfo hosReq.HosFlowSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, total, err := hosFlowService.GetHosFlowInfoList(pageInfo, c); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
 // GetHosFlowDataSource 获取HosFlow的数据源
 // @Tags HosFlow
 // @Summary 获取HosFlow的数据源

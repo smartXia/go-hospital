@@ -10,7 +10,7 @@ type HosSportAdviceSearch struct {
 	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
 
 	FlowId      *int   `json:"flowId" form:"flowId" `
-	HosUserId   string `json:"hosUserId" form:"hosUserId" `
+	HosUserId   int    `json:"hosUserId" form:"hosUserId" `
 	SportModeId *int   `json:"sportModeId" form:"sportModeId" `
 	Name        string `json:"name" form:"name" `
 	Fuzhenriqi  string `json:"fuzhenriqi" form:"fuzhenriqi" `

@@ -61,7 +61,7 @@ func (hosSportClockService *HosSportClockService) GetHosSportClockInfoList(info 
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.HosUserId != "" {
+	if info.HosUserId != 0 {
 		db = db.Where("hos_user_id = ?", info.HosUserId)
 	}
 	if info.FlowId != "" {

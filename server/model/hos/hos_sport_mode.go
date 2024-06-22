@@ -8,7 +8,7 @@ import (
 // hosSportMode表 结构体  HosSportMode
 type HosSportMode struct {
 	global.GVA_MODEL
-	Name           string       `json:"name" form:"name" gorm:"column:name;comment:名称;size:500;" binding:"required"`                //名称
+	Name           string       `json:"name" form:"name" gorm:"column:name;comment:名称;size:500;" binding:""`                        //名称
 	Category       string       `json:"category" form:"category" gorm:"column:category;comment:分类;size:255;"`                       //分类
 	Buwei          string       `json:"buwei" form:"buwei" gorm:"column:buwei;comment:部位;size:500;"`                                //部位
 	Tiduan         string       `json:"tiduan" form:"tiduan" gorm:"column:tiduan;comment:体段;size:500;"`                             //体段

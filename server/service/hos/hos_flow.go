@@ -59,18 +59,6 @@ func (hosFlowService *HosFlowService) GetHosFlowInfoList(info hosReq.HosFlowSear
 	db := global.GVA_DB.Model(&hos.HosFlow{}).Scopes(scope.TenantScope(ctx))
 	var hosFlows []hos.HosFlow
 	// 如果有条件搜索 下方会自动创建搜索语句
-	if info.Name != "" {
-		db = db.Where("name = ?", info.Name)
-	}
-	if info.Uuid != "" {
-		db = db.Where("uuid = ?", info.Uuid)
-	}
-	if info.AskId != nil {
-		db = db.Where("ask_id = ?", info.AskId)
-	}
-	if info.AdviceId != nil {
-		db = db.Where("advice_id = ?", info.AdviceId)
-	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -79,14 +67,44 @@ func (hosFlowService *HosFlowService) GetHosFlowInfoList(info hosReq.HosFlowSear
 	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
-	db.Preload("HosScale").
-		Preload("HosLocalAsk").
-		Preload("HosSportAdvice").
-		Preload("SysUsers").
-		Preload("HosUsers")
+	db.Preload("HosScale").Preload("HosScale.SysUser").
+		Preload("HosLocalAsk").Preload("HosLocalAsk.SysUser").
+		Preload("HosSportAdvice").Preload("HosSportAdvice.SysUser").
+		Preload("SysUser").
+		Preload("HosUser").Preload("HosUser.SysUser")
+
 	err = db.Find(&hosFlows).Error
 	return hosFlows, total, err
 }
+
+func (hosFlowService *HosFlowService) GetCurrentHosFlowInfoList(info hosReq.HosFlowSearch, ctx *gin.Context) (list []hos.HosFlow, total int64, err error) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	// 创建db
+	db := global.GVA_DB.Model(&hos.HosFlow{}).Scopes(scope.TenantScope(ctx))
+	var hosFlows []hos.HosFlow
+	// 如果有条件搜索 下方会自动创建搜索语句
+
+	if info.AdviceId != nil {
+		db = db.Where("advice_id = ?", info.AdviceId)
+	}
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+	if limit != 0 {
+		db = db.Limit(limit).Offset(offset).Order("id desc")
+	}
+	db.Preload("HosScale").Preload("HosScale.SysUser").
+		Preload("HosLocalAsk").Preload("HosLocalAsk.SysUser").
+		Preload("HosSportAdvice").Preload("HosSportAdvice.SysUser").
+		Preload("SysUser").
+		Preload("HosUser").Preload("HosUser.SysUser")
+
+	err = db.Find(&hosFlows).Error
+	return hosFlows, total, err
+}
+
 func (hosFlowService *HosFlowService) GetHosFlowDataSource() (res map[string][]map[string]any, err error) {
 	res = make(map[string][]map[string]any)
 
