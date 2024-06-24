@@ -2,6 +2,7 @@ package {{.Package}}
 
 import (
 	"devops-manage/global"
+	"devops-manage/utils"
 	"devops-manage/model/common/scope"
 	"devops-manage/model/{{.Package}}"
     {{.Package}}Req "devops-manage/model/{{.Package}}/request"

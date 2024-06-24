@@ -81,9 +81,6 @@ func Routers() *gin.Engine {
 		hosRouter.InitHosScaleRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitHosLocalAskRouter(PrivateGroup, PublicGroup)
 
-		hosRouter.InitHosSportClockRouter(PrivateGroup, PublicGroup)
-		hosRouter.InitHosSportClockCommitRouter(PrivateGroup, PublicGroup)
-		hosRouter.InitHosUserPointRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitHosFlowRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitSysUsersRouter(PrivateGroup, PublicGroup)
 
@@ -93,6 +90,12 @@ func Routers() *gin.Engine {
 		hosRouter.InitSysDeptRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitSysOrgRouter(PrivateGroup, PublicGroup)
 		hosRouter.InitSysPostRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitHosSportClockRouter(PrivateGroup, PublicGroup)
+
+		hosRouter.InitHosUserPointRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitHosSportClockCommitRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitHosUsersDianzanRouter(PrivateGroup, PublicGroup)
+		hosRouter.InitHosDashboardRouter(PrivateGroup, PublicGroup)
 
 	}
 

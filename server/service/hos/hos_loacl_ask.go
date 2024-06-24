@@ -16,7 +16,7 @@ type HosLocalAskService struct {
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosLocalAskService *HosLocalAskService) CreateHosLocalAsk(hosLocalAsk *hos.HosLocalAsk, ctx *gin.Context) (err error, h *hos.HosLocalAsk) {
 	hosLocalAsk.CreatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosLocalAsk).Error
+	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(hosLocalAsk).Error
 	return err, hosLocalAsk
 }
 

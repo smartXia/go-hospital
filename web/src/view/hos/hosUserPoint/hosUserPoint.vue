@@ -16,16 +16,9 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
-        <el-form-item label="用户id" prop="uid">
-         <el-input v-model="searchInfo.uid" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="流程id" prop="flowId">
-         <el-input v-model="searchInfo.flowId" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="名称" prop="name">
-         <el-input v-model="searchInfo.name" placeholder="搜索条件" />
+        <el-form-item label="用户id" prop="hosUserId">
+            
+             <el-input v-model.number="searchInfo.hosUserId" placeholder="搜索条件" />
 
         </el-form-item>
         <el-form-item>
@@ -53,15 +46,20 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="用户id" prop="uid" width="120" />
+        <el-table-column align="left" label="用户id" prop="hosUserId" width="120" />
         <el-table-column align="left" label="流程id" prop="flowId" width="120" />
         <el-table-column align="left" label="名称" prop="name" width="120" />
         <el-table-column align="left" label="事件" prop="event" width="120" />
         <el-table-column align="left" label="积分变化" prop="change" width="120" />
         <el-table-column align="left" label="共计积分" prop="total" width="120" />
         <el-table-column align="left" label="可用积分" prop="totalUse" width="120" />
+        <el-table-column align="left" label="描述" prop="desc" width="120" />
         <el-table-column align="left" label="状态" prop="enable" width="120" />
+        <el-table-column align="left" label="排序" prop="sort" width="120" />
         <el-table-column align="left" label="租户编号" prop="tenantId" width="120" />
+        <el-table-column align="left" label="创建者" prop="createdBy" width="120" />
+        <el-table-column align="left" label="更新者" prop="updatedBy" width="120" />
+        <el-table-column align="left" label="删除者" prop="deletedBy" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link icon="edit" class="table-button" @click="updateHosUserPointFunc(scope.row)">变更</el-button>
@@ -93,11 +91,11 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="用户id:"  prop="uid" >
-              <el-input v-model="formData.uid" :clearable="true"  placeholder="请输入用户id" />
+            <el-form-item label="用户id:"  prop="hosUserId" >
+              <el-input v-model.number="formData.hosUserId" :clearable="true" placeholder="请输入用户id" />
             </el-form-item>
             <el-form-item label="流程id:"  prop="flowId" >
-              <el-input v-model="formData.flowId" :clearable="true"  placeholder="请输入流程id" />
+              <el-input v-model.number="formData.flowId" :clearable="true" placeholder="请输入流程id" />
             </el-form-item>
             <el-form-item label="名称:"  prop="name" >
               <el-input v-model="formData.name" :clearable="true"  placeholder="请输入名称" />
@@ -109,16 +107,31 @@
               <el-input v-model="formData.change" :clearable="true"  placeholder="请输入积分变化" />
             </el-form-item>
             <el-form-item label="共计积分:"  prop="total" >
-              <el-input v-model="formData.total" :clearable="true"  placeholder="请输入共计积分" />
+              <el-input v-model.number="formData.total" :clearable="true" placeholder="请输入共计积分" />
             </el-form-item>
             <el-form-item label="可用积分:"  prop="totalUse" >
-              <el-input v-model="formData.totalUse" :clearable="true"  placeholder="请输入可用积分" />
+              <el-input v-model.number="formData.totalUse" :clearable="true" placeholder="请输入可用积分" />
+            </el-form-item>
+            <el-form-item label="描述:"  prop="desc" >
+              <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入描述" />
             </el-form-item>
             <el-form-item label="状态:"  prop="enable" >
               <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入状态" />
             </el-form-item>
+            <el-form-item label="排序:"  prop="sort" >
+              <el-input v-model.number="formData.sort" :clearable="true" placeholder="请输入排序" />
+            </el-form-item>
             <el-form-item label="租户编号:"  prop="tenantId" >
               <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入租户编号" />
+            </el-form-item>
+            <el-form-item label="创建者:"  prop="createdBy" >
+              <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入创建者" />
+            </el-form-item>
+            <el-form-item label="更新者:"  prop="updatedBy" >
+              <el-input v-model.number="formData.updatedBy" :clearable="true" placeholder="请输入更新者" />
+            </el-form-item>
+            <el-form-item label="删除者:"  prop="deletedBy" >
+              <el-input v-model.number="formData.deletedBy" :clearable="true" placeholder="请输入删除者" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -146,15 +159,20 @@ defineOptions({
 
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
-        uid: '',
-        flowId: '',
+        hosUserId: 0,
+        flowId: 0,
         name: '',
         event: '',
         change: '',
-        total: '',
-        totalUse: '',
+        total: 0,
+        totalUse: 0,
+        desc: '',
         enable: 0,
+        sort: 0,
         tenantId: 0,
+        createdBy: 0,
+        updatedBy: 0,
+        deletedBy: 0,
         })
 
 
@@ -333,15 +351,20 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        uid: '',
-        flowId: '',
+        hosUserId: 0,
+        flowId: 0,
         name: '',
         event: '',
         change: '',
-        total: '',
-        totalUse: '',
+        total: 0,
+        totalUse: 0,
+        desc: '',
         enable: 0,
+        sort: 0,
         tenantId: 0,
+        createdBy: 0,
+        updatedBy: 0,
+        deletedBy: 0,
         }
 }
 // 弹窗确定

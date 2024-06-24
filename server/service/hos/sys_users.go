@@ -17,7 +17,7 @@ type SysUsersService struct {
 func (sysUsersService *SysUsersService) CreateSysUsers(sysUsers *hos.SysUsers, ctx *gin.Context) (err error, d *hos.SysUsers) {
 	sysUsers.Uuid = utils.UniqueId()
 	sysUsers.CreatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysUsers).Error
+	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(sysUsers).Error
 	return err, sysUsers
 }
 

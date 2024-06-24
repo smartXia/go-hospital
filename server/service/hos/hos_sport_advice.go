@@ -6,7 +6,10 @@ import (
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
 	"devops-manage/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"strconv"
+	"time"
 )
 
 type HosSportAdviceService struct {
@@ -16,7 +19,57 @@ type HosSportAdviceService struct {
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosSportAdviceService *HosSportAdviceService) CreateHosSportAdvice(hosSportAdvice *hos.HosSportAdvice, ctx *gin.Context) (err error, d *hos.HosSportAdvice) {
 	hosSportAdvice.CreatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosSportAdvice).Error
+	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(hosSportAdvice).Error
+	//创建运动建议时候 从运动建议的 开始日期开始 然后到复诊日期前的日子 都是 周期
+	if hosSportAdvice.Jianyizhouqi != 0 {
+		start := hosSportAdvice.Jianyitime
+		end := hosSportAdvice.Fuzhenriqi
+
+		startT, err := time.ParseInLocation("2006-01-02", start, time.Local)
+		endT, err := time.ParseInLocation("2006-01-02", end, time.Local)
+		if err != nil {
+			return err, nil
+		}
+		zhouqi := hosSportAdvice.Jianyizhouqi
+		var clockService HosSportClockService
+		var hosUserService HosUsersService
+		users, err := hosUserService.GetHosUsers(strconv.Itoa(*hosSportAdvice.HosUserId), ctx)
+		if err != nil {
+			return err, nil
+		}
+		i := 0
+		for currentDate := startT; currentDate.Before(endT) || currentDate.Equal(endT); currentDate = currentDate.AddDate(0, 0, zhouqi) {
+			i++
+			clockStart := currentDate.Format("2006-01-02")
+			clockTemp := currentDate.AddDate(0, 0, zhouqi-1)
+			if clockTemp.After(endT) {
+				clockTemp = endT
+			}
+			clockEndT := clockTemp.Format("2006-01-02")
+
+			hosUid := hosSportAdvice.HosUserId
+
+			clock := hos.HosSportClock{
+				HosUserId:      hosUid,
+				FlowId:         hosSportAdvice.FlowId,
+				AdviceId:       hosSportAdvice.ID,
+				Cishu:          i,
+				Name:           fmt.Sprintf("%s~%s %s %d 次运动打卡", clockStart, clockEndT, users.Username, i),
+				ClockStartTime: clockStart,
+				ClockEndTime:   clockEndT,
+				CreatedBy:      hosSportAdvice.CreatedBy,
+			}
+
+			err, _ = clockService.CreateHosSportClock(&clock, ctx)
+
+		}
+
+	}
+
+	if err != nil {
+		return err, nil
+	}
+
 	return err, hosSportAdvice
 }
 

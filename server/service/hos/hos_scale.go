@@ -16,7 +16,7 @@ type HosScaleService struct {
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosScaleService *HosScaleService) CreateHosScale(hosScale *hos.HosScale, ctx *gin.Context) (err error, h *hos.HosScale) {
 	hosScale.CreatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosScale).Error
+	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(hosScale).Error
 	return err, hosScale
 }
 

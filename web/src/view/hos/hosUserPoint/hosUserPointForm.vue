@@ -2,11 +2,11 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
-        <el-form-item label="用户id:" prop="uid">
-          <el-input v-model="formData.uid" :clearable="true"  placeholder="请输入用户id" />
+        <el-form-item label="用户id:" prop="hosUserId">
+          <el-input v-model.number="formData.hosUserId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="流程id:" prop="flowId">
-          <el-input v-model="formData.flowId" :clearable="true"  placeholder="请输入流程id" />
+          <el-input v-model.number="formData.flowId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="名称:" prop="name">
           <el-input v-model="formData.name" :clearable="true"  placeholder="请输入名称" />
@@ -18,10 +18,10 @@
           <el-input v-model="formData.change" :clearable="true"  placeholder="请输入积分变化" />
        </el-form-item>
         <el-form-item label="共计积分:" prop="total">
-          <el-input v-model="formData.total" :clearable="true"  placeholder="请输入共计积分" />
+          <el-input v-model.number="formData.total" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="可用积分:" prop="totalUse">
-          <el-input v-model="formData.totalUse" :clearable="true"  placeholder="请输入可用积分" />
+          <el-input v-model.number="formData.totalUse" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="描述:" prop="desc">
           <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入描述" />
@@ -75,13 +75,13 @@ const router = useRouter()
 
 const type = ref('')
 const formData = ref({
-            uid: '',
-            flowId: '',
+            hosUserId: 0,
+            flowId: 0,
             name: '',
             event: '',
             change: '',
-            total: '',
-            totalUse: '',
+            total: 0,
+            totalUse: 0,
             desc: '',
             enable: 0,
             sort: 0,

@@ -16,7 +16,7 @@ type HosSportModeService struct {
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosSportModeService *HosSportModeService) CreateHosSportMode(hosSportMode *hos.HosSportMode, ctx *gin.Context) (err error, d *hos.HosSportMode) {
 	hosSportMode.CreatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosSportMode).Error
+	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(hosSportMode).Error
 	return err, hosSportMode
 }
 

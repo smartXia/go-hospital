@@ -17,7 +17,7 @@ type HosFlowService struct {
 func (hosFlowService *HosFlowService) CreateHosFlow(hosFlow *hos.HosFlow, ctx *gin.Context) (err error, f *hos.HosFlow) {
 	hosFlow.Uuid = utils.UniqueId()
 	hosFlow.CreatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosFlow).Error
+	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(hosFlow).Error
 	return err, hosFlow
 }
 

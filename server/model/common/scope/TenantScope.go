@@ -20,6 +20,15 @@ func TenantScope(ctx *gin.Context) func(db *gorm.DB) *gorm.DB {
 		}
 	}
 }
+func TenantSaveScope(ctx *gin.Context) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		tid := utils.GetTenantId(ctx)
+		db.Callback().Create().Before("gorm:before_create").Register("update_tenant_id", func(db *gorm.DB) {
+			db.Statement.SetColumn("tenant_id", tid)
+		})
+		return db
+	}
+}
 
 // RegisterTenantCallback 注册一个 GORM 回调，在需要时应用 tenant_id 过滤条件
 func RegisterTenantCallback(db *gorm.DB, uid uint) {

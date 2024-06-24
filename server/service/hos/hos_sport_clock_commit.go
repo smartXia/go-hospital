@@ -14,9 +14,9 @@ type HosSportClockCommitService struct {
 
 // CreateHosSportClockCommit 创建hosSportClockCommit表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosSportClockCommitService *HosSportClockCommitService) CreateHosSportClockCommit(hosSportClockCommit *hos.HosSportClockCommit, ctx *gin.Context) (err error, h *hos.HosSportClockCommit) {
+func (hosSportClockCommitService *HosSportClockCommitService) CreateHosSportClockCommit(hosSportClockCommit *hos.HosSportClockCommit, ctx *gin.Context) (err error, d *hos.HosSportClockCommit) {
 	hosSportClockCommit.CreatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosSportClockCommit).Error
+	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(hosSportClockCommit).Error
 	return err, hosSportClockCommit
 }
 
@@ -63,12 +63,6 @@ func (hosSportClockCommitService *HosSportClockCommitService) GetHosSportClockCo
 	}
 	if info.FlowId != "" {
 		db = db.Where("flow_id = ?", info.FlowId)
-	}
-	if info.AdviceId != "" {
-		db = db.Where("advice_id = ?", info.AdviceId)
-	}
-	if info.HosUserId != 0 {
-		db = db.Where("hos_user_id = ?", info.HosUserId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {

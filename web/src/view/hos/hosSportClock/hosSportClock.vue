@@ -16,12 +16,27 @@
       <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束日期" :disabled-date="time=> searchInfo.startCreatedAt ? time.getTime() < searchInfo.startCreatedAt.getTime() : false"></el-date-picker>
       </el-form-item>
       
-        <el-form-item label="用户id" prop="uid">
-         <el-input v-model="searchInfo.uid" placeholder="搜索条件" />
+        <el-form-item label="患者id" prop="hosUserId">
+            
+             <el-input v-model.number="searchInfo.hosUserId" placeholder="搜索条件" />
 
         </el-form-item>
         <el-form-item label="流程id" prop="flowId">
-         <el-input v-model="searchInfo.flowId" placeholder="搜索条件" />
+            
+             <el-input v-model.number="searchInfo.flowId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="建议ID" prop="adviceId">
+            
+             <el-input v-model.number="searchInfo.adviceId" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="可以开始打卡时间" prop="clockStartTime">
+         <el-input v-model="searchInfo.clockStartTime" placeholder="搜索条件" />
+
+        </el-form-item>
+        <el-form-item label="打卡截至时间" prop="clockEndTime">
+         <el-input v-model="searchInfo.clockEndTime" placeholder="搜索条件" />
 
         </el-form-item>
         <el-form-item>
@@ -49,13 +64,22 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-        <el-table-column align="left" label="用户id" prop="uid" width="120" />
+        <el-table-column align="left" label="患者id" prop="hosUserId" width="120">
+          <template #default="scope">
+          {{ filterDataSource(dataSource.hosUserId,scope.row.hosUserId) }}
+         </template>
+         </el-table-column>
         <el-table-column align="left" label="流程id" prop="flowId" width="120" />
+        <el-table-column align="left" label="建议ID" prop="adviceId" width="120" />
         <el-table-column align="left" label="名称" prop="name" width="120" />
         <el-table-column align="left" label="打卡图片" prop="relationPhotos" width="120" />
         <el-table-column align="left" label="描述" prop="desc" width="120" />
+        <el-table-column align="left" label="可以开始打卡时间" prop="clockStartTime" width="120" />
+        <el-table-column align="left" label="打卡截至时间" prop="clockEndTime" width="120" />
         <el-table-column align="left" label="状态" prop="enable" width="120" />
+        <el-table-column align="left" label="排序" prop="sort" width="120" />
         <el-table-column align="left" label="租户编号" prop="tenantId" width="120" />
+        <el-table-column align="left" label="创建者" prop="createdBy" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link icon="edit" class="table-button" @click="updateHosSportClockFunc(scope.row)">变更</el-button>
@@ -87,11 +111,16 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="用户id:"  prop="uid" >
-              <el-input v-model="formData.uid" :clearable="true"  placeholder="请输入用户id" />
+            <el-form-item label="患者id:"  prop="hosUserId" >
+            <el-select v-model="formData.hosUserId" placeholder="请选择患者id" style="width:100%" :clearable="true" >
+              <el-option v-for="(item,key) in dataSource.hosUserId" :key="key" :label="item.label" :value="item.value" />
+            </el-select>
             </el-form-item>
             <el-form-item label="流程id:"  prop="flowId" >
-              <el-input v-model="formData.flowId" :clearable="true"  placeholder="请输入流程id" />
+              <el-input v-model.number="formData.flowId" :clearable="true" placeholder="请输入流程id" />
+            </el-form-item>
+            <el-form-item label="建议ID:"  prop="adviceId" >
+              <el-input v-model.number="formData.adviceId" :clearable="true" placeholder="请输入建议ID" />
             </el-form-item>
             <el-form-item label="名称:"  prop="name" >
               <el-input v-model="formData.name" :clearable="true"  placeholder="请输入名称" />
@@ -102,11 +131,23 @@
             <el-form-item label="描述:"  prop="desc" >
               <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入描述" />
             </el-form-item>
+            <el-form-item label="可以开始打卡时间:"  prop="clockStartTime" >
+              <el-input v-model="formData.clockStartTime" :clearable="true"  placeholder="请输入可以开始打卡时间" />
+            </el-form-item>
+            <el-form-item label="打卡截至时间:"  prop="clockEndTime" >
+              <el-input v-model="formData.clockEndTime" :clearable="true"  placeholder="请输入打卡截至时间" />
+            </el-form-item>
             <el-form-item label="状态:"  prop="enable" >
               <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入状态" />
             </el-form-item>
+            <el-form-item label="排序:"  prop="sort" >
+              <el-input v-model.number="formData.sort" :clearable="true" placeholder="请输入排序" />
+            </el-form-item>
             <el-form-item label="租户编号:"  prop="tenantId" >
               <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入租户编号" />
+            </el-form-item>
+            <el-form-item label="创建者:"  prop="createdBy" >
+              <el-input v-model.number="formData.createdBy" :clearable="true" placeholder="请输入创建者" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -115,6 +156,7 @@
 
 <script setup>
 import {
+    getHosSportClockDataSource,
   createHosSportClock,
   deleteHosSportClock,
   deleteHosSportClockByIds,
@@ -134,14 +176,27 @@ defineOptions({
 
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
-        uid: '',
-        flowId: '',
+        hosUserId: 0,
+        flowId: 0,
+        adviceId: 0,
         name: '',
         relationPhotos: '',
         desc: '',
+        clockStartTime: '',
+        clockEndTime: '',
         enable: 0,
+        sort: 0,
         tenantId: 0,
+        createdBy: 0,
         })
+  const dataSource = ref([])
+  const getDataSourceFunc = async()=>{
+    const res = await getHosSportClockDataSource()
+    if (res.code === 0) {
+      dataSource.value = res.data
+    }
+  }
+  getDataSourceFunc()
 
 
 
@@ -319,13 +374,18 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        uid: '',
-        flowId: '',
+        hosUserId: 0,
+        flowId: 0,
+        adviceId: 0,
         name: '',
         relationPhotos: '',
         desc: '',
+        clockStartTime: '',
+        clockEndTime: '',
         enable: 0,
+        sort: 0,
         tenantId: 0,
+        createdBy: 0,
         }
 }
 // 弹窗确定

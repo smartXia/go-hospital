@@ -150,6 +150,23 @@ func (hosSportClockApi *HosSportClockApi) GetHosSportClockList(c *gin.Context) {
 	}
 }
 
+// GetHosSportClockDataSource 获取HosSportClock的数据源
+// @Tags HosSportClock
+// @Summary 获取HosSportClock的数据源
+// @accept application/json
+// @Produce application/json
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /hosSportClock/getHosSportClockDataSource [get]
+func (hosSportClockApi *HosSportClockApi) GetHosSportClockDataSource(c *gin.Context) {
+	// 此接口为获取数据源定义的数据
+	if dataSource, err := hosSportClockService.GetHosSportClockDataSource(); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(dataSource, c)
+	}
+}
+
 // GetHosSportClockPublic 不需要鉴权的hosSportClock表接口
 // @Tags HosSportClock
 // @Summary 不需要鉴权的hosSportClock表接口
@@ -164,4 +181,33 @@ func (hosSportClockApi *HosSportClockApi) GetHosSportClockPublic(c *gin.Context)
 	response.OkWithDetailed(gin.H{
 		"info": "不需要鉴权的hosSportClock表接口信息",
 	}, "获取成功", c)
+}
+
+// GetHosSportClockList 分页获取hosSportClock表列表
+// @Tags HosSportClock
+// @Summary 分页获取hosSportClock表列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query hosReq.HosSportClockSearch true "分页获取hosSportClock表列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /hosSportClock/getHosSportClockList [get]
+func (hosSportClockApi *HosSportClockApi) GetCurrentUserHosSportClockList(c *gin.Context) {
+	var pageInfo hosReq.HosSportClockSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, total, err := hosSportClockService.GetCurrentUserHosSportClockList(pageInfo, c); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }

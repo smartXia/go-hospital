@@ -23,10 +23,12 @@ func (s *HosSportClockRouter) InitHosSportClockRouter(Router *gin.RouterGroup, P
 		hosSportClockRouter.PUT("updateHosSportClock", hosSportClockApi.UpdateHosSportClock)              // 更新hosSportClock表
 	}
 	{
-		hosSportClockRouterWithoutRecord.GET("findHosSportClock", hosSportClockApi.FindHosSportClock)       // 根据ID获取hosSportClock表
-		hosSportClockRouterWithoutRecord.GET("getHosSportClockList", hosSportClockApi.GetHosSportClockList) // 获取hosSportClock表列表
+		hosSportClockRouterWithoutRecord.GET("findHosSportClock", hosSportClockApi.FindHosSportClock)                             // 根据ID获取hosSportClock表
+		hosSportClockRouterWithoutRecord.GET("getHosSportClockList", hosSportClockApi.GetHosSportClockList)                       // 获取hosSportClock表列表
+		hosSportClockRouterWithoutRecord.GET("getCurrentUserHosSportClockList", hosSportClockApi.GetCurrentUserHosSportClockList) // 获取hosSportClock表列表
 	}
 	{
-		hosSportClockRouterWithoutAuth.GET("getHosSportClockPublic", hosSportClockApi.GetHosSportClockPublic) // 获取hosSportClock表列表
+		hosSportClockRouterWithoutAuth.GET("getHosSportClockDataSource", hosSportClockApi.GetHosSportClockDataSource) // 获取hosSportClock表数据源
+		hosSportClockRouterWithoutAuth.GET("getHosSportClockPublic", hosSportClockApi.GetHosSportClockPublic)         // 获取hosSportClock表列表
 	}
 }

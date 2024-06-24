@@ -6,7 +6,10 @@ import (
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
 	"devops-manage/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"sort"
+	"time"
 )
 
 type HosSportClockService struct {
@@ -14,7 +17,7 @@ type HosSportClockService struct {
 
 // CreateHosSportClock 创建hosSportClock表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosSportClockService *HosSportClockService) CreateHosSportClock(hosSportClock *hos.HosSportClock, ctx *gin.Context) (err error, h *hos.HosSportClock) {
+func (hosSportClockService *HosSportClockService) CreateHosSportClock(hosSportClock *hos.HosSportClock, ctx *gin.Context) (err error, d *hos.HosSportClock) {
 	hosSportClock.CreatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(hosSportClock).Error
 	return err, hosSportClock
@@ -61,11 +64,20 @@ func (hosSportClockService *HosSportClockService) GetHosSportClockInfoList(info 
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.HosUserId != 0 {
+	if info.HosUserId != nil {
 		db = db.Where("hos_user_id = ?", info.HosUserId)
 	}
-	if info.FlowId != "" {
+	if info.FlowId != nil {
 		db = db.Where("flow_id = ?", info.FlowId)
+	}
+	if info.AdviceId != nil {
+		db = db.Where("advice_id = ?", info.AdviceId)
+	}
+	if info.ClockStartTime != "" {
+		db = db.Where("clock_start_time > ?", info.ClockStartTime)
+	}
+	if info.ClockEndTime != "" {
+		db = db.Where("clock_end_time < ?", info.ClockEndTime)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -78,4 +90,81 @@ func (hosSportClockService *HosSportClockService) GetHosSportClockInfoList(info 
 
 	err = db.Find(&hosSportClocks).Error
 	return hosSportClocks, total, err
+}
+
+// GetCurrentUserHosSportClockList 分页获取hosSportClock表记录
+// Author [piexlmax](https://github.com/piexlmax)
+func (hosSportClockService *HosSportClockService) GetCurrentUserHosSportClockList(info hosReq.HosSportClockSearch, ctx *gin.Context) (list interface{}, total int64, err error) {
+	// 创建db
+	//  先找到 自己 建议周期内的所有建议 然后按照建议id 来筛选出来 这个建议这天需要打卡的周期 比如 2
+	// 筛选条件 就可以 判断今天属于 哪个打卡 周期
+	db := global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx))
+	var hosSportClocks []hos.HosSportClock
+	start := time.Now().Format("2006-01-02")
+	//uid := utils.GetUserID(ctx)
+	db = db.Where("hos_user_id = ?", 49)
+	db = db.Where("clock_start_time <= ?", start)
+	db = db.Preload("HosSportAdvice").Preload("SysUser")
+	db = db.Preload("HosSportAdvice").Preload("HosSportAdvice.HosSportMode")
+	err = db.Find(&hosSportClocks).Order("id desc").Error
+
+	mapByDate := make(map[int][]hos.HosSportClock, 0)
+	if len(hosSportClocks) != 0 {
+		for _, v := range hosSportClocks {
+			mapByDate[v.Cishu] = append(mapByDate[v.Cishu], v)
+		}
+	}
+	// 提取 map 的所有 keys
+	keys := make([]int, 0, len(mapByDate))
+	for key := range mapByDate {
+		keys = append(keys, key)
+	}
+	// 对 keys 进行排序
+	sort.Ints(keys)
+	for i, j := 0, len(keys)-1; i < j; i, j = i+1, j-1 {
+		keys[i], keys[j] = keys[j], keys[i]
+	}
+	var c []ClockPlan
+	for _, key := range keys {
+
+		current := ClockPlan{
+			Name:              mapByDate[key][0].Name,
+			Image:             mapByDate[key][0].HosSportAdvice.Images,
+			JieDuan:           fmt.Sprintf("%s~%s", mapByDate[key][0].HosSportAdvice.Jianyitime, mapByDate[key][0].HosSportAdvice.Fuzhenriqi),
+			DoctorInfo:        mapByDate[key][0].SysUser,
+			SportAdviceDetail: mapByDate[key],
+			Jindu:             50,
+			Status:            "over",
+		}
+		parseS, err := time.Parse("2006-01-02", mapByDate[key][0].ClockStartTime)
+		parseE, err := time.Parse("2006-01-02", mapByDate[key][0].ClockEndTime)
+		if err != nil {
+			return nil, 0, err
+		}
+		if parseS.Before(time.Now()) && parseE.After(time.Now()) {
+			current.Status = "process"
+		}
+		c = append(c, current)
+	}
+
+	return c, total, err
+}
+
+type ClockPlan struct {
+	Name              string              `json:"name"`
+	JieDuan           string              `json:"jie_duan"`
+	DoctorInfo        hos.SysUsersInfo    `json:"doctor_info"`
+	SportAdviceDetail []hos.HosSportClock `json:"sport_advice_detail"`
+	Image             string              `json:"image"`
+	Jindu             int                 `json:"process"`
+	Status            string              `json:"status"`
+}
+
+func (hosSportClockService *HosSportClockService) GetHosSportClockDataSource() (res map[string][]map[string]any, err error) {
+	res = make(map[string][]map[string]any)
+
+	hosUserId := make([]map[string]any, 0)
+	global.GVA_DB.Table("hos_users").Select("name as label,username as value").Scan(&hosUserId)
+	res["hosUserId"] = hosUserId
+	return
 }

@@ -95,3 +95,16 @@ export const getHosSportClockList = (params) => {
     params
   })
 }
+// @Tags HosSportClock
+// @Summary 获取数据源
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /hosSportClock/findHosSportClockDataSource [get]
+export const getHosSportClockDataSource = () => {
+  return service({
+    url: '/hosSportClock/getHosSportClockDataSource',
+    method: 'get',
+  })
+}

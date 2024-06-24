@@ -20,14 +20,6 @@
          <el-input v-model="searchInfo.flowId" placeholder="搜索条件" />
 
         </el-form-item>
-        <el-form-item label="建议id" prop="adviceId">
-         <el-input v-model="searchInfo.adviceId" placeholder="搜索条件" />
-
-        </el-form-item>
-        <el-form-item label="用户id" prop="uid">
-         <el-input v-model="searchInfo.uid" placeholder="搜索条件" />
-
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -54,11 +46,14 @@
         </el-table-column>
         
         <el-table-column align="left" label="关联的流程id" prop="flowId" width="120" />
+        <el-table-column align="left" label="患者id" prop="hosUserId" width="120" />
         <el-table-column align="left" label="建议id" prop="adviceId" width="120" />
-        <el-table-column align="left" label="用户id" prop="uid" width="120" />
+        <el-table-column align="left" label="打卡id" prop="clockId" width="120" />
         <el-table-column align="left" label="评论" prop="commit" width="120" />
+        <el-table-column align="left" label="点赞数" prop="dianzan" width="120" />
         <el-table-column align="left" label="描述" prop="desc" width="120" />
-        <el-table-column align="left" label="租户编号" prop="tenantId" width="120" />
+        <el-table-column align="left" label="状态" prop="enable" width="120" />
+        <el-table-column align="left" label="排序" prop="sort" width="120" />
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button type="primary" link icon="edit" class="table-button" @click="updateHosSportClockCommitFunc(scope.row)">变更</el-button>
@@ -93,20 +88,29 @@
             <el-form-item label="关联的流程id:"  prop="flowId" >
               <el-input v-model="formData.flowId" :clearable="true"  placeholder="请输入关联的流程id" />
             </el-form-item>
-            <el-form-item label="建议id:"  prop="adviceId" >
-              <el-input v-model="formData.adviceId" :clearable="true"  placeholder="请输入建议id" />
+            <el-form-item label="患者id:"  prop="hosUserId" >
+              <el-input v-model.number="formData.hosUserId" :clearable="true" placeholder="请输入患者id" />
             </el-form-item>
-            <el-form-item label="用户id:"  prop="uid" >
-              <el-input v-model="formData.uid" :clearable="true"  placeholder="请输入用户id" />
+            <el-form-item label="建议id:"  prop="adviceId" >
+              <el-input v-model.number="formData.adviceId" :clearable="true" placeholder="请输入建议id" />
+            </el-form-item>
+            <el-form-item label="打卡id:"  prop="clockId" >
+              <el-input v-model.number="formData.clockId" :clearable="true" placeholder="请输入打卡id" />
             </el-form-item>
             <el-form-item label="评论:"  prop="commit" >
               <el-input v-model="formData.commit" :clearable="true"  placeholder="请输入评论" />
             </el-form-item>
+            <el-form-item label="点赞数:"  prop="dianzan" >
+              <el-input v-model.number="formData.dianzan" :clearable="true" placeholder="请输入点赞数" />
+            </el-form-item>
             <el-form-item label="描述:"  prop="desc" >
               <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入描述" />
             </el-form-item>
-            <el-form-item label="租户编号:"  prop="tenantId" >
-              <el-input v-model.number="formData.tenantId" :clearable="true" placeholder="请输入租户编号" />
+            <el-form-item label="状态:"  prop="enable" >
+              <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入状态" />
+            </el-form-item>
+            <el-form-item label="排序:"  prop="sort" >
+              <el-input v-model.number="formData.sort" :clearable="true" placeholder="请输入排序" />
             </el-form-item>
           </el-form>
     </el-drawer>
@@ -135,11 +139,14 @@ defineOptions({
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
         flowId: '',
-        adviceId: '',
-        uid: '',
+        hosUserId: 0,
+        adviceId: 0,
+        clockId: 0,
         commit: '',
+        dianzan: 0,
         desc: '',
-        tenantId: 0,
+        enable: 0,
+        sort: 0,
         })
 
 
@@ -319,11 +326,14 @@ const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
         flowId: '',
-        adviceId: '',
-        uid: '',
+        hosUserId: 0,
+        adviceId: 0,
+        clockId: 0,
         commit: '',
+        dianzan: 0,
         desc: '',
-        tenantId: 0,
+        enable: 0,
+        sort: 0,
         }
 }
 // 弹窗确定

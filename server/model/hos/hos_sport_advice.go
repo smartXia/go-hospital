@@ -9,11 +9,11 @@ import (
 type HosSportAdvice struct {
 	global.GVA_MODEL
 	FlowId       *int         `json:"flowId" form:"flowId" gorm:"column:flow_id;comment:流程id;size:10;"`                   //流程id
-	HosUserId    int          `json:"hosUserId" form:"hosUserId" gorm:"column:hos_user_id;comment:患者id;size:11;"`         //患者id
+	HosUserId    *int         `json:"hosUserId" form:"hosUserId" gorm:"column:hos_user_id;comment:患者id;size:11;"`         //患者id
 	SportModeId  *int         `json:"sportModeId" form:"sportModeId" gorm:"column:sport_mode_id;comment:模型 id;size:10;"`  //模型 id
 	Name         string       `json:"name" form:"name" gorm:"column:name;comment:名称;size:500;"`                           //名称
 	Jianyitime   string       `json:"jianyitime" form:"jianyitime" gorm:"column:jianyitime;comment:建议起止时间;size:500;"`     //建议起止时间
-	Jianyizhouqi string       `json:"jianyizhouqi" form:"jianyizhouqi" gorm:"column:jianyizhouqi;comment:建议周期;size:500;"` //建议周期
+	Jianyizhouqi int          `json:"jianyizhouqi" form:"jianyizhouqi" gorm:"column:jianyizhouqi;comment:建议周期;size:500;"` //建议周期
 	Fuzhenriqi   string       `json:"fuzhenriqi" form:"fuzhenriqi" gorm:"column:fuzhenriqi;comment:复诊时间;size:500;"`       //复诊时间
 	Detail       string       `json:"detail" form:"detail" gorm:"column:detail;comment:建议详情;size:500;"`                   //建议详情
 	Images       string       `json:"images" form:"images" gorm:"column:images;comment:建议图;size:500;"`                    //建议图
@@ -29,6 +29,7 @@ type HosSportAdvice struct {
 	UpdatedBy    uint         `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`           //更新者
 	DeletedBy    *int         `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`           //删除者
 	SysUser      SysUsersInfo `json:"createdByInfo" form:"sysUsers" gorm:"foreignKey:id;references:CreatedBy"`            //创建者
+	HosSportMode HosSportMode `json:"HosSportModInfo" form:"HosSportModInfo" gorm:"foreignKey:id;references:SportModeId"` //运动建议id
 }
 
 // TableName hosSportAdvice表 HosSportAdvice自定义表名 hos_sport_advice

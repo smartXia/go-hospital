@@ -5,14 +5,20 @@
         <el-form-item label="关联的流程id:" prop="flowId">
           <el-input v-model="formData.flowId" :clearable="true"  placeholder="请输入关联的流程id" />
        </el-form-item>
-        <el-form-item label="建议id:" prop="adviceId">
-          <el-input v-model="formData.adviceId" :clearable="true"  placeholder="请输入建议id" />
+        <el-form-item label="患者id:" prop="hosUserId">
+          <el-input v-model.number="formData.hosUserId" :clearable="true" placeholder="请输入" />
        </el-form-item>
-        <el-form-item label="用户id:" prop="uid">
-          <el-input v-model="formData.uid" :clearable="true"  placeholder="请输入用户id" />
+        <el-form-item label="建议id:" prop="adviceId">
+          <el-input v-model.number="formData.adviceId" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="打卡id:" prop="clockId">
+          <el-input v-model.number="formData.clockId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="评论:" prop="commit">
           <el-input v-model="formData.commit" :clearable="true"  placeholder="请输入评论" />
+       </el-form-item>
+        <el-form-item label="点赞数:" prop="dianzan">
+          <el-input v-model.number="formData.dianzan" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="描述:" prop="desc">
           <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入描述" />
@@ -67,9 +73,11 @@ const router = useRouter()
 const type = ref('')
 const formData = ref({
             flowId: '',
-            adviceId: '',
-            uid: '',
+            hosUserId: 0,
+            adviceId: 0,
+            clockId: 0,
             commit: '',
+            dianzan: 0,
             desc: '',
             enable: 0,
             sort: 0,

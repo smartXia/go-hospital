@@ -2,11 +2,16 @@
   <div>
     <div class="gva-form-box">
       <el-form :model="formData" ref="elFormRef" label-position="right" :rules="rule" label-width="80px">
-        <el-form-item label="用户id:" prop="uid">
-          <el-input v-model="formData.uid" :clearable="true"  placeholder="请输入用户id" />
+        <el-form-item label="患者id:" prop="hosUserId">
+        <el-select v-model="formData.hosUserId" placeholder="请选择患者id" style="width:100%" :clearable="true" >
+          <el-option v-for="(item,key) in dataSource.hosUserId" :key="key" :label="item.label" :value="item.value" />
+        </el-select>
        </el-form-item>
         <el-form-item label="流程id:" prop="flowId">
-          <el-input v-model="formData.flowId" :clearable="true"  placeholder="请输入流程id" />
+          <el-input v-model.number="formData.flowId" :clearable="true" placeholder="请输入" />
+       </el-form-item>
+        <el-form-item label="建议ID:" prop="adviceId">
+          <el-input v-model.number="formData.adviceId" :clearable="true" placeholder="请输入" />
        </el-form-item>
         <el-form-item label="名称:" prop="name">
           <el-input v-model="formData.name" :clearable="true"  placeholder="请输入名称" />
@@ -16,6 +21,12 @@
        </el-form-item>
         <el-form-item label="描述:" prop="desc">
           <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入描述" />
+       </el-form-item>
+        <el-form-item label="可以开始打卡时间:" prop="clockStartTime">
+          <el-input v-model="formData.clockStartTime" :clearable="true"  placeholder="请输入可以开始打卡时间" />
+       </el-form-item>
+        <el-form-item label="打卡截至时间:" prop="clockEndTime">
+          <el-input v-model="formData.clockEndTime" :clearable="true"  placeholder="请输入打卡截至时间" />
        </el-form-item>
         <el-form-item label="状态:" prop="enable">
           <el-input v-model.number="formData.enable" :clearable="true" placeholder="请输入" />
@@ -46,6 +57,7 @@
 
 <script setup>
 import {
+    getHosSportClockDataSource,
   createHosSportClock,
   updateHosSportClock,
   findHosSportClock
@@ -66,11 +78,14 @@ const router = useRouter()
 
 const type = ref('')
 const formData = ref({
-            uid: '',
-            flowId: '',
+            hosUserId: 0,
+            flowId: 0,
+            adviceId: 0,
             name: '',
             relationPhotos: '',
             desc: '',
+            clockStartTime: '',
+            clockEndTime: '',
             enable: 0,
             sort: 0,
             tenantId: 0,
@@ -83,6 +98,14 @@ const rule = reactive({
 })
 
 const elFormRef = ref()
+  const dataSource = ref([])
+  const getDataSourceFunc = async()=>{
+    const res = await getHosSportClockDataSource()
+    if (res.code === 0) {
+      dataSource.value = res.data
+    }
+  }
+  getDataSourceFunc()
 
 // 初始化方法
 const init = async () => {
