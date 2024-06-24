@@ -2,7 +2,9 @@
 package hos
 
 import (
+	"devops-manage/core/constants"
 	"devops-manage/global"
+	"github.com/goccy/go-json"
 )
 
 // hosDashboard表 结构体  HosDashboard
@@ -26,7 +28,7 @@ type HosDashboard struct {
 	CreatedBy              uint                `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                                           //创建者
 	UpdatedBy              uint                `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                                           //更新者
 	DeletedBy              *int                `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                                           //删除者
-	HosUser                HosUsers            `json:"hosUserInfo" form:"hosUsers" gorm:"foreignKey:id;references:HosUserId"`
+	HosUser                HosUsers            `json:"hosUserInfo" form:"hosUsers" gorm:"foreignKey:id;references:CreatedBy"`
 	SysOrg                 SysOperationRecords `json:"orgInfo" form:"orgInfo" gorm:"foreignKey:id;references:OrgId"`
 }
 
@@ -48,6 +50,57 @@ type Duilieyanzhongxing struct {
 type Duiliefenlei struct {
 	Name   string `json:"name"`
 	Number int    `json:"number"`
+}
+
+func (hosd *HosDashboard) BuildInitDashBoardDate() (h *HosDashboard) {
+	var a []Duilienianling
+	var b []Duilieyanzhongxing
+	var c []Duiliefenlei
+	var d []Diqupaihang
+	for _, s := range constants.Duilienianling {
+		a = append(a, Duilienianling{
+			Name:   s,
+			Number: 0,
+		})
+	}
+	for _, s := range constants.Duilieyanzhongxing {
+		b = append(b, Duilieyanzhongxing{
+			Name:   s,
+			Number: 0,
+		})
+	}
+	for _, s := range constants.Duiliefenlei {
+		c = append(c, Duiliefenlei{
+			Name:   s,
+			Number: 0,
+		})
+	}
+
+	for _, s := range constants.Diqupaihang {
+		d = append(d, Diqupaihang{
+			Province:      s,
+			WeekIncrease:  0,
+			MonthIncrease: 0,
+			YearIncrease:  0,
+			Total:         0,
+		})
+	}
+	aa, err := json.Marshal(a)
+	hosd.Diqupaihang = string(aa)
+
+	bb, err := json.Marshal(b)
+	hosd.Duilienianling = string(bb)
+
+	cc, err := json.Marshal(c)
+	hosd.Duilieyanzhongxing = string(cc)
+
+	dd, err := json.Marshal(d)
+	hosd.Duiliefenlei = string(dd)
+
+	if err != nil {
+		return hosd
+	}
+	return hosd
 }
 
 // TableName hosDashboard表 HosDashboard自定义表名 hos_dashboard

@@ -32,7 +32,7 @@ func (hosDashboardApi *HosDashboardApi) CreateHosDashboard(c *gin.Context) {
 		return
 	}
 
-	if err, d := hosDashboardService.CreateHosDashboard(&hosDashboard, c); err != nil {
+	if err, d := hosDashboardService.CreateHosDashboard(&hosDashboard, c, 1); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
