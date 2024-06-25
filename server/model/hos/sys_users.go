@@ -26,7 +26,7 @@ type SysUsers struct {
 	Phone          string       `json:"phone" form:"phone" gorm:"column:phone;comment:用户手机号;size:191;"`                            //用户手机号
 	Email          string       `json:"email" form:"email" gorm:"column:email;comment:用户邮箱;size:191;"`                             //用户邮箱
 	Enable         *int         `json:"enable" form:"enable" gorm:"column:enable;comment:用户是否被冻结 1正常 2冻结;size:19;"`                //用户是否被冻结 1正常 2冻结
-	Hospital       string       `json:"hospital" form:"hospital" gorm:"column:hospital;comment:归属医院;size:255;"`                    //归属医院
+	Hospital       *int         `json:"hospital" form:"hospital" gorm:"column:hospital;comment:归属医院;size:255;"`                    //归属医院
 	Dept           string       `json:"dept" form:"dept" gorm:"column:dept;comment:部门;size:255;"`                                  //部门
 	Post           string       `json:"post" form:"post" gorm:"column:post;comment:职务;size:255;"`                                  //职务
 	Birthday       string       `json:"birthday" form:"birthday" gorm:"column:birthday;comment:生日;size:255;"`                      //生日

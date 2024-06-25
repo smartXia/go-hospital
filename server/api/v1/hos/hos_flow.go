@@ -156,7 +156,7 @@ func (hosFlowApi *HosFlowApi) GetCurrentHosFlowList(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	if list, total, err := hosFlowService.GetHosFlowInfoList(pageInfo, c); err != nil {
+	if list, total, err := hosFlowService.GetCurrentHosFlowInfoList(pageInfo, c); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {

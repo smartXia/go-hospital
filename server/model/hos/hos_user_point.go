@@ -8,11 +8,11 @@ import (
 // hosUserPoint表 结构体  HosUserPoint
 type HosUserPoint struct {
 	global.GVA_MODEL
-	HosUserId *int   `json:"hosUserId" form:"hosUserId" gorm:"column:hos_user_id;comment:用户id;size:10;"` //用户id
+	HosUserId uint   `json:"hosUserId" form:"hosUserId" gorm:"column:hos_user_id;comment:用户id;size:10;"` //用户id
 	FlowId    *int   `json:"flowId" form:"flowId" gorm:"column:flow_id;comment:流程id;size:10;"`           //流程id
 	Name      string `json:"name" form:"name" gorm:"column:name;comment:名称;size:500;"`                   //名称
 	Event     string `json:"event" form:"event" gorm:"column:event;comment:事件;size:500;"`                //事件
-	Change    string `json:"change" form:"change" gorm:"column:change;comment:积分变化;size:500;"`           //积分变化
+	Change    int    `json:"change" form:"change" gorm:"column:change;comment:积分变化;size:500;"`           //积分变化
 	Total     *int   `json:"total" form:"total" gorm:"column:total;comment:共计积分;size:10;"`               //共计积分
 	TotalUse  *int   `json:"totalUse" form:"totalUse" gorm:"column:total_use;comment:可用积分;size:10;"`     //可用积分
 	Desc      string `json:"desc" form:"desc" gorm:"column:desc;comment:描述;size:500;"`                   //描述

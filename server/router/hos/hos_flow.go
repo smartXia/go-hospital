@@ -23,8 +23,9 @@ func (s *HosFlowRouter) InitHosFlowRouter(Router *gin.RouterGroup, PublicRouter 
 		hosFlowRouter.PUT("updateHosFlow", hosFlowApi.UpdateHosFlow)              // 更新hosFlow表
 	}
 	{
-		hosFlowRouterWithoutRecord.GET("findHosFlow", hosFlowApi.FindHosFlow)       // 根据ID获取hosFlow表
-		hosFlowRouterWithoutRecord.GET("getHosFlowList", hosFlowApi.GetHosFlowList) // 获取hosFlow表列表
+		hosFlowRouterWithoutRecord.GET("findHosFlow", hosFlowApi.FindHosFlow)                     // 根据ID获取hosFlow表
+		hosFlowRouterWithoutRecord.GET("getHosFlowList", hosFlowApi.GetHosFlowList)               // 获取hosFlow表列表
+		hosFlowRouterWithoutRecord.GET("getCurrentHosFlowList", hosFlowApi.GetCurrentHosFlowList) // 获取hosFlow表列表
 	}
 	{
 		hosFlowRouterWithoutAuth.GET("getHosFlowDataSource", hosFlowApi.GetHosFlowDataSource) // 获取hosFlow表数据源

@@ -6,6 +6,7 @@ import (
 	"devops-manage/model/example"
 	"devops-manage/utils/upload"
 	"errors"
+	"fmt"
 	"mime/multipart"
 	"strings"
 )
@@ -93,6 +94,7 @@ func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, 
 	if uploadErr != nil {
 		panic(uploadErr)
 	}
+
 	s := strings.Split(header.Filename, ".")
 	f := example.ExaFileUploadAndDownload{
 		Url:  filePath,
@@ -100,8 +102,15 @@ func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, 
 		Tag:  s[len(s)-1],
 		Key:  key,
 	}
+	fmt.Printf("2222%v", f)
 	if noSave == "0" {
-		return f, e.Upload(f)
+		err = e.Upload(f)
+		if err != nil {
+			fmt.Printf("3333333333%#v", err)
+
+			return example.ExaFileUploadAndDownload{}, err
+		}
+		return f, err
 	}
 	return f, nil
 }

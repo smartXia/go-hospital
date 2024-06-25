@@ -132,6 +132,7 @@ func (hosSportAdviceService *HosSportAdviceService) GetHosSportAdviceInfoList(in
 	if info.SyncWx != nil {
 		db = db.Where("sync_wx = ?", info.SyncWx)
 	}
+	db = db.Preload("HosSportMode")
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -154,24 +155,7 @@ func (hosSportAdviceService *HosSportAdviceService) GetCurrentHosSportAdviceList
 	db := global.GVA_DB.Model(&hos.HosSportAdvice{}).Scopes(scope.TenantScope(ctx))
 	var hosSportAdvices []hos.HosSportAdvice
 	// 如果有条件搜索 下方会自动创建搜索语句
-	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
-		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
-	}
-	if info.FlowId != nil {
-		db = db.Where("flow_id = ?", info.FlowId)
-	}
-	if info.HosUserId != 0 {
-		db = db.Where("hos_user_id = ?", info.HosUserId)
-	}
-	if info.SportModeId != nil {
-		db = db.Where("sport_mode_id = ?", info.SportModeId)
-	}
-	if info.Name != "" {
-		db = db.Where("name = ?", info.Name)
-	}
-	if info.Fuzhenriqi != "" {
-		db = db.Where("fuzhenriqi = ?", info.Fuzhenriqi)
-	}
+
 	if info.SyncWx != nil {
 		db = db.Where("sync_wx = ?", info.SyncWx)
 	}
@@ -179,9 +163,7 @@ func (hosSportAdviceService *HosSportAdviceService) GetCurrentHosSportAdviceList
 	if err != nil {
 		return
 	}
-	uid := utils.GetUserID(ctx)
-	//获取 自己运动建议
-	db = db.Where("hos_user_id = ?", uid)
+
 	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}

@@ -60,3 +60,21 @@ var Duiliefenlei = []string{
 	"背疼",
 	"其它",
 }
+var ActionEvent = []string{
+	"register",
+	"point",
+}
+
+const (
+	REGISTER = "register"
+	POINT    = "point"
+)
+
+var ActionEventChange = map[string]int{
+	REGISTER: 5,
+	POINT:    10,
+}
+var ActionEventChangeCn = map[string]string{
+	REGISTER: "完成信息提交",
+	POINT:    "完成打卡提交",
+}

@@ -1,6 +1,7 @@
 package hos
 
 import (
+	"devops-manage/core/constants"
 	"devops-manage/global"
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
@@ -8,6 +9,7 @@ import (
 	"devops-manage/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"math"
 	"sort"
 	"time"
 )
@@ -42,6 +44,9 @@ func (hosSportClockService *HosSportClockService) DeleteHosSportClockByIds(IDs [
 func (hosSportClockService *HosSportClockService) UpdateHosSportClock(hosSportClock hos.HosSportClock, ctx *gin.Context) (err error) {
 	hosSportClock.UpdatedBy = utils.GetUserID(ctx)
 	err = global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", hosSportClock.ID).Updates(&hosSportClock).Error
+	//埋点
+	go UpdateUserPoint(ctx, hosSportClock.ID, constants.POINT)
+
 	return err
 }
 
@@ -101,8 +106,14 @@ func (hosSportClockService *HosSportClockService) GetCurrentUserHosSportClockLis
 	db := global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx))
 	var hosSportClocks []hos.HosSportClock
 	start := time.Now().Format("2006-01-02")
-	//uid := utils.GetUserID(ctx)
-	db = db.Where("hos_user_id = ?", 49)
+
+	uids, err := GetUserIds(ctx)
+	if len(uids) == 0 {
+		return list, 0, nil
+	}
+
+	db = db.Where("hos_user_id in ?", uids)
+	//db = db.Where("hos_user_id = ?", 49)
 	db = db.Where("clock_start_time <= ?", start)
 	db = db.Preload("HosSportAdvice").Preload("SysUser")
 	db = db.Preload("HosSportAdvice").Preload("HosSportAdvice.HosSportMode")
@@ -133,7 +144,7 @@ func (hosSportClockService *HosSportClockService) GetCurrentUserHosSportClockLis
 			JieDuan:           fmt.Sprintf("%s~%s", mapByDate[key][0].HosSportAdvice.Jianyitime, mapByDate[key][0].HosSportAdvice.Fuzhenriqi),
 			DoctorInfo:        mapByDate[key][0].SysUser,
 			SportAdviceDetail: mapByDate[key],
-			Jindu:             50,
+			Jindu:             process(mapByDate[key]),
 			Status:            "over",
 		}
 		parseS, err := time.Parse("2006-01-02", mapByDate[key][0].ClockStartTime)
@@ -148,6 +159,18 @@ func (hosSportClockService *HosSportClockService) GetCurrentUserHosSportClockLis
 	}
 
 	return c, total, err
+}
+
+func process(hs []hos.HosSportClock) int {
+	i := 0
+	for _, v := range hs {
+		if v.RelationPhotos != "" {
+			i++
+		}
+	}
+	total := len(hs)
+	res := float64(i) / float64(total) * 100
+	return int(math.Round(res))
 }
 
 type ClockPlan struct {

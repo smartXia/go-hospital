@@ -1,6 +1,7 @@
 package hos
 
 import (
+	"devops-manage/core/constants"
 	"devops-manage/global"
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
@@ -24,6 +25,9 @@ func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, c
 		hosUsers.NickName = hosUsers.Username
 	}
 	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(hosUsers).Error
+	//埋点
+	go UpdateUserPoint(ctx, hosUsers.ID, constants.REGISTER)
+
 	return err, hosUsers
 }
 
@@ -167,6 +171,26 @@ func (hosUsersService *HosUsersService) GetHosUsersIds(info hosReq.HosUsersSearc
 	}
 	//global.GVA_DB.Where("hos_user_id in (?) ", MenuIds)
 	err = db.Find(&hosUserss).Error
+	return list, err
+}
+
+func (hosUsersService *HosUsersService) GetHosUsersIdsByPhone(ctx *gin.Context) (list []uint, err error) {
+	// 创建db
+	phone := utils.GetUserPhone(ctx)
+	if phone == "" {
+		return nil, err
+	}
+	db := global.GVA_DB.Model(&hos.HosUsers{}).Scopes(scope.TenantScope(ctx))
+	var hosUserss []hos.HosUsers
+	// 如果有条件搜索 下方会自动创建搜索语句
+	// 通过搜索患者id对应的监护人创建人 获取hos_user_id
+	db = db.Where("phone = ?", phone)
+	err = db.Find(&hosUserss).Error
+	if len(hosUserss) != 0 {
+		for _, v := range hosUserss {
+			list = append(list, v.ID)
+		}
+	}
 	return list, err
 }
 

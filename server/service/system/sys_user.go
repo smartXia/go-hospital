@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/gofrs/uuid/v5"
 	"github.com/silenceper/wechat/v2"
 	wxcache "github.com/silenceper/wechat/v2/cache"
@@ -27,7 +28,7 @@ import (
 
 type UserService struct{}
 
-func (userService *UserService) Register(u system.SysUser) (userInter system.SysUser, err error) {
+func (userService *UserService) Register(u system.SysUser, c *gin.Context) (userInter system.SysUser, err error) {
 	var user system.SysUser
 	if !errors.Is(global.GVA_DB.Where("username = ?", u.Username).First(&user).Error, gorm.ErrRecordNotFound) { // 判断用户名是否注册
 		return userInter, errors.New("用户名已注册")
@@ -35,6 +36,7 @@ func (userService *UserService) Register(u system.SysUser) (userInter system.Sys
 	// 否则 附加uuid 密码hash加密 注册
 	u.Password = utils.BcryptHash(u.Password)
 	u.UUID = uuid.Must(uuid.NewV4())
+
 	err = global.GVA_DB.Create(&u).Error
 	return u, err
 }
@@ -100,7 +102,7 @@ func (userService *UserService) LoginGetAccessToken() (tokenRes system.TokenRes,
 	return tokenRes, err
 }
 
-func (userService *UserService) LoginByCode(code string) (userInter *system.SysUser, err error) {
+func (userService *UserService) LoginByCode(code string, c *gin.Context) (userInter *system.SysUser, err error) {
 	if nil == global.GVA_DB {
 		return nil, fmt.Errorf("db not init")
 	}
@@ -134,16 +136,28 @@ func (userService *UserService) LoginByCode(code string) (userInter *system.SysU
 	var phoneResponse system.PhoneResponse
 	phoneResponse.PhoneInfo.PhoneNumber = "18260356308"
 	err = json.NewDecoder(resp.Body).Decode(&phoneResponse)
-	if err != nil {
-		fmt.Println("Error decoding JSON response:", err)
-		return nil, err
-	}
-	if phoneResponse.ErrCode != 0 {
-		//return nil, errors.New(fmt.Sprintf("code:%d,msg:%s", phoneResponse.ErrCode, phoneResponse.ErrMsg))
-	}
+	//if err != nil {
+	//	fmt.Println("Error decoding JSON response:", err)
+	//	return nil, err
+	//}
+	//if phoneResponse.ErrCode != 0 {
+	//	return nil, errors.New(fmt.Sprintf("code:%d,msg:%s", phoneResponse.ErrCode, phoneResponse.ErrMsg))
+	//}
 	fmt.Println("Phone Number:", phoneResponse.PhoneInfo.PhoneNumber)
 	var user system.SysUser
 	err = global.GVA_DB.Where("phone = ?", phoneResponse.PhoneInfo.PhoneNumber).Preload("Authorities").Preload("Authority").First(&user).Error
+	if err != nil {
+		//注册这个手机号 为患者
+		user.Username = phoneResponse.PhoneInfo.PhoneNumber
+		user.NickName = phoneResponse.PhoneInfo.PhoneNumber
+		user.Phone = phoneResponse.PhoneInfo.PhoneNumber
+		user.Password = phoneResponse.PhoneInfo.PhoneNumber
+		user.AuthorityId = 0
+		user, err = userService.Register(user, c)
+		if err != nil {
+			return nil, err
+		}
+	}
 	if err == nil {
 		MenuServiceApp.UserAuthorityDefaultRouter(&user)
 	}

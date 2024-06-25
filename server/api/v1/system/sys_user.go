@@ -81,6 +81,7 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 		ID:          user.ID,
 		NickName:    user.NickName,
 		Username:    user.Username,
+		Phone:       user.Phone,
 		AuthorityId: user.AuthorityId,
 	})
 	token, err := j.CreateToken(claims)
@@ -160,7 +161,7 @@ func (b *BaseApi) Register(c *gin.Context) {
 		})
 	}
 	user := &system.SysUser{Username: r.Username, NickName: r.NickName, Password: r.Password, HeaderImg: r.HeaderImg, AuthorityId: r.AuthorityId, Authorities: authorities, Enable: r.Enable, Phone: r.Phone, Email: r.Email}
-	userReturn, err := userService.Register(*user)
+	userReturn, err := userService.Register(*user, c)
 	if err != nil {
 		global.GVA_LOG.Error("注册失败!", zap.Error(err))
 		response.FailWithDetailed(systemRes.SysUserResponse{User: userReturn}, "注册失败", c)
@@ -501,7 +502,7 @@ func (b *BaseApi) LoginByPhone(c *gin.Context) {
 func (b *BaseApi) LoginByWxCode(c *gin.Context) {
 	var l systemReq.LoginByCode
 	err := c.ShouldBindJSON(&l)
-	key := c.ClientIP()
+	//key := c.ClientIP()
 	err = utils.Verify(l, utils.LoginByCodeVerify)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
@@ -512,18 +513,16 @@ func (b *BaseApi) LoginByWxCode(c *gin.Context) {
 		return
 	}
 
-	user, err := userService.LoginByCode(l.Code)
+	user, err := userService.LoginByCode(l.Code, c)
 	if err != nil {
 		global.GVA_LOG.Error("登陆失败! 手机号不存在!", zap.Error(err))
 		// 验证码次数+1
-		global.BlackCache.Increment(key, 1)
-		response.FailWithMessage("手机号不存在", c)
+		response.FailWithMessage("手机号不存在"+err.Error(), c)
 		return
 	}
 	if user.Enable != 1 {
 		global.GVA_LOG.Error("登陆失败! 用户被禁止登录!")
 		// 验证码次数+1
-		global.BlackCache.Increment(key, 1)
 		response.FailWithMessage("用户被禁止登录", c)
 		return
 	}
