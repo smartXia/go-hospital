@@ -9,6 +9,8 @@ type HosSportClockCommitSearch struct {
 	StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
 	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
 
-	FlowId string `json:"flowId" form:"flowId" `
+	FlowId    int `json:"flowId" form:"flowId" `
+	HosUserId int `json:"hosUserId" form:"hosUserId" `
+	ClockId   int `json:"clockId" form:"clockId" `
 	request.PageInfo
 }

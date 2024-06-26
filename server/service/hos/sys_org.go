@@ -6,11 +6,14 @@ import (
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
 	"devops-manage/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
 type SysOrgService struct {
 }
+
+var hosDashboardService HosDashboardService
 
 // CreateSysOrg 创建sysOrg表记录
 // Author [piexlmax](https://github.com/piexlmax)
@@ -18,6 +21,13 @@ func (sysOrgService *SysOrgService) CreateSysOrg(sysOrg *hos.SysOrg, ctx *gin.Co
 	sysOrg.CreatedBy = utils.GetUserID(ctx)
 
 	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysOrg).Error
+
+	var hosDashboard hos.HosDashboard
+	hosDashboard.OrgId = sysOrg.ID
+	hosDashboard.Name = fmt.Sprintf("%s-医院大屏", sysOrg.Name)
+	if err, _ := hosDashboardService.CreateHosDashboard(&hosDashboard, ctx, 1); err != nil {
+
+	}
 	return err, sysOrg
 }
 

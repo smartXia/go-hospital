@@ -23,8 +23,9 @@ func (s *HosDashboardRouter) InitHosDashboardRouter(Router *gin.RouterGroup, Pub
 		hosDashboardRouter.PUT("updateHosDashboard", hosDashboardApi.UpdateHosDashboard)              // 更新hosDashboard表
 	}
 	{
-		hosDashboardRouterWithoutRecord.GET("findHosDashboard", hosDashboardApi.FindHosDashboard)       // 根据ID获取hosDashboard表
-		hosDashboardRouterWithoutRecord.GET("getHosDashboardList", hosDashboardApi.GetHosDashboardList) // 获取hosDashboard表列表
+		hosDashboardRouterWithoutRecord.GET("findHosDashboard", hosDashboardApi.FindHosDashboard)               // 根据ID获取hosDashboard表
+		hosDashboardRouterWithoutRecord.GET("getHosDashboardList", hosDashboardApi.GetHosDashboardList)         // 获取hosDashboard表列表
+		hosDashboardRouterWithoutRecord.GET("getCurrentDashBoardInfo", hosDashboardApi.GetCurrentDashBoardInfo) // 获取hosDashboard表列表
 	}
 	{
 		hosDashboardRouterWithoutAuth.GET("getHosDashboardDataSource", hosDashboardApi.GetHosDashboardDataSource) // 获取hosDashboard表数据源

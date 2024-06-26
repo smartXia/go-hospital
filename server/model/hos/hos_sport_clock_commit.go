@@ -8,7 +8,7 @@ import (
 // hosSportClockCommit表 结构体  HosSportClockCommit
 type HosSportClockCommit struct {
 	global.GVA_MODEL
-	FlowId    string `json:"flowId" form:"flowId" gorm:"column:flow_id;comment:关联的流程id;size:500;"`       //关联的流程id
+	FlowId    int    `json:"flowId" form:"flowId" gorm:"column:flow_id;comment:关联的流程id;size:500;"`       //关联的流程id
 	HosUserId *int   `json:"hosUserId" form:"hosUserId" gorm:"column:hos_user_id;comment:患者id;size:10;"` //患者id
 	AdviceId  *int   `json:"adviceId" form:"adviceId" gorm:"column:advice_id;comment:建议id;size:10;"`     //建议id
 	ClockId   *int   `json:"clockId" form:"clockId" gorm:"column:clock_id;comment:打卡id;size:10;"`        //打卡id

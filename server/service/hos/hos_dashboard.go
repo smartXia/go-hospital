@@ -67,6 +67,11 @@ func (hosDashboardService *HosDashboardService) GetHosDashboardInfoList(info hos
 	if info.OrgId != nil {
 		db = db.Where("org_id = ?", info.OrgId)
 	}
+	if info.Enable != nil {
+		db = db.Where("enable = ?", info.Enable)
+	}
+	db = db.Preload("SysOrg")
+	db = db.Preload("SysUsersInfo")
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -79,9 +84,40 @@ func (hosDashboardService *HosDashboardService) GetHosDashboardInfoList(info hos
 	err = db.Find(&hosDashboards).Error
 	return hosDashboards, total, err
 }
+
+func (hosDashboardService *HosDashboardService) GetCurrentDashBoardInfo(info hosReq.HosDashboardSearch, ctx *gin.Context) (hosDashboard hos.HosDashboard, err error) {
+	// 创建db
+	db := global.GVA_DB.Model(&hos.HosDashboard{}).Scopes(scope.TenantScope(ctx))
+	// 如果有条件搜索 下方会自动创建搜索语句
+	tid := utils.GetTenantId(ctx)
+	if info.OrgId != nil {
+		db = db.Where("org_id = ?", info.OrgId)
+	} else {
+		db = db.Where("org_id = ?", tid)
+	}
+	db = db.Preload("SysOrg")
+	db = db.Preload("SysUsersInfo")
+	err = db.First(&hosDashboard).Error
+	if hosDashboard.ID == 0 {
+		return hos.HosDashboard{}, nil
+	}
+	if *hosDashboard.Enable == 1 {
+		return hosDashboard, err
+	} else {
+		//默认处理
+		return hosDashboard, err
+	}
+}
+
+//func BuildDa0ta() {
+//	var a []hos.Duilienianling
+//	var b []hos.Duilieyanzhongxing
+//	var c []hos.Duiliefenlei
+//	var d []hos.Diqupaihang
+//}
+
 func (hosDashboardService *HosDashboardService) GetHosDashboardDataSource() (res map[string][]map[string]any, err error) {
 	res = make(map[string][]map[string]any)
-
 	orgId := make([]map[string]any, 0)
 	global.GVA_DB.Table("sys_org").Select("name as label,id as value").Scan(&orgId)
 	res["orgId"] = orgId

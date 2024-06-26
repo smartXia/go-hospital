@@ -57,6 +57,48 @@ func (hosSportClockService *HosSportClockService) GetHosSportClock(ID string, ct
 	return
 }
 
+func (hosSportClockService *HosSportClockService) GetHosSportDistinctClockList(info hosReq.HosSportClockSearch, ctx *gin.Context) (list []hos.HosSportClock, total int64, err error) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	// 创建db
+	db := global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx))
+	var hosSportClocks []hos.HosSportClock
+	// 如果有条件搜索 下方会自动创建搜索语句
+	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
+		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+	}
+	if info.HosUserId != nil {
+		db = db.Where("hos_user_id = ?", info.HosUserId)
+	}
+	if info.FlowId != nil {
+		db = db.Where("flow_id = ?", info.FlowId)
+	}
+	if info.AdviceId != nil {
+		db = db.Where("advice_id = ?", info.AdviceId)
+	}
+	if info.ClockStartTime != "" {
+		db = db.Where("clock_start_time > ?", info.ClockStartTime)
+	}
+	if info.ClockEndTime != "" {
+		db = db.Where("clock_end_time < ?", info.ClockEndTime)
+	}
+	if err != nil {
+		return
+	}
+	db = db.Preload("HosSportAdvice")
+	db = db.Preload("HosFlow")
+	db = db.Preload("SysUser")
+	db = db.Group("flow_id")
+	err = db.Count(&total).Error
+
+	if limit != 0 {
+		db = db.Limit(limit).Offset(offset).Order("hos_sport_clock.id desc")
+	}
+
+	err = db.Find(&hosSportClocks).Error
+	return hosSportClocks, total, err
+}
+
 // GetHosSportClockInfoList 分页获取hosSportClock表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosSportClockService *HosSportClockService) GetHosSportClockInfoList(info hosReq.HosSportClockSearch, ctx *gin.Context) (list []hos.HosSportClock, total int64, err error) {
@@ -92,7 +134,7 @@ func (hosSportClockService *HosSportClockService) GetHosSportClockInfoList(info 
 	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
-
+	db = db.Preload("HosSportAdvice").Preload("HosSportAdvice.HosSportMode")
 	err = db.Find(&hosSportClocks).Error
 	return hosSportClocks, total, err
 }

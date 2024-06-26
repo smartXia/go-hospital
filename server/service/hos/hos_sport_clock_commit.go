@@ -61,8 +61,14 @@ func (hosSportClockCommitService *HosSportClockCommitService) GetHosSportClockCo
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.FlowId != "" {
+	if info.FlowId != 0 {
 		db = db.Where("flow_id = ?", info.FlowId)
+	}
+	if info.HosUserId != 0 {
+		db = db.Where("hos_user_id = ?", info.FlowId)
+	}
+	if info.ClockId != 0 {
+		db = db.Where("clock_id = ?", info.FlowId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {

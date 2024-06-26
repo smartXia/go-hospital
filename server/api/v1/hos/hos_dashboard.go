@@ -150,6 +150,30 @@ func (hosDashboardApi *HosDashboardApi) GetHosDashboardList(c *gin.Context) {
 	}
 }
 
+// GetCurrentDashBoardInfo 分页获取hosDashboard表列表
+// @Tags HosDashboard
+// @Summary 分页获取hosDashboard表列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query hosReq.HosDashboardSearch true "分页获取hosDashboard表列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /hosDashboard/getHosDashboardList [get]
+func (hosDashboardApi *HosDashboardApi) GetCurrentDashBoardInfo(c *gin.Context) {
+	var pageInfo hosReq.HosDashboardSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, err := hosDashboardService.GetCurrentDashBoardInfo(pageInfo, c); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(list, "获取成功", c)
+	}
+}
+
 // GetHosDashboardDataSource 获取HosDashboard的数据源
 // @Tags HosDashboard
 // @Summary 获取HosDashboard的数据源
