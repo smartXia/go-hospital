@@ -2,14 +2,13 @@ package system
 
 import (
 	v1 "devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 type DictionaryDetailRouter struct{}
 
 func (s *DictionaryDetailRouter) InitSysDictionaryDetailRouter(Router *gin.RouterGroup) {
-	dictionaryDetailRouter := Router.Group("sysDictionaryDetail").Use(middleware.OperationRecord())
+	dictionaryDetailRouter := Router.Group("sysDictionaryDetail")
 	dictionaryDetailRouterWithoutRecord := Router.Group("sysDictionaryDetail")
 	sysDictionaryDetailApi := v1.ApiGroupApp.SystemApiGroup.DictionaryDetailApi
 	{

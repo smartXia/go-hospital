@@ -2,7 +2,6 @@ package hos
 
 import (
 	"devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +10,7 @@ type HosSportModeRouter struct {
 
 // InitHosSportModeRouter 初始化 hosSportMode表 路由信息
 func (s *HosSportModeRouter) InitHosSportModeRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
-	hosSportModeRouter := Router.Group("hosSportMode").Use(middleware.OperationRecord())
+	hosSportModeRouter := Router.Group("hosSportMode")
 	hosSportModeRouterWithoutRecord := Router.Group("hosSportMode")
 	hosSportModeRouterWithoutAuth := PublicRouter.Group("hosSportMode")
 

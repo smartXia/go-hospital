@@ -2,7 +2,6 @@ package hos
 
 import (
 	"devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +10,7 @@ type SysUsersRouter struct {
 
 // InitSysUsersRouter 初始化 sysUsers表 路由信息
 func (s *SysUsersRouter) InitSysUsersRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
-	sysUsersRouter := Router.Group("sysUsers").Use(middleware.OperationRecord())
+	sysUsersRouter := Router.Group("sysUsers")
 	sysUsersRouterWithoutRecord := Router.Group("sysUsers")
 	sysUsersRouterWithoutAuth := PublicRouter.Group("sysUsers")
 

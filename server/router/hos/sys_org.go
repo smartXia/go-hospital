@@ -2,7 +2,6 @@ package hos
 
 import (
 	"devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +10,7 @@ type SysOrgRouter struct {
 
 // InitSysOrgRouter 初始化 sysOrg表 路由信息
 func (s *SysOrgRouter) InitSysOrgRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
-	sysOrgRouter := Router.Group("sysOrg").Use(middleware.OperationRecord())
+	sysOrgRouter := Router.Group("sysOrg")
 	sysOrgRouterWithoutRecord := Router.Group("sysOrg")
 	sysOrgRouterWithoutAuth := PublicRouter.Group("sysOrg")
 

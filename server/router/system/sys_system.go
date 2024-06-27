@@ -2,14 +2,13 @@ package system
 
 import (
 	v1 "devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 type SysRouter struct{}
 
 func (s *SysRouter) InitSystemRouter(Router *gin.RouterGroup) {
-	sysRouter := Router.Group("system").Use(middleware.OperationRecord())
+	sysRouter := Router.Group("system")
 	systemApi := v1.ApiGroupApp.SystemApiGroup.SystemApi
 	{
 		sysRouter.POST("getSystemConfig", systemApi.GetSystemConfig) // 获取配置文件内容

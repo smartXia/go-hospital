@@ -2,7 +2,6 @@ package hos
 
 import (
 	"devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +10,7 @@ type HosScaleRouter struct {
 
 // InitHosScaleRouter 初始化 hosScale表 路由信息
 func (s *HosScaleRouter) InitHosScaleRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
-	hosScaleRouter := Router.Group("hosScale").Use(middleware.OperationRecord())
+	hosScaleRouter := Router.Group("hosScale")
 	hosScaleRouterWithoutRecord := Router.Group("hosScale")
 	hosScaleRouterWithoutAuth := PublicRouter.Group("hosScale")
 

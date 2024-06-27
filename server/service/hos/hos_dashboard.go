@@ -17,7 +17,7 @@ type HosDashboardService struct {
 func (hosDashboardService *HosDashboardService) CreateHosDashboard(hosDashboard *hos.HosDashboard, ctx *gin.Context, init int) (err error, d *hos.HosDashboard) {
 	hosDashboard.CreatedBy = utils.GetUserID(ctx)
 	if init == 1 {
-		hosDashboard = hosDashboard.BuildInitDashBoardDate()
+		hosDashboard.BuildInitDashBoardDate()
 	}
 	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(hosDashboard).Error
 	return err, hosDashboard
@@ -101,7 +101,7 @@ func (hosDashboardService *HosDashboardService) GetCurrentDashBoardInfo(info hos
 	if hosDashboard.ID == 0 {
 		return hos.HosDashboard{}, nil
 	}
-	if *hosDashboard.Enable == 1 {
+	if hosDashboard.Enable == nil {
 		return hosDashboard, err
 	} else {
 		//默认处理

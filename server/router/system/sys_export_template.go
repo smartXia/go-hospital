@@ -2,7 +2,6 @@ package system
 
 import (
 	v1 "devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +10,7 @@ type SysExportTemplateRouter struct {
 
 // InitSysExportTemplateRouter 初始化 导出模板 路由信息
 func (s *SysExportTemplateRouter) InitSysExportTemplateRouter(Router *gin.RouterGroup) {
-	sysExportTemplateRouter := Router.Group("sysExportTemplate").Use(middleware.OperationRecord())
+	sysExportTemplateRouter := Router.Group("sysExportTemplate")
 	sysExportTemplateRouterWithoutRecord := Router.Group("sysExportTemplate")
 	var sysExportTemplateApi = v1.ApiGroupApp.SystemApiGroup.SysExportTemplateApi
 	{

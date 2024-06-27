@@ -2,7 +2,6 @@ package hos
 
 import (
 	"devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +10,7 @@ type HosSportClockRouter struct {
 
 // InitHosSportClockRouter 初始化 hosSportClock表 路由信息
 func (s *HosSportClockRouter) InitHosSportClockRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
-	hosSportClockRouter := Router.Group("hosSportClock").Use(middleware.OperationRecord())
+	hosSportClockRouter := Router.Group("hosSportClock")
 	hosSportClockRouterWithoutRecord := Router.Group("hosSportClock")
 	hosSportClockRouterWithoutAuth := PublicRouter.Group("hosSportClock")
 

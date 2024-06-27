@@ -2,14 +2,13 @@ package system
 
 import (
 	v1 "devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 type MenuRouter struct{}
 
 func (s *MenuRouter) InitMenuRouter(Router *gin.RouterGroup) (R gin.IRoutes) {
-	menuRouter := Router.Group("menu").Use(middleware.OperationRecord())
+	menuRouter := Router.Group("menu")
 	menuRouterWithoutRecord := Router.Group("menu")
 	authorityMenuApi := v1.ApiGroupApp.SystemApiGroup.AuthorityMenuApi
 	{

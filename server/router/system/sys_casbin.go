@@ -2,14 +2,13 @@ package system
 
 import (
 	v1 "devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 type CasbinRouter struct{}
 
 func (s *CasbinRouter) InitCasbinRouter(Router *gin.RouterGroup) {
-	casbinRouter := Router.Group("casbin").Use(middleware.OperationRecord())
+	casbinRouter := Router.Group("casbin")
 	casbinRouterWithoutRecord := Router.Group("casbin")
 	casbinApi := v1.ApiGroupApp.SystemApiGroup.CasbinApi
 	{

@@ -52,12 +52,12 @@ type Duiliefenlei struct {
 	Number int    `json:"number"`
 }
 
-func (hosd *HosDashboard) BuildInitDashBoardDate() (h *HosDashboard) {
-	h.JizhuduilieTotal = "1000"
-	h.XinxishagnbaoTotal = "1000"
-	h.XianchagnzhenliaoTotal = "1000"
-	h.YundongjianyiTotal = "1000"
-	h.XianshagndakaTotal = "1000"
+func (hosd *HosDashboard) BuildInitDashBoardDate() (err error) {
+	hosd.JizhuduilieTotal = "1000"
+	hosd.XinxishagnbaoTotal = "1000"
+	hosd.XianchagnzhenliaoTotal = "1000"
+	hosd.YundongjianyiTotal = "1000"
+	hosd.XianshagndakaTotal = "1000"
 	var a []Duilienianling
 	var b []Duilieyanzhongxing
 	var c []Duiliefenlei
@@ -91,21 +91,21 @@ func (hosd *HosDashboard) BuildInitDashBoardDate() (h *HosDashboard) {
 		})
 	}
 	aa, err := json.Marshal(a)
-	hosd.Diqupaihang = string(aa)
+	hosd.Duilienianling = string(aa)
 
 	bb, err := json.Marshal(b)
-	hosd.Duilienianling = string(bb)
+	hosd.Duilieyanzhongxing = string(bb)
 
 	cc, err := json.Marshal(c)
-	hosd.Duilieyanzhongxing = string(cc)
+	hosd.Duiliefenlei = string(cc)
 
 	dd, err := json.Marshal(d)
-	hosd.Duiliefenlei = string(dd)
+	hosd.Diqupaihang = string(dd)
 
 	if err != nil {
-		return hosd
+		return err
 	}
-	return hosd
+	return nil
 }
 
 // TableName hosDashboard表 HosDashboard自定义表名 hos_dashboard

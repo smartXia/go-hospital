@@ -2,7 +2,6 @@ package hos
 
 import (
 	"devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +10,7 @@ type HosUsersDianzanRouter struct {
 
 // InitHosUsersDianzanRouter 初始化 hosUsersDianzan表 路由信息
 func (s *HosUsersDianzanRouter) InitHosUsersDianzanRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
-	hosUsersDianzanRouter := Router.Group("hosUsersDianzan").Use(middleware.OperationRecord())
+	hosUsersDianzanRouter := Router.Group("hosUsersDianzan")
 	hosUsersDianzanRouterWithoutRecord := Router.Group("hosUsersDianzan")
 	hosUsersDianzanRouterWithoutAuth := PublicRouter.Group("hosUsersDianzan")
 

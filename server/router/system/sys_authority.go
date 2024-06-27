@@ -2,14 +2,13 @@ package system
 
 import (
 	v1 "devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 type AuthorityRouter struct{}
 
 func (s *AuthorityRouter) InitAuthorityRouter(Router *gin.RouterGroup) {
-	authorityRouter := Router.Group("authority").Use(middleware.OperationRecord())
+	authorityRouter := Router.Group("authority")
 	authorityRouterWithoutRecord := Router.Group("authority")
 	authorityApi := v1.ApiGroupApp.SystemApiGroup.AuthorityApi
 	{

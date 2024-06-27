@@ -2,7 +2,6 @@ package hos
 
 import (
 	"devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +10,7 @@ type HosLocalAskRouter struct {
 
 // InitHosLocalAskRouter 初始化 hosLocalAsk表 路由信息
 func (s *HosLocalAskRouter) InitHosLocalAskRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
-	hosLocalAskRouter := Router.Group("hosLoaclAsk").Use(middleware.OperationRecord())
+	hosLocalAskRouter := Router.Group("hosLoaclAsk")
 	hosLocalAskRouterWithoutRecord := Router.Group("hosLoaclAsk")
 	hosLocalAskRouterWithoutAuth := PublicRouter.Group("hosLoaclAsk")
 

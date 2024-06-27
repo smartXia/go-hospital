@@ -2,7 +2,6 @@ package hos
 
 import (
 	"devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +10,7 @@ type SysPostRouter struct {
 
 // InitSysPostRouter 初始化 sysPost表 路由信息
 func (s *SysPostRouter) InitSysPostRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
-	sysPostRouter := Router.Group("sysPost").Use(middleware.OperationRecord())
+	sysPostRouter := Router.Group("sysPost")
 	sysPostRouterWithoutRecord := Router.Group("sysPost")
 	sysPostRouterWithoutAuth := PublicRouter.Group("sysPost")
 

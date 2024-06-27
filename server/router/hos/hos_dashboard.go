@@ -2,7 +2,6 @@ package hos
 
 import (
 	"devops-manage/api/v1"
-	"devops-manage/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +10,7 @@ type HosDashboardRouter struct {
 
 // InitHosDashboardRouter 初始化 hosDashboard表 路由信息
 func (s *HosDashboardRouter) InitHosDashboardRouter(Router *gin.RouterGroup, PublicRouter *gin.RouterGroup) {
-	hosDashboardRouter := Router.Group("hosDashboard").Use(middleware.OperationRecord())
+	hosDashboardRouter := Router.Group("hosDashboard")
 	hosDashboardRouterWithoutRecord := Router.Group("hosDashboard")
 	hosDashboardRouterWithoutAuth := PublicRouter.Group("hosDashboard")
 
