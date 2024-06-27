@@ -2,7 +2,7 @@ package system
 
 import (
 	"context"
-
+	"fmt"
 	"go.uber.org/zap"
 
 	"devops-manage/global"
@@ -20,6 +20,9 @@ type JwtService struct{}
 
 func (jwtService *JwtService) JsonInBlacklist(jwtList system.JwtBlacklist) (err error) {
 	err = global.GVA_DB.Create(&jwtList).Error
+	fmt.Println(1111111)
+	fmt.Printf("%#v", jwtList)
+
 	if err != nil {
 		return
 	}

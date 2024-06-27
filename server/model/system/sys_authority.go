@@ -5,6 +5,7 @@ import (
 )
 
 type SysAuthority struct {
+	TenantId        uint            `gorm:"tenant_id" json:"-"` // 删除时间
 	CreatedAt       time.Time       // 创建时间
 	UpdatedAt       time.Time       // 更新时间
 	DeletedAt       *time.Time      `sql:"index"`
