@@ -70,6 +70,9 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	if info.Post != "" {
 		db = db.Where("post = ?", info.Post)
 	}
+	if info.TenantId != 0 {
+		db = db.Where("tenant_id = ?", info.TenantId)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

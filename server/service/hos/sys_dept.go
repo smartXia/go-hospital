@@ -87,6 +87,9 @@ func (sysDeptService *SysDeptService) Tree(info hosReq.SysDeptSearch, ctx *gin.C
 	db := global.GVA_DB.Model(&hos.SysDept{}).Scopes(scope.TenantScope(ctx))
 	var sysDepts []*hos.SysDept
 	// 如果有条件搜索 下方会自动创建搜索语句
+	if info.TenantId != 0 {
+		db.Where("tenant_id = ?", info.TenantId)
+	}
 	err = db.Find(&sysDepts).Error
 	sysDepts = hos.BuildDeptTree(sysDepts)
 	//tree := utils.BuildTree(sysDepts)

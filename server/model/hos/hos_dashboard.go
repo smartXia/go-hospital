@@ -52,12 +52,23 @@ type Duiliefenlei struct {
 	Number int    `json:"number"`
 }
 
-func (hosd *HosDashboard) BuildInitDashBoardDate() (err error) {
-	hosd.JizhuduilieTotal = "1000"
-	hosd.XinxishagnbaoTotal = "1000"
-	hosd.XianchagnzhenliaoTotal = "1000"
-	hosd.YundongjianyiTotal = "1000"
-	hosd.XianshagndakaTotal = "1000"
+func (hosd *HosDashboard) BuildInitDashBoardDate(hosDashboard *HosDashboard) (err error) {
+	if hosDashboard.JizhuduilieTotal == "" {
+		hosd.JizhuduilieTotal = "1000"
+	}
+	if hosDashboard.XinxishagnbaoTotal == "" {
+		hosd.XinxishagnbaoTotal = "1000"
+	}
+	if hosDashboard.XianchagnzhenliaoTotal == "" {
+		hosd.XianchagnzhenliaoTotal = "1000"
+	}
+	if hosDashboard.YundongjianyiTotal == "" {
+		hosd.YundongjianyiTotal = "1000"
+	}
+	if hosDashboard.XianshagndakaTotal == "" {
+		hosd.XianshagndakaTotal = "1000"
+	}
+
 	var a []Duilienianling
 	var b []Duilieyanzhongxing
 	var c []Duiliefenlei
@@ -90,17 +101,24 @@ func (hosd *HosDashboard) BuildInitDashBoardDate() (err error) {
 			Total:         0,
 		})
 	}
-	aa, err := json.Marshal(a)
-	hosd.Duilienianling = string(aa)
+	if hosDashboard.Duilienianling == "" {
+		aa, _ := json.Marshal(a)
+		hosd.Duilienianling = string(aa)
+	}
+	if hosDashboard.Duilieyanzhongxing == "" {
+		bb, _ := json.Marshal(b)
+		hosd.Duilieyanzhongxing = string(bb)
+	}
 
-	bb, err := json.Marshal(b)
-	hosd.Duilieyanzhongxing = string(bb)
+	if hosDashboard.Duiliefenlei == "" {
+		cc, _ := json.Marshal(c)
+		hosd.Duiliefenlei = string(cc)
 
-	cc, err := json.Marshal(c)
-	hosd.Duiliefenlei = string(cc)
-
-	dd, err := json.Marshal(d)
-	hosd.Diqupaihang = string(dd)
+	}
+	if hosDashboard.Diqupaihang == "" {
+		dd, _ := json.Marshal(d)
+		hosd.Diqupaihang = string(dd)
+	}
 
 	if err != nil {
 		return err

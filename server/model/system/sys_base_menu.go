@@ -18,6 +18,7 @@ type SysBaseMenu struct {
 	Children      []SysBaseMenu                              `json:"children" gorm:"-"`
 	Parameters    []SysBaseMenuParameter                     `json:"parameters"`
 	MenuBtn       []SysBaseMenuBtn                           `json:"menuBtn"`
+	TenantId      uint                                       `gorm:"tenant_id" json:"-"` // 删除时间
 }
 
 type Meta struct {

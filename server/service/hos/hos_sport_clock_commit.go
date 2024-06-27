@@ -65,10 +65,10 @@ func (hosSportClockCommitService *HosSportClockCommitService) GetHosSportClockCo
 		db = db.Where("flow_id = ?", info.FlowId)
 	}
 	if info.HosUserId != 0 {
-		db = db.Where("hos_user_id = ?", info.FlowId)
+		db = db.Where("hos_user_id = ?", info.HosUserId)
 	}
 	if info.ClockId != 0 {
-		db = db.Where("clock_id = ?", info.FlowId)
+		db = db.Where("clock_id = ?", info.ClockId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {

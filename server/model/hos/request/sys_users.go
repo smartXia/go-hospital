@@ -13,5 +13,6 @@ type SysUsersSearch struct {
 	Hospital string `json:"hospital" form:"hospital" `
 	Dept     string `json:"dept" form:"dept" `
 	Post     string `json:"post" form:"post" `
+	TenantId int    `json:"tenantId" form:"tenantId" `
 	request.PageInfo
 }

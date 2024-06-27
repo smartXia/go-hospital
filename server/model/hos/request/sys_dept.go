@@ -11,5 +11,6 @@ type SysDeptSearch struct {
 
 	Name     string `json:"name" form:"name" `
 	ManageId string `json:"manageId" form:"manageId" `
+	TenantId int    `json:"tenantId" form:"tenantId" `
 	request.PageInfo
 }
