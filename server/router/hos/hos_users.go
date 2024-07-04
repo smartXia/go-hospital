@@ -29,5 +29,6 @@ func (s *HosUsersRouter) InitHosUsersRouter(Router *gin.RouterGroup, PublicRoute
 	{
 		hosUsersRouterWithoutAuth.GET("getHosUsersDataSource", hosUsersApi.GetHosUsersDataSource) // 获取hosUsers表数据源
 		hosUsersRouterWithoutAuth.GET("getHosUsersPublic", hosUsersApi.GetHosUsersPublic)         // 获取hosUsers表列表
+		hosUsersRouterWithoutAuth.GET("getHosUsersLastly", hosUsersApi.GetHosUsersLastly)         // 获取hosUsers表列表
 	}
 }

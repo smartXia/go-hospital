@@ -7,6 +7,7 @@ import (
 	hosReq "devops-manage/model/hos/request"
 	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
+	"strings"
 )
 
 type HosSportModeService struct {
@@ -54,8 +55,10 @@ func (hosSportModeService *HosSportModeService) GetHosSportMode(ID string, ctx *
 func (hosSportModeService *HosSportModeService) GetHosSportModeInfoList(info hosReq.HosSportModeSearch, ctx *gin.Context) (list []hos.HosSportMode, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-	// 创建db
-	db := global.GVA_DB.Model(&hos.HosSportMode{}).Scopes(scope.TenantScope(ctx))
+
+	db := global.GVA_DB.Model(&hos.HosSportMode{})
+
+	// 创建db 这个接口没有scope 不加where 条件
 	var hosSportModes []hos.HosSportMode
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
@@ -64,33 +67,56 @@ func (hosSportModeService *HosSportModeService) GetHosSportModeInfoList(info hos
 	if info.Name != "" {
 		db = db.Where("name = ?", info.Name)
 	}
+	if info.Enable != nil {
+		db.Where("enable = ?", info.Enable)
+	}
+	if info.Hospital != 0 {
+		db = db.Where("hospital = ?", info.Hospital)
+	}
 	if info.Category != "" {
-		db = db.Where("category = ?", info.Category)
+		tmp := strings.Split(info.Category, ",")
+		db = db.Where("category in ?", tmp)
 	}
 	if info.Buwei != "" {
-		db = db.Where("buwei = ?", info.Buwei)
+		tmp := strings.Split(info.Buwei, ",")
+		db = db.Where("buwei in ?", tmp)
 	}
 	if info.Tiduan != "" {
-		db = db.Where("tiduan = ?", info.Tiduan)
+		tmp := strings.Split(info.Tiduan, ",")
+		db = db.Where("tiduan in ?", tmp)
 	}
 	if info.Xingdong != "" {
-		db = db.Where("xingdong = ?", info.Xingdong)
+		tmp := strings.Split(info.Xingdong, ",")
+		db = db.Where("xingdong in ?", tmp)
 	}
 	if info.Fangxiang != "" {
-		db = db.Where("fangxiang = ?", info.Fangxiang)
+		tmp := strings.Split(info.Fangxiang, ",")
+		db = db.Where("fangxiang in ?", tmp)
 	}
 	if info.Weizhi != "" {
-		db = db.Where("weizhi = ?", info.Weizhi)
+		tmp := strings.Split(info.Weizhi, ",")
+		db = db.Where("weizhi = ?", tmp)
+	}
+	id := utils.GetUserAuthorityId(ctx)
+	if id == 100 {
+		//管理员 那么去掉tenantId查询 获取所有的
+	} else {
+		//医院和医生 的管理需要加 tenant = 1
+		if info.All == 1 {
+			db.Where("enable = ?", 1)
+			db.Where("tenant_id in ?", []int{0, utils.GetTenantId(ctx)})
+		} else {
+			db.Scopes(scope.TenantScope(ctx))
+		}
 	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return
 	}
-
 	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
-
+	db = db.Preload("SysUsersInfo")
 	err = db.Find(&hosSportModes).Error
 	return hosSportModes, total, err
 }

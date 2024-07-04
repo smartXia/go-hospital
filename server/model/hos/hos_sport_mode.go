@@ -21,12 +21,14 @@ type HosSportMode struct {
 	Source         string       `json:"source" form:"source" gorm:"column:source;comment:来源;size:255;"`                             //来源
 	Desc           string       `json:"desc" form:"desc" gorm:"column:desc;comment:描述;size:500;"`                                   //描述
 	Enable         *int         `json:"enable" form:"enable" gorm:"column:enable;comment:状态;size:10;"`                              //状态
-	Sort           *int         `json:"sort" form:"sort" gorm:"column:sort;comment:排序;size:10;"`                                    //排序
-	TenantId       *int         `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户编号;size:10;"`                     //租户编号
-	CreatedBy      uint         `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                   //创建者
-	UpdatedBy      uint         `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                   //更新者
-	DeletedBy      *int         `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                   //删除者
-	SysUser        SysUsersInfo `json:"createdByInfo" form:"createdBy" gorm:"foreignKey:id;references:CreatedBy"`                   //创建者
+	Sort           *int         `json:"sort" form:"sort" gorm:"column:sort;comment:排序;size:10;"`
+	Hospital       *int         `json:"hospital" form:"hospital" gorm:"column:hospital;comment:归属医院;size:255;"`   //归属医院
+	TenantId       *int         `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户编号;size:10;"`   //租户编号
+	CreatedBy      uint         `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"` //创建者
+	UpdatedBy      uint         `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"` //更新者
+	DeletedBy      *int         `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"` //删除者
+	SysUsersInfo   SysUsersInfo `json:"createdByInfo" form:"createdBy" gorm:"foreignKey:id;references:CreatedBy"` //创建者
+
 }
 
 // TableName hosSportMode表 HosSportMode自定义表名 hos_sport_mode

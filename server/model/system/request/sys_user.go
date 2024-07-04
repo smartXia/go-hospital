@@ -6,6 +6,7 @@ import "devops-manage/model/system"
 type Register struct {
 	Username     string `json:"userName" example:"用户名"`
 	Password     string `json:"passWord" example:"密码"`
+	Hospital     int    `json:"hospital"` // 密码
 	NickName     string `json:"nickName" example:"昵称"`
 	HeaderImg    string `json:"headerImg" example:"头像链接"`
 	AuthorityId  uint   `json:"authorityId" swaggertype:"string" example:"int 角色id"`
@@ -19,6 +20,7 @@ type Register struct {
 type Login struct {
 	Username  string `json:"username"`  // 用户名
 	Password  string `json:"password"`  // 密码
+	Hospital  int    `json:"hospital"`  // 密码
 	Captcha   string `json:"captcha"`   // 验证码
 	CaptchaId string `json:"captchaId"` // 验证码ID
 }

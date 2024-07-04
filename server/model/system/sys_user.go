@@ -2,6 +2,7 @@ package system
 
 import (
 	"devops-manage/global"
+	"devops-manage/model/hos"
 	"github.com/gofrs/uuid/v5"
 )
 
@@ -17,9 +18,11 @@ type SysUser struct {
 	AuthorityId uint           `json:"authorityId" gorm:"default:0;comment:用户角色ID"`                                          // 用户角色ID
 	Authority   SysAuthority   `json:"authority" gorm:"foreignKey:AuthorityId;references:AuthorityId;comment:用户角色"`
 	Authorities []SysAuthority `json:"authorities" gorm:"many2many:sys_user_authority;"`
-	Phone       string         `json:"phone"  gorm:"comment:用户手机号"`                     // 用户手机号
-	Email       string         `json:"email"  gorm:"comment:用户邮箱"`                      // 用户邮箱
-	Enable      int            `json:"enable" gorm:"default:1;comment:用户是否被冻结 1正常 2冻结"` //用户是否被冻结 1正常 2冻结
+	Phone       string         `json:"phone"  gorm:"comment:用户手机号"`                        // 用户手机号
+	Email       string         `json:"email"  gorm:"comment:用户邮箱"`                         // 用户邮箱
+	Hospital    int            `json:"hospital"  gorm:"comment:hospital;column:hospital" ` // 用户邮箱
+	Enable      int            `json:"enable" gorm:"default:1;comment:用户是否被冻结 1正常 2冻结"`    //用户是否被冻结 1正常 2冻结
+	SysOrg      hos.SysOrg     `json:"orgInfo"  gorm:"foreignKey:id;references:Hospital"`
 }
 
 func (SysUser) TableName() string {

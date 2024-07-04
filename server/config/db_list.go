@@ -1,5 +1,9 @@
 package config
 
+import (
+	"context"
+)
+
 type DsnProvider interface {
 	Dsn() string
 }
@@ -29,4 +33,20 @@ type SpecializedDB struct {
 	AliasName string `mapstructure:"alias-name" json:"alias-name" yaml:"alias-name"`
 	GeneralDB `yaml:",inline" mapstructure:",squash"`
 	Disable   bool `mapstructure:"disable" json:"disable" yaml:"disable"`
+}
+
+const (
+	TenantIdKey = "tenantId"
+)
+
+func NewContext(ctx context.Context) context.Context {
+	//tenantId := ctx.Value(TenantIdKey).(json.Number).String() // 获取用户id
+
+	return ctx
+	//md, ok := metadata.FromOutgoingContext(ctx)
+	//if !ok {
+	//	md = metadata.Pairs()
+	//}
+	//md.Append(TenantIdKey, tenantId)
+	//return metadata.NewOutgoingContext(ctx, md)
 }

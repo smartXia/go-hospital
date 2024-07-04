@@ -74,7 +74,7 @@ func (hosSportClockCommitService *HosSportClockCommitService) GetHosSportClockCo
 	if err != nil {
 		return
 	}
-
+	db = db.Preload("SysUsersInfo")
 	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}

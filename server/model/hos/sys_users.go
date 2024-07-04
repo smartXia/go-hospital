@@ -28,7 +28,9 @@ type SysUsers struct {
 	Enable         *int         `json:"enable" form:"enable" gorm:"column:enable;comment:用户是否被冻结 1正常 2冻结;size:19;"`                //用户是否被冻结 1正常 2冻结
 	Hospital       *int         `json:"hospital" form:"hospital" gorm:"column:hospital;comment:归属医院;size:255;"`                    //归属医院
 	Dept           string       `json:"dept" form:"dept" gorm:"column:dept;comment:部门;size:255;"`                                  //部门
+	DeptInfo       SysDept      `json:"deptInfo" form:"deptInfo"  gorm:"foreignKey:id;references:Dept"`                            //部门
 	Post           string       `json:"post" form:"post" gorm:"column:post;comment:职务;size:255;"`                                  //职务
+	PostInfo       SysPost      `json:"sysPost" form:"sysPost" gorm:"foreignKey:id;references:Post"`                               //职务
 	Birthday       string       `json:"birthday" form:"birthday" gorm:"column:birthday;comment:生日;size:255;"`                      //生日
 	Sex            string       `json:"sex" form:"sex" gorm:"column:sex;comment:性别;size:255;"`                                     //性别
 	Address        string       `json:"address" form:"address" gorm:"column:address;comment:住址;size:255;"`                         //住址

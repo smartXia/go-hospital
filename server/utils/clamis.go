@@ -46,9 +46,9 @@ func GetToken(c *gin.Context) string {
 }
 
 func GetTenantId(c *gin.Context) int {
-	token, _ := c.Cookie("X-Tenant-ID")
+	token, _ := c.Cookie("X-Tenant-Id")
 	if token == "" {
-		token = c.Request.Header.Get("X-Tenant-ID")
+		token = c.Request.Header.Get("X-Tenant-Id")
 	}
 	atoi, err := strconv.Atoi(token)
 	if err != nil {

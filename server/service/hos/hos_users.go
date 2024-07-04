@@ -205,3 +205,46 @@ func (hosUsersService *HosUsersService) GetHosUsersDataSource() (res map[string]
 	res["registerHos"] = registerHos
 	return
 }
+
+func (hosUsersService *HosUsersService) GetHosUsersLastlyDataSource(cardNo string) ([]map[string]string, error) {
+	// 返回空结果和错误
+	if cardNo == "" {
+		return nil, nil
+	}
+
+	// 查询hos_users表，获取相关记录
+	var hosUsers []hos.HosUsers
+	err := global.GVA_DB.Table("hos_users").Where("card_no = ?", cardNo).Find(&hosUsers).Error
+	if err != nil {
+		return nil, err
+	}
+
+	// 如果没有记录，返回空结果
+	if len(hosUsers) == 0 {
+		return nil, nil
+	}
+
+	// 提取并去重TenantId列表
+	tenantIdSet := make(map[int]struct{})
+	for _, user := range hosUsers {
+		if user.TenantId != nil {
+			tenantIdSet[*user.TenantId] = struct{}{}
+		}
+	}
+
+	// 将去重后的TenantId列表转换为切片
+	tenantIds := make([]int, 0, len(tenantIdSet))
+	for id := range tenantIdSet {
+		tenantIds = append(tenantIds, id)
+	}
+
+	// 查询sys_org表，获取对应的标签和值
+	var latelyHos []map[string]string
+	err = global.GVA_DB.Table("sys_org").Select("name as label, id as value").
+		Where("id IN (?)", tenantIds).Order("id desc").Scan(&latelyHos).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return latelyHos, nil
+}

@@ -212,3 +212,18 @@ func (hosUsersApi *HosUsersApi) GetHosUsersPublic(c *gin.Context) {
 		"info": "不需要鉴权的hosUsers表接口信息",
 	}, "获取成功", c)
 }
+
+func (hosUsersApi *HosUsersApi) GetHosUsersLastly(c *gin.Context) {
+	var pageInfo hosReq.HosUsersSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if dataSource, err := hosUsersService.GetHosUsersLastlyDataSource(pageInfo.CardNo); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(dataSource, c)
+	}
+}

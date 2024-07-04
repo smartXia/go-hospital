@@ -61,7 +61,7 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	if info.Phone != "" {
 		db = db.Where("phone = ?", info.Phone)
 	}
-	if info.Hospital != "" {
+	if info.Hospital != 0 {
 		db = db.Where("hospital = ?", info.Hospital)
 	}
 	if info.Dept != "" {
@@ -69,9 +69,6 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	}
 	if info.Post != "" {
 		db = db.Where("post = ?", info.Post)
-	}
-	if info.TenantId != 0 {
-		db = db.Where("tenant_id = ?", info.TenantId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -81,7 +78,8 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
-
+	db.Preload("DeptInfo")
+	db.Preload("PostInfo")
 	err = db.Find(&sysUserss).Error
 	return sysUserss, total, err
 }
