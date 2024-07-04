@@ -54,7 +54,7 @@ func (hosSportAdviceService *HosSportAdviceService) CreateHosSportAdvice(hosSpor
 				FlowId:         hosSportAdvice.FlowId,
 				AdviceId:       hosSportAdvice.ID,
 				Cishu:          i,
-				Name:           fmt.Sprintf("%s~%s %s %d 次运动打卡", clockStart, clockEndT, users.Username, i),
+				Name:           fmt.Sprintf("%s~%s %s %s 日上报打卡", start, end, users.Username, clockStart),
 				ClockStartTime: clockStart,
 				ClockEndTime:   clockEndT,
 				CreatedBy:      hosSportAdvice.CreatedBy,

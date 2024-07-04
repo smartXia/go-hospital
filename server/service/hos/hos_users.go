@@ -206,7 +206,7 @@ func (hosUsersService *HosUsersService) GetHosUsersDataSource() (res map[string]
 	return
 }
 
-func (hosUsersService *HosUsersService) GetHosUsersLastlyDataSource(cardNo string) ([]map[string]string, error) {
+func (hosUsersService *HosUsersService) GetHosUsersLastlyDataSource(cardNo string) ([]map[string]any, error) {
 	// 返回空结果和错误
 	if cardNo == "" {
 		return nil, nil
@@ -239,8 +239,8 @@ func (hosUsersService *HosUsersService) GetHosUsersLastlyDataSource(cardNo strin
 	}
 
 	// 查询sys_org表，获取对应的标签和值
-	var latelyHos []map[string]string
-	err = global.GVA_DB.Table("sys_org").Select("name as label, id as value").
+	var latelyHos []map[string]any
+	err = global.GVA_DB.Table("sys_org").Select("id,name").
 		Where("id IN (?)", tenantIds).Order("id desc").Scan(&latelyHos).Error
 	if err != nil {
 		return nil, err
