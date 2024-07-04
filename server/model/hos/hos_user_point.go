@@ -16,7 +16,7 @@ type HosUserPoint struct {
 	Total     *int   `json:"total" form:"total" gorm:"column:total;comment:共计积分;size:10;"`               //共计积分
 	TotalUse  *int   `json:"totalUse" form:"totalUse" gorm:"column:total_use;comment:可用积分;size:10;"`     //可用积分
 	Desc      string `json:"desc" form:"desc" gorm:"column:desc;comment:描述;size:500;"`                   //描述
-	Enable    *int   `json:"enable" form:"enable" gorm:"column:enable;comment:状态;size:10;"`              //状态
+	Enable    *int   `json:"enable" form:"enable" gorm:"default:1; column:enable;comment:状态;size:10;"`   //状态
 	Sort      *int   `json:"sort" form:"sort" gorm:"column:sort;comment:排序;size:10;"`                    //排序
 	TenantId  *int   `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户编号;size:10;"`     //租户编号
 	CreatedBy uint   `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`   //创建者

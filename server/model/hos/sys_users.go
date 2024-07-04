@@ -25,7 +25,7 @@ type SysUsers struct {
 	AuthorityId    *int         `json:"authorityId" form:"authorityId" gorm:"column:authority_id;comment:用户角色ID;size:20;"`         //用户角色ID
 	Phone          string       `json:"phone" form:"phone" gorm:"column:phone;comment:用户手机号;size:191;"`                            //用户手机号
 	Email          string       `json:"email" form:"email" gorm:"column:email;comment:用户邮箱;size:191;"`                             //用户邮箱
-	Enable         *int         `json:"enable" form:"enable" gorm:"column:enable;comment:用户是否被冻结 1正常 2冻结;size:19;"`                //用户是否被冻结 1正常 2冻结
+	Enable         *int         `json:"enable" form:"enable" gorm:"default:1; column:enable;comment:状态;size:10;"`                  //状态
 	Hospital       *int         `json:"hospital" form:"hospital" gorm:"column:hospital;comment:归属医院;size:255;"`                    //归属医院
 	Dept           *int         `json:"dept" form:"dept" gorm:"column:dept;comment:部门;size:255;"`                                  //部门
 	DeptInfo       SysDept      `json:"deptInfo" form:"deptInfo"  gorm:"foreignKey:id;references:Dept"`                            //部门

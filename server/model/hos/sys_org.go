@@ -12,7 +12,7 @@ type SysOrg struct {
 	Desc      string       `json:"desc" form:"desc" gorm:"column:desc;comment:描述;size:255;"`                   //描述
 	Img       string       `json:"img" form:"img" gorm:"column:img;comment:图标;size:255;"`                      //图标
 	Address   string       `json:"address" form:"address" gorm:"column:address;comment:详细地址;size:255;"`        //详细地址
-	Enable    *int         `json:"enable" form:"enable" gorm:"column:enable;comment:状态;"`                      //状态
+	Enable    *int         `json:"enable" form:"enable" gorm:"default:1; column:enable;comment:状态;size:10;"`   //状态
 	Sort      *int         `json:"sort" form:"sort" gorm:"column:sort;comment:排序;size:19;"`                    //排序
 	ManageId  *int         `json:"manageId" form:"manageId" gorm:"column:manage_id;comment:管理人id;size:19;"`    //管理人id
 	ParentId  *int         `json:"parentId" form:"parentId" gorm:"column:parent_id;comment:parentId;size:19;"` //parentId

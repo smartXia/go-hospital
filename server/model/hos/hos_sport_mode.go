@@ -20,7 +20,7 @@ type HosSportMode struct {
 	RelationVideos string       `json:"relationVideos" form:"relationVideos" gorm:"column:relation_videos;comment:;size:500;"`      //relationVideos字段
 	Source         string       `json:"source" form:"source" gorm:"column:source;comment:来源;size:255;"`                             //来源
 	Desc           string       `json:"desc" form:"desc" gorm:"column:desc;comment:描述;size:500;"`                                   //描述
-	Enable         *int         `json:"enable" form:"enable" gorm:"column:enable;comment:状态;size:10;"`                              //状态
+	Enable         *int         `json:"enable" form:"enable" gorm:"default:1; column:enable;comment:状态;size:10;"`                   //状态
 	Sort           *int         `json:"sort" form:"sort" gorm:"column:sort;comment:排序;size:10;"`
 	Hospital       *int         `json:"hospital" form:"hospital" gorm:"column:hospital;comment:归属医院;size:255;"`   //归属医院
 	TenantId       *int         `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户编号;size:10;"`   //租户编号

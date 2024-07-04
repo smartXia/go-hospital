@@ -18,7 +18,7 @@ type HosUsers struct {
 	Jianhuren       string       `json:"jianhuren" form:"jianhuren" gorm:"column:jianhuren;comment:监护人;size:255;"`                        //监护人
 	WxUuid          string       `json:"wxUuid" form:"wxUuid" gorm:"column:wx_uuid;comment:微信uuid;size:255;"`                             //微信uuid
 	Email           string       `json:"email" form:"email" gorm:"column:email;comment:用户邮箱;size:255;"`                                   //用户邮箱
-	Enable          *int         `json:"enable" form:"enable" gorm:"column:enable;comment:用户是否被冻结 1正常 2冻结;size:19;"`                      //用户是否被冻结 1正常 2冻结
+	Enable          *int         `json:"enable" form:"enable" gorm:"default:1; column:enable;comment:状态;size:10;"`                        //状态
 	YuyueType       string       `json:"yuyueType" form:"yuyueType" gorm:"column:yuyue_type;comment:预约类型;size:255;"`                      //预约类型
 	YuyueTime       string       `json:"yuyueTime" form:"yuyueTime" gorm:"column:yuyue_time;comment:预约时间;size:255;"`                      //预约时间
 	Birthday        string       `json:"birthday" form:"birthday" gorm:"column:birthday;comment:生日;size:255;"`                            //生日
@@ -35,7 +35,7 @@ type HosUsers struct {
 	Weight          *int         `json:"weight" form:"weight" gorm:"column:weight;comment:体重;size:255;"`                                  //体重
 	RegisterHos     string       `json:"registerHos" form:"registerHos" gorm:"column:register_hos;comment:第一次登记医院;size:255;"`             //第一次登记医院
 	LatelyHos       string       `json:"latelyHos" form:"latelyHos" gorm:"column:lately_hos;comment:近一次登记医院;size:255;"`                   //近一次登记医院
-	TenantId        *int         `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户id;"`                                  //租户id
+	TenantId        *int         `json:"tenantId" form:"tenantId" gorm:"default:0;column:tenant_id;comment:租户id;"`                        //租户id
 	CreatedBy       uint         `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                        //创建者
 	UpdatedBy       uint         `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                        //更新者
 	DeletedBy       *int         `json:"-" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                                //删除者

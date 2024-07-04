@@ -21,7 +21,7 @@ type HosSportAdvice struct {
 	SportMode    string       `json:"sportMode" form:"sportMode" gorm:"column:sport_mode;comment:建议;size:500;"`           //建议
 	Period       string       `json:"period" form:"period" gorm:"column:period;comment:周期;size:500;"`                     //周期
 	Desc         string       `json:"desc" form:"desc" gorm:"column:desc;comment:描述;size:500;"`                           //描述
-	Enable       *int         `json:"enable" form:"enable" gorm:"column:enable;comment:状态;size:10;"`                      //状态
+	Enable       *int         `json:"enable" form:"enable" gorm:"default:1; column:enable;comment:状态;size:10;"`           //状态
 	Sort         *int         `json:"sort" form:"sort" gorm:"column:sort;comment:排序;size:10;"`                            //排序
 	SyncWx       *int         `json:"syncWx" form:"syncWx" gorm:"column:sync_wx;comment:是否同步微信;size:10;"`                 //是否同步微信
 	TenantId     *int         `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户编号;size:10;"`             //租户编号

@@ -17,7 +17,7 @@ type HosSportClock struct {
 	Desc           string         `json:"desc" form:"desc" gorm:"column:desc;comment:描述;size:500;"`                                      //描述
 	ClockStartTime string         `json:"clockStartTime" form:"clockStartTime" gorm:"column:clock_start_time;comment:可以开始打卡时间;size:50;"` //可以开始打卡时间
 	ClockEndTime   string         `json:"clockEndTime" form:"clockEndTime" gorm:"column:clock_end_time;comment:打卡截至时间;size:50;"`         //打卡截至时间
-	Enable         *int           `json:"enable" form:"enable" gorm:"column:enable;comment:状态;size:10;"`                                 //状态
+	Enable         *int           `json:"enable" form:"enable" gorm:"default:1; column:enable;comment:状态;size:10;"`                      //状态
 	Sort           *int           `json:"sort" form:"sort" gorm:"column:sort;comment:排序;size:10;"`                                       //排序
 	TenantId       *int           `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户编号;size:10;"`                        //租户编号
 	CreatedBy      uint           `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                      //创建者
