@@ -84,12 +84,14 @@ func (sysDeptService *SysDeptService) GetSysDeptInfoList(info hosReq.SysDeptSear
 
 func (sysDeptService *SysDeptService) Tree(info hosReq.SysDeptSearch, ctx *gin.Context) (list []*hos.SysDept, err error) {
 	// 创建db
-	db := global.GVA_DB.Model(&hos.SysDept{}).Scopes(scope.TenantScope(ctx))
+	db := global.GVA_DB.Model(&hos.SysDept{})
+	//db := global.GVA_DB.Model(&hos.SysDept{}).Scopes(scope.TenantScope(ctx))
 	var sysDepts []*hos.SysDept
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.TenantId != 0 {
 		db.Where("tenant_id = ?", info.TenantId)
 	}
+	db.Order("id desc")
 	err = db.Find(&sysDepts).Error
 	sysDepts = hos.BuildDeptTree(sysDepts)
 	//tree := utils.BuildTree(sysDepts)

@@ -3,6 +3,7 @@ package hos
 
 import (
 	"devops-manage/global"
+	"sort"
 )
 
 // sysDept表 结构体  SysDept
@@ -39,7 +40,6 @@ func BuildDeptTree(depts []*SysDept) []*SysDept {
 		depts[i].Children = []*SysDept{}
 		deptMap[int(depts[i].ID)] = depts[i]
 	}
-
 	// 使用递归函数构建树结构，传入nil表示从根节点开始
 	return buildTree(deptMap, 0)
 }
@@ -53,5 +53,9 @@ func buildTree(deptMap map[int]*SysDept, parentId int) []*SysDept {
 			children = append(children, dept)
 		}
 	}
+	// Sort the children by ID
+	sort.Slice(children, func(i, j int) bool {
+		return children[i].ID < children[j].ID
+	})
 	return children
 }
