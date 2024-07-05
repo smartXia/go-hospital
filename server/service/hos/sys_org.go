@@ -8,6 +8,7 @@ import (
 	"devops-manage/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/sync/errgroup"
 )
 
 type SysOrgService struct {
@@ -87,7 +88,35 @@ func (sysOrgService *SysOrgService) GetSysOrgInfoList(info hosReq.SysOrgSearch, 
 	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
-
 	err = db.Find(&sysOrgs).Error
+	var list2 []hos.SysOrg
+	if len(sysOrgs) != 0 {
+		var g errgroup.Group
+		for _, org := range sysOrgs {
+			db1 := global.GVA_DB.Model(&hos.HosFlow{}).Scopes(scope.TenantScope(ctx))
+			db2 := global.GVA_DB.Model(&hos.HosUsers{}).Scopes(scope.TenantScope(ctx))
+			db3 := global.GVA_DB.Model(&hos.SysUsers{}).Where("hospital = ?", org.ID)
+			g.Go(func() error {
+				var uhC int64
+				var hC int64
+				var fC int64
+				err = db1.Count(&fC).Error
+				err = db2.Count(&hC).Error
+				err = db3.Count(&uhC).Error
+				if err != nil {
+					return err
+				}
+				org.HosUserNum = hC
+				org.SysUserNum = uhC
+				org.FlowNum = fC
+				list2 = append(list2, org)
+				return err
+			})
+		}
+		if err = g.Wait(); err != nil {
+			return
+		}
+		return list2, total, err
+	}
 	return sysOrgs, total, err
 }
