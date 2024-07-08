@@ -159,9 +159,21 @@ func (sysOrgApi *SysOrgApi) GetSysOrgList(c *gin.Context) {
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /sysOrg/getSysOrgPublic [get]
 func (sysOrgApi *SysOrgApi) GetSysOrgPublic(c *gin.Context) {
-	// 此接口不需要鉴权
-	// 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
-	response.OkWithDetailed(gin.H{
-		"info": "不需要鉴权的sysOrg表接口信息",
-	}, "获取成功", c)
+	var pageInfo hosReq.SysOrgSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if list, total, err := sysOrgService.GetSysOrgInfoList(pageInfo, c); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }

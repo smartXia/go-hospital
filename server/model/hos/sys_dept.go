@@ -21,6 +21,8 @@ type SysDept struct {
 	UpdatedBy uint         `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"` //更新者
 	DeletedBy *int         `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"` //删除者
 	TenantId  *int         `json:"tenantId" form:"tenantId" gorm:"column:tenant_id;comment:租户id;size:10;"`   //租户id
+	DeptNum   int          `json:"dept_num" form:"-" gorm:"-"`                                               //租户id
+	OrgInfo   SysOrg       `json:"orgInfo" form:"-" gorm:"foreignKey:id;references:TenantId"`                //租户id
 	SysUser   SysUsersInfo `json:"createdByInfo" form:"createdBy" gorm:"foreignKey:id;references:CreatedBy"` //创建者
 	Children  []*SysDept   `json:"children" gorm:"-"`
 }

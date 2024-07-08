@@ -16,7 +16,7 @@ type SysPostService struct {
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysPostService *SysPostService) CreateSysPost(sysPost *hos.SysPost, ctx *gin.Context) (err error, d *hos.SysPost) {
 	sysPost.CreatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysPost).Error
+	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(sysPost).Error
 	return err, sysPost
 }
 
@@ -72,6 +72,7 @@ func (sysPostService *SysPostService) GetSysPostInfoList(info hosReq.SysPostSear
 		return
 	}
 
+	db.Preload("OrgInfo")
 	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}

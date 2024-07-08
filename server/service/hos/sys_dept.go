@@ -16,7 +16,7 @@ type SysDeptService struct {
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysDeptService *SysDeptService) CreateSysDept(sysDept *hos.SysDept, ctx *gin.Context) (err error, d *hos.SysDept) {
 	sysDept.CreatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Create(sysDept).Error
+	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(sysDept).Error
 	return err, sysDept
 }
 
@@ -84,13 +84,14 @@ func (sysDeptService *SysDeptService) GetSysDeptInfoList(info hosReq.SysDeptSear
 
 func (sysDeptService *SysDeptService) Tree(info hosReq.SysDeptSearch, ctx *gin.Context) (list []*hos.SysDept, err error) {
 	// 创建db
-	db := global.GVA_DB.Model(&hos.SysDept{})
-	//db := global.GVA_DB.Model(&hos.SysDept{}).Scopes(scope.TenantScope(ctx))
+	//db := global.GVA_DB.Model(&hos.SysDept{})
+	db := global.GVA_DB.Model(&hos.SysDept{}).Scopes(scope.TenantScope(ctx))
 	var sysDepts []*hos.SysDept
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.TenantId != 0 {
 		db.Where("tenant_id = ?", info.TenantId)
 	}
+	db.Preload("OrgInfo")
 	db.Order("id desc")
 	err = db.Find(&sysDepts).Error
 	sysDepts = hos.BuildDeptTree(sysDepts)
