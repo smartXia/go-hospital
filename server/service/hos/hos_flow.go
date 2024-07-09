@@ -60,6 +60,9 @@ func (hosFlowService *HosFlowService) GetHosFlowInfoList(info hosReq.HosFlowSear
 	db := global.GVA_DB.Model(&hos.HosFlow{}).Scopes(scope.TenantScope(ctx))
 	var hosFlows []hos.HosFlow
 	// 如果有条件搜索 下方会自动创建搜索语句
+	if info.Type != "" {
+		db = db.Where("type = ?", info.Type)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

@@ -26,6 +26,7 @@ type HosSportClock struct {
 	HosSportAdvice HosSportAdvice `json:"hosSportAdviceInfo" form:"hosSportAdvice" gorm:"foreignKey:id;references:AdviceId"`             //运动建议id
 	SysUser        SysUsersInfo   `json:"createdByInfo" form:"sysUsers" gorm:"foreignKey:id;references:CreatedBy"`                       //创建者
 	HosFlow        HosFlow        `json:"hosFlowInfo" form:"hosFlowInfo" gorm:"foreignKey:id;references:FlowId"`                         //创建者
+	HosUsers       HosUsers       `json:"hosUsersInfo" form:"hosUsersInfo" gorm:"foreignKey:id;references:HosUserId"`                    //创建者
 }
 
 // TableName hosSportClock表 HosSportClock自定义表名 hos_sport_clock

@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/sync/errgroup"
+	"sort"
 )
 
 type SysOrgService struct {
@@ -116,7 +117,12 @@ func (sysOrgService *SysOrgService) GetSysOrgInfoList(info hosReq.SysOrgSearch, 
 		if err = g.Wait(); err != nil {
 			return
 		}
+		// Sort the children by ID
+		sort.Slice(list2, func(i, j int) bool {
+			return list2[i].ID < list2[j].ID
+		})
 		return list2, total, err
 	}
+
 	return sysOrgs, total, err
 }

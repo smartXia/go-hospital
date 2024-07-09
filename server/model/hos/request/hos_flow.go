@@ -11,6 +11,7 @@ type HosFlowSearch struct {
 	Enable         *int       `json:"enable" form:"enable" gorm:"column:enable;comment:状态;size:10;"` //状态
 	Name           string     `json:"name" form:"name" `
 	Uuid           string     `json:"uuid" form:"uuid" `
+	Type           string     `json:"type" form:"type" `
 	AskId          *int       `json:"askId" form:"askId" `
 	AdviceId       *int       `json:"adviceId" form:"adviceId" `
 	request.PageInfo

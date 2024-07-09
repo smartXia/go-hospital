@@ -20,8 +20,8 @@ type SysOrg struct {
 	CreatedBy  uint         `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:19;"`   //创建者
 	UpdatedBy  uint         `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:19;"`   //更新者
 	DeletedBy  uint         `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:19;"`   //删除者
-	HosUserNum int64        `json:"hosUserNum" form:"-" gorm:"column:-;comment:删除者;size:19;"`                   //删除者
-	SysUserNum int64        `json:"sysUserNum" form:"-" gorm:"column:-;comment:删除者;size:19;"`                   //删除者
+	HosUserNum int64        `json:"hosUserNum" form:"-" gorm:"-"`                                               //删除者
+	SysUserNum int64        `json:"sysUserNum" form:"-" gorm:"-"`                                               //删除者
 	FlowNum    int64        `json:"flowNum" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:19;"`     //删除者
 	SysUser    SysUsersInfo `json:"createdByInfo" form:"createdBy" gorm:"foreignKey:id;references:CreatedBy"`   //创建者
 }

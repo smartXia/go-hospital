@@ -88,6 +88,7 @@ func (hosSportClockService *HosSportClockService) GetHosSportDistinctClockList(i
 	db = db.Preload("HosSportAdvice")
 	db = db.Preload("HosFlow")
 	db = db.Preload("SysUser")
+	db = db.Preload("HosUsers")
 	db = db.Group("flow_id")
 	err = db.Count(&total).Error
 
@@ -125,6 +126,8 @@ func (hosSportClockService *HosSportClockService) GetHosSportClockInfoList(info 
 	}
 	if info.ClockEndTime != "" {
 		db = db.Where("clock_end_time < ?", info.ClockEndTime)
+	} else {
+		db = db.Where("clock_end_time <= ?", time.Now().Format("2006-01-02"))
 	}
 	err = db.Count(&total).Error
 	if err != nil {
@@ -161,19 +164,20 @@ func (hosSportClockService *HosSportClockService) GetCurrentUserHosSportClockLis
 	db = db.Preload("HosSportAdvice").Preload("HosSportAdvice.HosSportMode")
 	err = db.Find(&hosSportClocks).Order("id desc").Error
 
-	mapByDate := make(map[int][]hos.HosSportClock, 0)
+	mapByDate := make(map[string][]hos.HosSportClock, 0)
 	if len(hosSportClocks) != 0 {
 		for _, v := range hosSportClocks {
-			mapByDate[v.Cishu] = append(mapByDate[v.Cishu], v)
+			k := fmt.Sprintf("%d_%d", *v.HosUserId, v.Cishu)
+			mapByDate[k] = append(mapByDate[k], v)
 		}
 	}
 	// 提取 map 的所有 keys
-	keys := make([]int, 0, len(mapByDate))
+	keys := make([]string, 0, len(mapByDate))
 	for key := range mapByDate {
 		keys = append(keys, key)
 	}
 	// 对 keys 进行排序
-	sort.Ints(keys)
+	sort.Strings(keys)
 	for i, j := 0, len(keys)-1; i < j; i, j = i+1, j-1 {
 		keys[i], keys[j] = keys[j], keys[i]
 	}
@@ -194,9 +198,12 @@ func (hosSportClockService *HosSportClockService) GetCurrentUserHosSportClockLis
 		if err != nil {
 			return nil, 0, err
 		}
-		if parseS.Before(time.Now()) && parseE.After(time.Now()) {
+		//当前时间在开始时间和结束时间之间就是 进行中 就是 当前时间大于开始时间小于 结束时间
+		parseE = parseE.AddDate(0, 0, 1)
+		if time.Now().After(parseS) && time.Now().Before(parseE) {
 			current.Status = "process"
 		}
+
 		c = append(c, current)
 	}
 

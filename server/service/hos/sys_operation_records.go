@@ -64,11 +64,12 @@ func (sysOperationRecordsService *SysOperationRecordsService) GetSysOperationRec
 	if info.Action != "" {
 		db = db.Where("action = ?", info.Action)
 	}
+	db = db.Where("user_id != 0")
 	err = db.Count(&total).Error
 	if err != nil {
 		return
 	}
-
+	db.Preload("SysUsersInfo")
 	if limit != 0 {
 		db = db.Limit(limit).Offset(offset).Order("id desc")
 	}
