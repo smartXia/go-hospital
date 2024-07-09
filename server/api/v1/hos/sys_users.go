@@ -34,7 +34,7 @@ func (sysUsersApi *SysUsersApi) CreateSysUsers(c *gin.Context) {
 
 	if err, d := sysUsersService.CreateSysUsers(&sysUsers, c); err != nil {
 		global.GVA_LOG.Error("创建失败!", zap.Error(err))
-		response.FailWithMessage("创建失败", c)
+		response.FailWithMessage(err.Error(), c)
 	} else {
 		response.OkWithData(d, c)
 	}

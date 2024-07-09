@@ -10,7 +10,7 @@ type HosUsers struct {
 	global.GVA_MODEL
 	Uuid            string       `json:"uuid" form:"uuid" gorm:"column:uuid;comment:用户UUID;size:255;"`                                    //用户UUID
 	Username        string       `json:"username" form:"username" gorm:"column:username;comment:用户登录名;size:255;"`                         //用户登录名
-	Password        string       `json:"-" form:"password" gorm:"column:password;comment:用户登录密码;size:255;"`                               //用户登录密码
+	Password        string       `json:"password" form:"password" gorm:"column:password;comment:用户登录密码;size:255;"`                        //用户登录密码
 	NickName        string       `json:"nickName" form:"nickName" gorm:"column:nick_name;comment:用户昵称;size:255;"`                         //用户昵称
 	HeaderImg       string       `json:"headerImg" form:"headerImg" gorm:"column:header_img;comment:用户头像;size:255;"`                      //用户头像
 	Phone           string       `json:"phone" form:"phone" gorm:"column:phone;comment:用户手机号;size:20;"`                                   //用户手机号

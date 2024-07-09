@@ -5,7 +5,9 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
+	"devops-manage/model/system"
 	"devops-manage/utils"
+	"errors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,8 +17,21 @@ type SysUsersService struct {
 // CreateSysUsers 创建sysUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysUsersService *SysUsersService) CreateSysUsers(sysUsers *hos.SysUsers, ctx *gin.Context) (err error, d *hos.SysUsers) {
+	if sysUsers.Phone != "" {
+		su := hos.SysUsers{}
+		global.GVA_DB.Scopes(scope.TenantScope(ctx)).Where("phone = ?", sysUsers.Phone).First(&su)
+		if su.ID != 0 {
+			return errors.New("手机号已经存在"), d
+		}
+	}
+	var authorities []system.SysAuthority
+	authorities = append(authorities, system.SysAuthority{
+		AuthorityId: sysUsers.AuthorityId,
+	})
+	sysUsers.Authorities = authorities
 	sysUsers.Uuid = utils.UniqueId()
 	sysUsers.CreatedBy = utils.GetUserID(ctx)
+	sysUsers.Password = utils.BcryptHash(sysUsers.Password)
 	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(sysUsers).Error
 	return err, sysUsers
 }
