@@ -8,7 +8,7 @@ import (
 
 type SysUser struct {
 	global.GVA_MODEL
-	UUID           uuid.UUID      `json:"uuid" gorm:"index;comment:用户UUID"`                                                     // 用户UUID
+	UUID           uuid.UUID      `json:"uuid" form:"-"  gorm:"index;comment:用户UUID"`                                           // 用户UUID
 	Username       string         `json:"userName" gorm:"index;comment:用户登录名"`                                                  // 用户登录名
 	Password       string         `json:"-"  gorm:"comment:用户登录密码"`                                                             // 用户登录密码
 	NickName       string         `json:"nickName" gorm:"default:系统用户;comment:用户昵称"`                                            // 用户昵称
@@ -35,6 +35,7 @@ type SysUser struct {
 	School         string         `json:"school" form:"school" gorm:"column:school;comment:毕业院校;size:500;"`                          //毕业院校
 	GraduationTime string         `json:"graduationTime" form:"graduationTime" gorm:"column:graduation_time;comment:毕业时间;size:255;"` //毕业时间
 	Desc           string         `json:"desc" form:"desc" gorm:"column:desc;comment:个人简介;size:2000;"`                               //个人简介
+	CreatedBy      uint           `json:"createdBy" form:"createdBy" gorm:"column:created_by;comment:创建者;size:20;"`                  //创建者
 }
 
 func (SysUser) TableName() string {

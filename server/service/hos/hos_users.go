@@ -188,7 +188,6 @@ func (hosUsersService *HosUsersService) GetHosUsersIds(info hosReq.HosUsersSearc
 func (hosUsersService *HosUsersService) GetHosUsersIdsByPhone(ctx *gin.Context) (list []uint, err error) {
 	// 创建db
 	phone := utils.GetUserPhone(ctx)
-	phone = "18260356308"
 	if phone == "" {
 		return nil, err
 	}

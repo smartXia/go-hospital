@@ -5,7 +5,6 @@ import (
 	"devops-manage/model/common/scope"
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
-	"devops-manage/model/system"
 	"devops-manage/utils"
 	"errors"
 	"github.com/gin-gonic/gin"
@@ -24,15 +23,18 @@ func (sysUsersService *SysUsersService) CreateSysUsers(sysUsers *hos.SysUsers, c
 			return errors.New("手机号已经存在"), d
 		}
 	}
-	var authorities []system.SysAuthority
-	authorities = append(authorities, system.SysAuthority{
-		AuthorityId: sysUsers.AuthorityId,
-	})
-	sysUsers.Authorities = authorities
 	sysUsers.Uuid = utils.UniqueId()
 	sysUsers.CreatedBy = utils.GetUserID(ctx)
 	sysUsers.Password = utils.BcryptHash(sysUsers.Password)
-	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(sysUsers).Error
+	err = global.GVA_DB.Scopes().Create(sysUsers).Error
+	if sysUsers.AuthorityId != 0 {
+		a := hos.SysUserAuthority{
+			SysUserId:               sysUsers.ID,
+			SysAuthorityAuthorityId: sysUsers.AuthorityId,
+		}
+		db := global.GVA_DB.Model(&hos.SysUserAuthority{})
+		err = db.Create(&a).Error
+	}
 	return err, sysUsers
 }
 
