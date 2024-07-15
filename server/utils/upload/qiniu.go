@@ -2,15 +2,15 @@ package upload
 
 import (
 	"context"
+	"devops-manage/global"
+	"devops-manage/utils"
 	"errors"
 	"fmt"
-	"mime/multipart"
-	"time"
-
-	"devops-manage/global"
 	"github.com/qiniu/api.v7/v7/auth/qbox"
 	"github.com/qiniu/api.v7/v7/storage"
 	"go.uber.org/zap"
+	"mime/multipart"
+	"time"
 )
 
 type Qiniu struct{}
@@ -39,12 +39,14 @@ func (*Qiniu) UploadFile(file *multipart.FileHeader) (string, string, error) {
 
 		return "", "", errors.New("function file.Open() failed, err:" + openError.Error())
 	}
-	defer f.Close()                                                  // 创建文件 defer 关闭
-	fileKey := fmt.Sprintf("%d%s", time.Now().Unix(), file.Filename) // 文件名格式 自己可以改 建议保证唯一性
+	defer f.Close()
+	// 创建文件 defer 关闭
+	a := utils.MD5V([]byte(file.Filename))
+	fileKey := fmt.Sprintf("%s_%s_%d", a, file.Filename, time.Now().Unix()) // 文件名格式 自己可以改 建议保证唯一性
 	putErr := formUploader.Put(context.Background(), &ret, upToken, fileKey, f, file.Size, &putExtra)
 	if putErr != nil {
 		global.GVA_LOG.Error("function formUploader.Put() failed", zap.Any("err", putErr.Error()))
-		return "", "", errors.New("function formUploader.Put() failed, err:" + putErr.Error())
+		//return "", "", errors.New("function formUploader.Put() failed, err:" + putErr.Error())
 	}
 	return global.GVA_CONFIG.Qiniu.ImgPath + "/" + ret.Key, ret.Key, nil
 }

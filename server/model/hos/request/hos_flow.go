@@ -13,6 +13,7 @@ type HosFlowSearch struct {
 	Uuid           string     `json:"uuid" form:"uuid" `
 	Type           string     `json:"type" form:"type" `
 	AskId          *int       `json:"askId" form:"askId" `
+	HosUserId      *int       `json:"hosUserId" form:"hosUserId" `
 	AdviceId       *int       `json:"adviceId" form:"adviceId" `
 	request.PageInfo
 }

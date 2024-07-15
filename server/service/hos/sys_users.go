@@ -33,7 +33,7 @@ func (sysUsersService *SysUsersService) CreateSysUsers(sysUsers *hos.SysUsers, c
 			SysAuthorityAuthorityId: sysUsers.AuthorityId,
 		}
 		db := global.GVA_DB.Model(&hos.SysUserAuthority{})
-		err = db.Create(&a).Error
+		_ = db.Create(&a).Error
 	}
 	return err, sysUsers
 }
@@ -73,13 +73,18 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := global.GVA_DB.Model(&hos.SysUsers{}).Scopes(scope.TenantScope(ctx))
+	db := global.GVA_DB.Model(&hos.SysUsers{})
+	if info.Hospital != 0 {
+		db = db.Where("hospital = ?", info.Hospital)
+	} else {
+		tid := utils.GetTenantId(ctx)
+		if tid != 0 {
+			db = db.Where("tenant_id = ?", tid)
+		}
+	}
 	var sysUserss []hos.SysUsers
 	if info.Phone != "" {
 		db = db.Where("phone = ?", info.Phone)
-	}
-	if info.Hospital != 0 {
-		db = db.Where("hospital = ?", info.Hospital)
 	}
 	if info.Dept != "" {
 		db = db.Where("dept = ?", info.Dept)

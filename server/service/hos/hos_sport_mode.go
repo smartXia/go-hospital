@@ -159,7 +159,7 @@ func (hosSportModeService *HosSportModeService) GetHosSportModeMatrix(info hosRe
 func getAttrByField(field string) (res []string, count int64) {
 	db := global.GVA_DB.Model(&hos.HosSportMode{})
 	db = db.Distinct(field)
-	db.Count(&count)
+	db.Count(&count).Order("id desc")
 	db.Find(&res)
 
 	return res, count

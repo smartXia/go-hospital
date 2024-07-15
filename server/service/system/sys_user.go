@@ -139,7 +139,7 @@ func (userService *UserService) LoginByCode(code string, c *gin.Context) (userIn
 		return nil, err
 	}
 	var phoneResponse system.PhoneResponse
-	phoneResponse.PhoneInfo.PhoneNumber = "18260356308"
+	//phoneResponse.PhoneInfo.PhoneNumber = "18260356308"
 	err = json.NewDecoder(resp.Body).Decode(&phoneResponse)
 	//if err != nil {
 	//	fmt.Println("Error decoding JSON response:", err)

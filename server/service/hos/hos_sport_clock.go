@@ -11,6 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"math"
 	"sort"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -27,15 +29,25 @@ func (hosSportClockService *HosSportClockService) CreateHosSportClock(hosSportCl
 
 // DeleteHosSportClock 删除hosSportClock表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosSportClockService *HosSportClockService) DeleteHosSportClock(ID string, ctx *gin.Context) (err error) {
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&hos.HosSportClock{}, "id = ?", ID).Error
+func (hosSportClockService *HosSportClockService) DeleteHosSportClock(ID, flowId string, ctx *gin.Context) (err error) {
+	//todo 删除直接给流程
+	if flowId != "" {
+		//删除和这个flowID相关所有的建议id
+		err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&hos.HosSportClock{}, "flow_id = ?", flowId).Error
+	} else {
+		err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&hos.HosSportClock{}, "id = ?", ID).Error
+	}
 	return err
 }
 
 // DeleteHosSportClockByIds 批量删除hosSportClock表记录
 // Author [piexlmax](https://github.com/piexlmax)
-func (hosSportClockService *HosSportClockService) DeleteHosSportClockByIds(IDs []string, ctx *gin.Context) (err error) {
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&[]hos.HosSportClock{}, "id in ?", IDs).Error
+func (hosSportClockService *HosSportClockService) DeleteHosSportClockByIds(IDs []string, flowIds []string, ctx *gin.Context) (err error) {
+	if len(flowIds) != 0 {
+		err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&[]hos.HosSportClock{}, "flow_id in ?", flowIds).Error
+	} else {
+		err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&[]hos.HosSportClock{}, "id in ?", IDs).Error
+	}
 	return err
 }
 
@@ -123,12 +135,15 @@ func (hosSportClockService *HosSportClockService) GetHosSportClockInfoList(info 
 	}
 	if info.ClockStartTime != "" {
 		db = db.Where("clock_start_time > ?", info.ClockStartTime)
+	} else {
+		db = db.Where("clock_start_time <= ?", time.Now().Format("2006-01-02"))
 	}
 	if info.ClockEndTime != "" {
 		db = db.Where("clock_end_time < ?", info.ClockEndTime)
-	} else {
-		db = db.Where("clock_end_time <= ?", time.Now().Format("2006-01-02"))
 	}
+	//else {
+	//	db = db.Where("clock_end_time <= ?", time.Now().Format("2006-01-02"))
+	//}
 	err = db.Count(&total).Error
 	if err != nil {
 		return
@@ -150,16 +165,14 @@ func (hosSportClockService *HosSportClockService) GetCurrentUserHosSportClockLis
 	// 筛选条件 就可以 判断今天属于 哪个打卡 周期
 	db := global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx))
 	var hosSportClocks []hos.HosSportClock
-	start := time.Now().Format("2006-01-02")
-
+	//start := time.Now().Format("2006-01-02")
 	uids, err := GetUserIds(ctx)
 	if len(uids) == 0 {
 		return list, 0, nil
 	}
-
 	db = db.Where("hos_user_id in ?", uids)
 	//db = db.Where("hos_user_id = ?", 49)
-	db = db.Where("clock_start_time <= ?", start)
+	db = db.Where("clock_start_time <= ?", "2024-07-17")
 	db = db.Preload("HosSportAdvice").Preload("SysUser")
 	db = db.Preload("HosSportAdvice").Preload("HosSportAdvice.HosSportMode")
 	err = db.Find(&hosSportClocks).Order("id desc").Error
@@ -177,13 +190,9 @@ func (hosSportClockService *HosSportClockService) GetCurrentUserHosSportClockLis
 		keys = append(keys, key)
 	}
 	// 对 keys 进行排序
-	sort.Strings(keys)
-	for i, j := 0, len(keys)-1; i < j; i, j = i+1, j-1 {
-		keys[i], keys[j] = keys[j], keys[i]
-	}
+	keys = crossSort(keys)
 	var c []ClockPlan
 	for _, key := range keys {
-
 		current := ClockPlan{
 			Name:              mapByDate[key][0].Name,
 			Image:             mapByDate[key][0].HosSportAdvice.Images,
@@ -208,6 +217,57 @@ func (hosSportClockService *HosSportClockService) GetCurrentUserHosSportClockLis
 	}
 
 	return c, total, err
+}
+func maxMapLength(scores map[int][]int) int {
+	maxLength := 0
+	for _, v := range scores {
+		if len(v) > maxLength {
+			maxLength = len(v)
+		}
+	}
+	return maxLength
+}
+
+func crossSort(strSlice []string) []string {
+	// Map to store each main version's highest subversions
+	sort.Strings(strSlice)
+	for i, j := 0, len(strSlice)-1; i < j; i, j = i+1, j-1 {
+		strSlice[i], strSlice[j] = strSlice[j], strSlice[i]
+	}
+
+	scores := make(map[int][]int)
+
+	// Populate the scores map
+	for _, str := range strSlice {
+		parts := strings.Split(str, "_")
+		mainVersion, _ := strconv.Atoi(parts[0])
+		subVersion, _ := strconv.Atoi(parts[1])
+		scores[mainVersion] = append(scores[mainVersion], subVersion)
+	}
+	// Sort keys in descending order of main version
+	keys := make([]int, 0, len(scores))
+	for key := range scores {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool {
+		return keys[i] > keys[j]
+	})
+	// Construct result based on sorted keys and subversions
+	var result []string
+	length := maxMapLength(scores)
+	for i := 0; i < length; i++ {
+		for _, key := range keys {
+			i2, ok := scores[key]
+			if ok != true {
+				continue
+			}
+			if len(i2) > i {
+				i3 := i2[i]
+				result = append(result, fmt.Sprintf("%d_%d", key, i3))
+			}
+		}
+	}
+	return result
 }
 
 func process(hs []hos.HosSportClock) int {

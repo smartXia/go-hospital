@@ -51,7 +51,8 @@ func (hosSportClockApi *HosSportClockApi) CreateHosSportClock(c *gin.Context) {
 // @Router /hosSportClock/deleteHosSportClock [delete]
 func (hosSportClockApi *HosSportClockApi) DeleteHosSportClock(c *gin.Context) {
 	ID := c.Query("ID")
-	if err := hosSportClockService.DeleteHosSportClock(ID, c); err != nil {
+	flowId := c.Query("flowId")
+	if err := hosSportClockService.DeleteHosSportClock(ID, flowId, c); err != nil {
 		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
@@ -69,7 +70,8 @@ func (hosSportClockApi *HosSportClockApi) DeleteHosSportClock(c *gin.Context) {
 // @Router /hosSportClock/deleteHosSportClockByIds [delete]
 func (hosSportClockApi *HosSportClockApi) DeleteHosSportClockByIds(c *gin.Context) {
 	IDs := c.QueryArray("IDs[]")
-	if err := hosSportClockService.DeleteHosSportClockByIds(IDs, c); err != nil {
+	flowIds := c.QueryArray("flowIds[]")
+	if err := hosSportClockService.DeleteHosSportClockByIds(IDs, flowIds, c); err != nil {
 		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {

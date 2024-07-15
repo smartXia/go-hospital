@@ -7,6 +7,7 @@ import (
 	"devops-manage/model/system"
 	systemReq "devops-manage/model/system/request"
 	systemRes "devops-manage/model/system/response"
+	"devops-manage/service/hos"
 	"devops-manage/utils"
 	"strconv"
 	"time"
@@ -58,10 +59,21 @@ func (b *BaseApi) Login(c *gin.Context) {
 		response.FailWithMessage("用户名不存在或者密码错误", c)
 		return
 	}
+	org := hos.SysOrgService{}
+	if user.Hospital != 0 {
+		parseInt := strconv.Itoa(l.Hospital)
+		sysOrg, err := org.GetSysOrg(parseInt, c)
+		if err != nil {
+			return
+		}
+		if *sysOrg.Enable != 1 {
+			global.GVA_LOG.Error("登陆失败! 机构未开启!")
+			response.FailWithMessage("机构未开启", c)
+			return
+		}
+	}
 	if user.Enable != 1 {
 		global.GVA_LOG.Error("登陆失败! 用户被禁止登录!")
-		// 验证码次数+1
-		global.BlackCache.Increment(key, 1)
 		response.FailWithMessage("用户被禁止登录", c)
 		return
 	}

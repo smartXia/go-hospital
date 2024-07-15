@@ -63,6 +63,9 @@ func (hosFlowService *HosFlowService) GetHosFlowInfoList(info hosReq.HosFlowSear
 	if info.Type != "" {
 		db = db.Where("type = ?", info.Type)
 	}
+	if info.HosUserId != nil {
+		db = db.Where("hos_user_id = ?", info.HosUserId)
+	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return

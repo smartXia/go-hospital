@@ -32,7 +32,7 @@ func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, c
 		db.Find(&d)
 		//直接返回详情
 		if d.ID != 0 {
-			return err, hosUsers
+			return err, d
 		}
 	}
 	err = db.Create(hosUsers).Error
@@ -195,6 +195,7 @@ func (hosUsersService *HosUsersService) GetHosUsersIdsByPhone(ctx *gin.Context) 
 	var hosUserss []hos.HosUsers
 	// 如果有条件搜索 下方会自动创建搜索语句
 	// 通过搜索患者id对应的监护人创建人 获取hos_user_id
+	//phone = "18260356308"
 	db = db.Where("phone = ?", phone)
 	err = db.Find(&hosUserss).Error
 	if len(hosUserss) != 0 {
