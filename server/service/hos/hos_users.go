@@ -24,9 +24,10 @@ func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, c
 	if hosUsers.Username != "" && hosUsers.NickName == "" {
 		hosUsers.NickName = hosUsers.Username
 	}
-	db := global.GVA_DB.Scopes(scope.TenantSaveScope(ctx))
+
 	//后端原则是同一个tenantId 下可以存在两名患者但是身份证号必须不一致
 	if hosUsers.CardNo != "" && hosUsers.Phone != "" {
+		db := global.GVA_DB.Scopes(scope.TenantScope(ctx))
 		db.Where("card_no =?", hosUsers.CardNo)
 		db.Where("phone =?", hosUsers.Phone)
 		db.Find(&d)
@@ -35,6 +36,7 @@ func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, c
 			return err, d
 		}
 	}
+	db := global.GVA_DB.Scopes(scope.TenantSaveScope(ctx))
 	err = db.Create(hosUsers).Error
 	//埋点
 	go UpdateUserPoint(ctx, hosUsers.ID, constants.REGISTER)
