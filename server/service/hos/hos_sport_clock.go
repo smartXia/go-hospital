@@ -165,14 +165,14 @@ func (hosSportClockService *HosSportClockService) GetCurrentUserHosSportClockLis
 	// 筛选条件 就可以 判断今天属于 哪个打卡 周期
 	db := global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx))
 	var hosSportClocks []hos.HosSportClock
-	//start := time.Now().Format("2006-01-02")
+	start := time.Now().Format("2006-01-02")
 	uids, err := GetUserIds(ctx)
 	if len(uids) == 0 {
 		return list, 0, nil
 	}
 	db = db.Where("hos_user_id in ?", uids)
 	//db = db.Where("hos_user_id = ?", 49)
-	db = db.Where("clock_start_time <= ?", "2024-07-17")
+	db = db.Where("clock_start_time <= ?", start)
 	db = db.Preload("HosSportAdvice").Preload("SysUser")
 	db = db.Preload("HosSportAdvice").Preload("HosSportAdvice.HosSportMode")
 	err = db.Find(&hosSportClocks).Order("id desc").Error

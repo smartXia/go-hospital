@@ -9,7 +9,7 @@ gox -os "linux" -arch amd64
 ├── docs
 ├── global
 ├── initialize
-│   └── internal
+│   └── internalx
 ├── middleware
 ├── model
 │   ├── request
