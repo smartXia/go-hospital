@@ -29,6 +29,7 @@ type HosSportAdvice struct {
 	UpdatedBy    uint         `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`           //更新者
 	DeletedBy    *int         `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`           //删除者
 	SysUser      SysUsersInfo `json:"createdByInfo" form:"sysUsers" gorm:"foreignKey:id;references:CreatedBy"`            //创建者
+	HosUsers     HosUsers     `json:"hosUsersInfo" form:"hosUsersInfo" gorm:"foreignKey:id;references:HosUserId"`         //创建者
 	HosSportMode HosSportMode `json:"HosSportModInfo" form:"HosSportModInfo" gorm:"foreignKey:id;references:SportModeId"` //运动建议id
 }
 

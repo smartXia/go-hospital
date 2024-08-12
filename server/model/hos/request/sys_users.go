@@ -11,6 +11,7 @@ type SysUsersSearch struct {
 
 	Phone    string `json:"phone" form:"phone" `
 	Hospital int    `json:"hospital" form:"hospital" `
+	NickName string `json:"nickName" form:"nickName" `
 	Dept     string `json:"dept" form:"dept" `
 	Post     string `json:"post" form:"post" `
 	TenantId int    `json:"tenantId" form:"tenantId" `

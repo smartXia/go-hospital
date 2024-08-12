@@ -91,6 +91,9 @@ func (sysDeptService *SysDeptService) Tree(info hosReq.SysDeptSearch, ctx *gin.C
 	if info.TenantId != 0 {
 		db.Where("tenant_id = ?", info.TenantId)
 	}
+	if info.Name != "" {
+		db.Where("name = ?", info.Name)
+	}
 	db.Preload("OrgInfo")
 	db.Order("id desc")
 	err = db.Find(&sysDepts).Error

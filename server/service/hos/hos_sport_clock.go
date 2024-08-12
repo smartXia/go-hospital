@@ -73,26 +73,30 @@ func (hosSportClockService *HosSportClockService) GetHosSportDistinctClockList(i
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx))
+	db := global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TableTenantScope(ctx, "hos_sport_clock"))
 	var hosSportClocks []hos.HosSportClock
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
+	if info.Name != "" {
+		db.Joins("JOIN `hos_users`  ON hos_sport_clock.hos_user_id = hos_users.id")
+		db = db.Where("hos_users.username = ?", info.Name)
+	}
 	if info.HosUserId != nil {
-		db = db.Where("hos_user_id = ?", info.HosUserId)
+		db = db.Where("hos_sport_clock.hos_user_id = ?", info.HosUserId)
 	}
 	if info.FlowId != nil {
-		db = db.Where("flow_id = ?", info.FlowId)
+		db = db.Where("hos_sport_clock.flow_id = ?", info.FlowId)
 	}
 	if info.AdviceId != nil {
-		db = db.Where("advice_id = ?", info.AdviceId)
+		db = db.Where("hos_sport_clock.advice_id = ?", info.AdviceId)
 	}
 	if info.ClockStartTime != "" {
-		db = db.Where("clock_start_time > ?", info.ClockStartTime)
+		db = db.Where("hos_sport_clock.clock_start_time > ?", info.ClockStartTime)
 	}
 	if info.ClockEndTime != "" {
-		db = db.Where("clock_end_time < ?", info.ClockEndTime)
+		db = db.Where("hos_sport_clock.clock_end_time < ?", info.ClockEndTime)
 	}
 	if err != nil {
 		return

@@ -57,21 +57,28 @@ func (hosFlowService *HosFlowService) GetHosFlowInfoList(info hosReq.HosFlowSear
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
 
-	db := global.GVA_DB.Model(&hos.HosFlow{}).Scopes(scope.TenantScope(ctx))
+	db := global.GVA_DB.Model(&hos.HosFlow{}).Scopes(scope.TableTenantScope(ctx, "hos_flow"))
 	var hosFlows []hos.HosFlow
+	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
+		db = db.Where("hos_flow.created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
+	}
+	if info.Name != "" {
+		db.Joins("JOIN `hos_users`  ON hos_flow.hos_user_id = hos_users.id")
+		db = db.Where("hos_users.username = ?", info.Name)
+	}
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.Type != "" {
-		db = db.Where("type = ?", info.Type)
+		db = db.Where("hos_flow.type = ?", info.Type)
 	}
 	if info.HosUserId != nil {
-		db = db.Where("hos_user_id = ?", info.HosUserId)
+		db = db.Where("hos_flow.hos_user_id = ?", info.HosUserId)
 	}
 	err = db.Count(&total).Error
 	if err != nil {
 		return
 	}
 	if limit != 0 {
-		db = db.Limit(limit).Offset(offset).Order("id desc")
+		db = db.Limit(limit).Offset(offset).Order("hos_flow.id desc")
 	}
 	db.Preload("HosScale").Preload("HosScale.SysUser").
 		Preload("HosLocalAsk").Preload("HosLocalAsk.SysUser").

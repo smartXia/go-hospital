@@ -227,3 +227,17 @@ func (hosUsersApi *HosUsersApi) GetHosUsersLastly(c *gin.Context) {
 		response.OkWithData(dataSource, c)
 	}
 }
+func (hosUsersApi *HosUsersApi) GetCurrentUsersFuzhenList(c *gin.Context) {
+	var pageInfo hosReq.HosUsersSearch
+	err := c.ShouldBindQuery(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if dataSource, err := hosUsersService.GetCurrentUsersFuzhenList(c); err != nil {
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		response.FailWithMessage("查询失败", c)
+	} else {
+		response.OkWithData(dataSource, c)
+	}
+}

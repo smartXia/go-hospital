@@ -18,10 +18,13 @@ type SysUsersService struct {
 func (sysUsersService *SysUsersService) CreateSysUsers(sysUsers *hos.SysUsers, ctx *gin.Context) (err error, d *hos.SysUsers) {
 	if sysUsers.Phone != "" {
 		su := hos.SysUsers{}
-		global.GVA_DB.Scopes(scope.TenantScope(ctx)).Where("phone = ?", sysUsers.Phone).First(&su)
+		global.GVA_DB.Scopes(scope.TenantScope(ctx)).Where("phone = ?", sysUsers.Phone).Where("deleted_at != ?", nil).First(&su)
 		if su.ID != 0 {
 			return errors.New("手机号已经存在"), d
 		}
+	}
+	if sysUsers.Username != "" && sysUsers.NickName == "" {
+		sysUsers.NickName = sysUsers.Username
 	}
 	sysUsers.Uuid = utils.UniqueId()
 	sysUsers.CreatedBy = utils.GetUserID(ctx)
@@ -41,7 +44,7 @@ func (sysUsersService *SysUsersService) CreateSysUsers(sysUsers *hos.SysUsers, c
 // DeleteSysUsers 删除sysUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysUsersService *SysUsersService) DeleteSysUsers(ID string, ctx *gin.Context) (err error) {
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Delete(&hos.SysUsers{}, "id = ?", ID).Error
+	err = global.GVA_DB.Delete(&hos.SysUsers{}, "id = ?", ID).Error
 	return err
 }
 
@@ -56,14 +59,14 @@ func (sysUsersService *SysUsersService) DeleteSysUsersByIds(IDs []string, ctx *g
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysUsersService *SysUsersService) UpdateSysUsers(sysUsers hos.SysUsers, ctx *gin.Context) (err error) {
 	sysUsers.UpdatedBy = utils.GetUserID(ctx)
-	err = global.GVA_DB.Model(&hos.SysUsers{}).Scopes(scope.TenantScope(ctx)).Where("id = ?", sysUsers.ID).Updates(&sysUsers).Error
+	err = global.GVA_DB.Model(&hos.SysUsers{}).Where("id = ?", sysUsers.ID).Updates(&sysUsers).Error
 	return err
 }
 
 // GetSysUsers 根据ID获取sysUsers表记录
 // Author [piexlmax](https://github.com/piexlmax)
 func (sysUsersService *SysUsersService) GetSysUsers(ID string, ctx *gin.Context) (sysUsers hos.SysUsers, err error) {
-	err = global.GVA_DB.Scopes(scope.TenantScope(ctx)).Where("id = ?", ID).First(&sysUsers).Error
+	err = global.GVA_DB.Where("id = ?", ID).First(&sysUsers).Error
 	return
 }
 
@@ -88,6 +91,9 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	}
 	if info.Dept != "" {
 		db = db.Where("dept = ?", info.Dept)
+	}
+	if info.NickName != "" {
+		db = db.Where("username = ?", info.NickName)
 	}
 	if info.Post != "" {
 		db = db.Where("post = ?", info.Post)

@@ -175,6 +175,7 @@ func (sysDeptApi *SysDeptApi) GetSysDeptPublic(c *gin.Context) {
 // @Param data query hosReq.SysDeptSearch true "分页获取sysDept表列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /sysDept/getSysDeptList [get]
+
 func (sysDeptApi *SysDeptApi) Tree(c *gin.Context) {
 	var pageInfo hosReq.SysDeptSearch
 	err := c.ShouldBindQuery(&pageInfo)

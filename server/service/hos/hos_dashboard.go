@@ -101,11 +101,12 @@ func (hosDashboardService *HosDashboardService) GetCurrentDashBoardInfo(info hos
 	if hosDashboard.ID == 0 {
 		return hos.HosDashboard{}, nil
 	}
-	if hosDashboard.Enable == nil {
+	if *hosDashboard.Enable != 1 {
 		return hosDashboard, err
 	} else {
 		//默认处理
 		return hosDashboard, err
+
 	}
 }
 

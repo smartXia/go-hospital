@@ -145,7 +145,7 @@ func (hosSportModeService *HosSportModeService) GetHosSportModeMatrix(info hosRe
 	// 创建db
 	tmp := make(map[string][]string, 0)
 	for _, s := range Field {
-		field, _ := getAttrByField(s)
+		field, _ := getAttrByField(s, info)
 		tmp[s] = field
 	}
 	res = make(map[string][]string, 6)
@@ -156,8 +156,32 @@ func (hosSportModeService *HosSportModeService) GetHosSportModeMatrix(info hosRe
 	return res, total, err
 }
 
-func getAttrByField(field string) (res []string, count int64) {
+func getAttrByField(field string, info hosReq.HosSportModeSearch) (res []string, count int64) {
 	db := global.GVA_DB.Model(&hos.HosSportMode{})
+	if info.Category != "" {
+		tmp := strings.Split(info.Category, ",")
+		db = db.Where("category in ?", tmp)
+	}
+	if info.Buwei != "" {
+		tmp := strings.Split(info.Buwei, ",")
+		db = db.Where("buwei in ?", tmp)
+	}
+	if info.Tiduan != "" {
+		tmp := strings.Split(info.Tiduan, ",")
+		db = db.Where("tiduan in ?", tmp)
+	}
+	if info.Xingdong != "" {
+		tmp := strings.Split(info.Xingdong, ",")
+		db = db.Where("xingdong in ?", tmp)
+	}
+	if info.Fangxiang != "" {
+		tmp := strings.Split(info.Fangxiang, ",")
+		db = db.Where("fangxiang in ?", tmp)
+	}
+	if info.Weizhi != "" {
+		tmp := strings.Split(info.Weizhi, ",")
+		db = db.Where("weizhi = ?", tmp)
+	}
 	db = db.Distinct(field)
 	db.Count(&count).Order("id desc")
 	db.Find(&res)

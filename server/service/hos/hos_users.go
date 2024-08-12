@@ -9,6 +9,7 @@ import (
 	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"time"
 )
 
 type HosUsersService struct {
@@ -197,7 +198,7 @@ func (hosUsersService *HosUsersService) GetHosUsersIdsByPhone(ctx *gin.Context) 
 	var hosUserss []hos.HosUsers
 	// 如果有条件搜索 下方会自动创建搜索语句
 	// 通过搜索患者id对应的监护人创建人 获取hos_user_id
-	//phone = "13815409887"
+	//phone = "18260356308"
 	db = db.Where("phone = ?", phone)
 	err = db.Find(&hosUserss).Error
 	if len(hosUserss) != 0 {
@@ -261,4 +262,22 @@ func (hosUsersService *HosUsersService) GetHosUsersLastlyDataSource(cardNo strin
 	}
 
 	return latelyHos, nil
+}
+
+func (hosUsersService *HosUsersService) GetCurrentUsersFuzhenList(ctx *gin.Context) (list []hos.HosSportAdvice, err error) {
+	//var hosUserss []hos.HosUsers
+	uids, err := GetUserIds(ctx)
+	if len(uids) == 0 {
+		return list, nil
+	}
+	day7 := time.Now().AddDate(0, 0, 7).Format("2006-01-02")
+	today := time.Now().Format("2006-01-02")
+	var hosAdvice []hos.HosSportAdvice
+	db := global.GVA_DB.Model(&hos.HosSportAdvice{}).Scopes(scope.TenantScope(ctx))
+	db = db.Where("hos_user_id in ?", uids)
+	db = db.Where("fuzhenriqi <= ?", day7)
+	db = db.Where("fuzhenriqi >= ?", today)
+	db = db.Preload("HosUsers").Group("hos_user_id")
+	db.Find(&hosAdvice)
+	return hosAdvice, nil
 }

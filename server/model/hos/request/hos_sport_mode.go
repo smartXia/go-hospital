@@ -9,10 +9,11 @@ type HosSportModeSearch struct {
 	StartCreatedAt *time.Time `json:"startCreatedAt" form:"startCreatedAt"`
 	EndCreatedAt   *time.Time `json:"endCreatedAt" form:"endCreatedAt"`
 
-	Hospital  int    `json:"hospital" form:"hospital" `
-	All       int    `json:"all" form:"all" `
-	Name      string `json:"name" form:"name" `
-	Enable    *int   `json:"enable" form:"enable" `
+	Hospital int    `json:"hospital" form:"hospital" `
+	All      int    `json:"all" form:"all" `
+	Name     string `json:"name" form:"name" `
+	Enable   *int   `json:"enable" form:"enable" `
+
 	Category  string `json:"category" form:"category" `
 	Buwei     string `json:"buwei" form:"buwei" `
 	Tiduan    string `json:"tiduan" form:"tiduan" `

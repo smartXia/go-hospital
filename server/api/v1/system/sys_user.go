@@ -447,7 +447,8 @@ func (b *BaseApi) GetUserInfo(c *gin.Context) {
 	ReqUser, err := userService.GetUserInfo(uuid)
 	if err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
-		response.FailWithMessage("获取失败", c)
+		//response.FailWithMessage("获取失败", c)
+		response.NoAuth("您的帐户异地登陆或令牌失效", c)
 		return
 	}
 	response.OkWithDetailed(gin.H{"userInfo": ReqUser}, "获取成功", c)

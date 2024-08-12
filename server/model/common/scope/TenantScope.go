@@ -2,6 +2,7 @@ package scope
 
 import (
 	"devops-manage/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"log/slog"
@@ -15,6 +16,17 @@ func TenantScope(ctx *gin.Context) func(db *gorm.DB) *gorm.DB {
 		tid := utils.GetTenantId(ctx)
 		if tid != 0 {
 			return db.Where("tenant_id = ?", tid)
+		} else {
+			return db
+		}
+	}
+}
+
+func TableTenantScope(ctx *gin.Context, tableName string) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		tid := utils.GetTenantId(ctx)
+		if tid != 0 {
+			return db.Where(fmt.Sprintf("%s.tenant_id = ?", tableName), tid)
 		} else {
 			return db
 		}
