@@ -20,5 +20,6 @@ type HosSportModeSearch struct {
 	Xingdong  string `json:"xingdong" form:"xingdong" `
 	Fangxiang string `json:"fangxiang" form:"fangxiang" `
 	Weizhi    string `json:"weizhi" form:"weizhi" `
+	CreatedBy int    `json:"created_by" form:"createdBy"`
 	request.PageInfo
 }

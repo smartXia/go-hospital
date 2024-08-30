@@ -89,11 +89,14 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	if info.Phone != "" {
 		db = db.Where("phone = ?", info.Phone)
 	}
+	if info.Enable != nil {
+		db = db.Where("enable = ?", info.Enable)
+	}
 	if info.Dept != "" {
 		db = db.Where("dept = ?", info.Dept)
 	}
 	if info.NickName != "" {
-		db = db.Where("username = ?", info.NickName)
+		db = db.Where("nick_name LIKE ?", "%"+info.NickName+"%")
 	}
 	if info.Post != "" {
 		db = db.Where("post = ?", info.Post)
@@ -108,6 +111,7 @@ func (sysUsersService *SysUsersService) GetSysUsersInfoList(info hosReq.SysUsers
 	}
 	db.Preload("DeptInfo")
 	db.Preload("PostInfo")
+	db.Preload("OrgInfo")
 	err = db.Find(&sysUserss).Error
 	return sysUserss, total, err
 }

@@ -114,3 +114,9 @@ func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, 
 	}
 	return f, nil
 }
+
+func (e *FileUploadAndDownloadService) Token() (token string, err error) {
+	oss := upload.NewOss()
+	t := oss.Token()
+	return t, err
+}

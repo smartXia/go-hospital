@@ -45,6 +45,8 @@ type SysUsers struct {
 	UpdatedBy      uint         `json:"updatedBy" form:"updatedBy" gorm:"column:updated_by;comment:更新者;size:20;"`                  //更新者
 	DeletedBy      *uint        `json:"deletedBy" form:"deletedBy" gorm:"column:deleted_by;comment:删除者;size:20;"`                  //删除者
 	SysUser        SysUsersInfo `json:"createdByInfo" form:"createdBy" gorm:"foreignKey:id;references:CreatedBy"`                  //创建者
+
+	OrgInfo SysOrg `json:"orgInfo" form:"-" gorm:"foreignKey:id;references:hospital"`
 }
 
 // TableName sysUsers表 SysUsers自定义表名 sys_users

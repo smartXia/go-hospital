@@ -54,19 +54,19 @@ type Duiliefenlei struct {
 
 func (hosd *HosDashboard) BuildInitDashBoardDate(hosDashboard *HosDashboard) (err error) {
 	if hosDashboard.JizhuduilieTotal == "" {
-		hosd.JizhuduilieTotal = "1000"
+		hosd.JizhuduilieTotal = "998"
 	}
 	if hosDashboard.XinxishagnbaoTotal == "" {
-		hosd.XinxishagnbaoTotal = "1000"
+		hosd.XinxishagnbaoTotal = "998"
 	}
 	if hosDashboard.XianchagnzhenliaoTotal == "" {
-		hosd.XianchagnzhenliaoTotal = "1000"
+		hosd.XianchagnzhenliaoTotal = "998"
 	}
 	if hosDashboard.YundongjianyiTotal == "" {
-		hosd.YundongjianyiTotal = "1000"
+		hosd.YundongjianyiTotal = "998"
 	}
 	if hosDashboard.XianshagndakaTotal == "" {
-		hosd.XianshagndakaTotal = "1000"
+		hosd.XianshagndakaTotal = "998"
 	}
 
 	var a []Duilienianling
@@ -101,21 +101,21 @@ func (hosd *HosDashboard) BuildInitDashBoardDate(hosDashboard *HosDashboard) (er
 			Total:         0,
 		})
 	}
-	if hosDashboard.Duilienianling == "" {
+	if hosDashboard.Duilienianling == "" || hosDashboard.Duilienianling == "[]" {
 		aa, _ := json.Marshal(a)
 		hosd.Duilienianling = string(aa)
 	}
-	if hosDashboard.Duilieyanzhongxing == "" {
+	if hosDashboard.Duilieyanzhongxing == "" || hosDashboard.Duilieyanzhongxing == "[]" {
 		bb, _ := json.Marshal(b)
 		hosd.Duilieyanzhongxing = string(bb)
 	}
 
-	if hosDashboard.Duiliefenlei == "" {
+	if hosDashboard.Duiliefenlei == "" || hosDashboard.Duiliefenlei == "[]" {
 		cc, _ := json.Marshal(c)
 		hosd.Duiliefenlei = string(cc)
 
 	}
-	if hosDashboard.Diqupaihang == "" {
+	if hosDashboard.Diqupaihang == "" || hosDashboard.Diqupaihang == "[]" {
 		dd, _ := json.Marshal(d)
 		hosd.Diqupaihang = string(dd)
 	}

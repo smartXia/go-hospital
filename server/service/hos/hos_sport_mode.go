@@ -6,6 +6,7 @@ import (
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
 	"devops-manage/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
@@ -97,6 +98,9 @@ func (hosSportModeService *HosSportModeService) GetHosSportModeInfoList(info hos
 		tmp := strings.Split(info.Weizhi, ",")
 		db = db.Where("weizhi = ?", tmp)
 	}
+	if info.CreatedBy != 0 {
+		db = db.Where("created_by = ?", info.CreatedBy)
+	}
 	id := utils.GetUserAuthorityId(ctx)
 	if id == 100 {
 		//管理员 那么去掉tenantId查询 获取所有的
@@ -183,7 +187,7 @@ func getAttrByField(field string, info hosReq.HosSportModeSearch) (res []string,
 		db = db.Where("weizhi = ?", tmp)
 	}
 	db = db.Distinct(field)
-	db.Count(&count).Order("id desc")
+	db.Count(&count).Order(fmt.Sprintf("%s desc", field))
 	db.Find(&res)
 
 	return res, count

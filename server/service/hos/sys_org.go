@@ -26,6 +26,8 @@ func (sysOrgService *SysOrgService) CreateSysOrg(sysOrg *hos.SysOrg, ctx *gin.Co
 
 	var hosDashboard hos.HosDashboard
 	hosDashboard.OrgId = sysOrg.ID
+	a := int(sysOrg.ID)
+	hosDashboard.TenantId = &a
 	hosDashboard.Name = fmt.Sprintf("%s-医院大屏", sysOrg.Name)
 	if err, _ := hosDashboardService.CreateHosDashboard(&hosDashboard, ctx, 1); err != nil {
 

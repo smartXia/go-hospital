@@ -15,6 +15,13 @@ import (
 
 type Qiniu struct{}
 
+func (q *Qiniu) Token() string {
+	putPolicy := storage.PutPolicy{Scope: global.GVA_CONFIG.Qiniu.Bucket}
+	mac := qbox.NewMac(global.GVA_CONFIG.Qiniu.AccessKey, global.GVA_CONFIG.Qiniu.SecretKey)
+	upToken := putPolicy.UploadToken(mac)
+	return upToken
+}
+
 //@author: [piexlmax](https://github.com/piexlmax)
 //@author: [ccfish86](https://github.com/ccfish86)
 //@author: [SliverHorn](https://github.com/SliverHorn)

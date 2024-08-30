@@ -16,9 +16,9 @@ type HosDashboardService struct {
 // Author [piexlmax](https://github.com/piexlmax)
 func (hosDashboardService *HosDashboardService) CreateHosDashboard(hosDashboard *hos.HosDashboard, ctx *gin.Context, init int) (err error, d *hos.HosDashboard) {
 	hosDashboard.CreatedBy = utils.GetUserID(ctx)
-	if init == 1 {
-		hosDashboard.BuildInitDashBoardDate(hosDashboard)
-	}
+	//if init == 1 {
+	hosDashboard.BuildInitDashBoardDate(hosDashboard)
+	//}
 	err = global.GVA_DB.Scopes(scope.TenantSaveScope(ctx)).Create(hosDashboard).Error
 	return err, hosDashboard
 }

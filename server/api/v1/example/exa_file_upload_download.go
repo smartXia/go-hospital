@@ -39,6 +39,16 @@ func (b *FileUploadAndDownloadApi) UploadFile(c *gin.Context) {
 	response.OkWithDetailed(exampleRes.ExaFileResponse{File: file}, "上传成功", c)
 }
 
+func (b *FileUploadAndDownloadApi) Token(c *gin.Context) {
+	//noSave := c.DefaultQuery("noSave", "0")
+
+	token, err := fileUploadAndDownloadService.Token()
+	if err != nil {
+		return
+	} // 文件上传后拿到文件路径
+	response.OkWithData(token, c)
+}
+
 // EditFileName 编辑文件名或者备注
 func (b *FileUploadAndDownloadApi) EditFileName(c *gin.Context) {
 	var file example.ExaFileUploadAndDownload
