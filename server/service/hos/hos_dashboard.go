@@ -7,6 +7,7 @@ import (
 	hosReq "devops-manage/model/hos/request"
 	"devops-manage/utils"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 type HosDashboardService struct {
@@ -101,10 +102,33 @@ func (hosDashboardService *HosDashboardService) GetCurrentDashBoardInfo(info hos
 	if hosDashboard.ID == 0 {
 		return hos.HosDashboard{}, nil
 	}
-	if *hosDashboard.Enable != 1 {
+	if *hosDashboard.Enable == 1 {
 		return hosDashboard, err
 	} else {
+		//脊椎队列 就是flow数量
+		var flowNum int64
+		global.GVA_DB.Model(&hos.HosFlow{}).Scopes(scope.TenantScope(ctx)).Count(&flowNum)
+		hosDashboard.JizhuduilieTotal = strconv.FormatInt(flowNum, 10)
+		//信息上报就是sacle数量
+		var scaleNum int64
+		global.GVA_DB.Model(&hos.HosScale{}).Scopes(scope.TenantScope(ctx)).Count(&scaleNum)
+		hosDashboard.XinxishagnbaoTotal = strconv.FormatInt(scaleNum, 10)
+		//现场诊疗就是local
+		var localNum int64
+		global.GVA_DB.Model(&hos.HosLocalAsk{}).Scopes(scope.TenantScope(ctx)).Count(&localNum)
+		hosDashboard.XianchagnzhenliaoTotal = strconv.FormatInt(localNum, 10)
+		//运动建议就是建议
+		var adviceNum int64
+		global.GVA_DB.Model(&hos.HosSportAdvice{}).Scopes(scope.TenantScope(ctx)).Count(&adviceNum)
+		hosDashboard.YundongjianyiTotal = strconv.FormatInt(adviceNum, 10)
+		//打卡数量就是总打卡数量
+		var clockNum int64
+		global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx)).Count(&clockNum)
+		hosDashboard.XianshagndakaTotal = strconv.FormatInt(clockNum, 10)
 		//默认处理
+
+		//hosDashboard.Diqupaihang=
+
 		return hosDashboard, err
 
 	}
