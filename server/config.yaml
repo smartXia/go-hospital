@@ -53,22 +53,22 @@ cors:
           expose-headers: Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type
           allow-credentials: true
 db-list:
-    - type: ""
-      alias-name: ""
-      prefix: ""
-      port: ""
-      config: ""
-      db-name: ""
-      username: ""
-      password: ""
-      path: ""
-      engine: ""
-      log-mode: ""
-      max-idle-conns: 10
-      max-open-conns: 100
-      singular: false
-      log-zap: false
-      disable: true
+      - type: ""
+        alias-name: ""
+        prefix: ""
+        port: ""
+        config: ""
+        db-name: ""
+        username: ""
+        password: ""
+        path: ""
+        engine: ""
+        log-mode: ""
+        max-idle-conns: 10
+        max-open-conns: 100
+        singular: false
+        log-zap: false
+        disable: true
 excel:
     dir: ./resource/excel/
 jwt:

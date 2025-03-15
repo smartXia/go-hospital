@@ -34,6 +34,7 @@ type HosDashboard struct {
 
 type Diqupaihang struct {
 	Province      string `json:"province"`
+	City          string `json:"city"`
 	WeekIncrease  int    `json:"week"`
 	MonthIncrease int    `json:"month"`
 	YearIncrease  int    `json:"year"`

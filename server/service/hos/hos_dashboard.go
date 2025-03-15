@@ -6,7 +6,9 @@ import (
 	"devops-manage/model/hos"
 	hosReq "devops-manage/model/hos/request"
 	"devops-manage/utils"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/sync/errgroup"
 	"strconv"
 )
 
@@ -105,29 +107,215 @@ func (hosDashboardService *HosDashboardService) GetCurrentDashBoardInfo(info hos
 	if *hosDashboard.Enable == 1 {
 		return hosDashboard, err
 	} else {
+		var g errgroup.Group
+
 		//脊椎队列 就是flow数量
 		var flowNum int64
-		global.GVA_DB.Model(&hos.HosFlow{}).Scopes(scope.TenantScope(ctx)).Count(&flowNum)
-		hosDashboard.JizhuduilieTotal = strconv.FormatInt(flowNum, 10)
+		g.Go(func() error {
+			global.GVA_DB.Model(&hos.HosFlow{}).Scopes(scope.TenantScope(ctx)).Count(&flowNum)
+			hosDashboard.JizhuduilieTotal = strconv.FormatInt(flowNum, 10)
+			return nil
+		})
 		//信息上报就是sacle数量
 		var scaleNum int64
-		global.GVA_DB.Model(&hos.HosScale{}).Scopes(scope.TenantScope(ctx)).Count(&scaleNum)
-		hosDashboard.XinxishagnbaoTotal = strconv.FormatInt(scaleNum, 10)
+		g.Go(func() error {
+			global.GVA_DB.Model(&hos.HosScale{}).Scopes(scope.TenantScope(ctx)).Count(&scaleNum)
+			hosDashboard.XinxishagnbaoTotal = strconv.FormatInt(scaleNum, 10)
+			return nil
+		})
 		//现场诊疗就是local
 		var localNum int64
-		global.GVA_DB.Model(&hos.HosLocalAsk{}).Scopes(scope.TenantScope(ctx)).Count(&localNum)
-		hosDashboard.XianchagnzhenliaoTotal = strconv.FormatInt(localNum, 10)
+		g.Go(func() error {
+			global.GVA_DB.Model(&hos.HosLocalAsk{}).Scopes(scope.TenantScope(ctx)).Count(&localNum)
+			hosDashboard.XianchagnzhenliaoTotal = strconv.FormatInt(localNum, 10)
+			return nil
+		})
 		//运动建议就是建议
 		var adviceNum int64
-		global.GVA_DB.Model(&hos.HosSportAdvice{}).Scopes(scope.TenantScope(ctx)).Count(&adviceNum)
-		hosDashboard.YundongjianyiTotal = strconv.FormatInt(adviceNum, 10)
+		g.Go(func() error {
+			global.GVA_DB.Model(&hos.HosSportAdvice{}).Scopes(scope.TenantScope(ctx)).Count(&adviceNum)
+			hosDashboard.YundongjianyiTotal = strconv.FormatInt(adviceNum, 10)
+			return nil
+		})
 		//打卡数量就是总打卡数量
 		var clockNum int64
-		global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx)).Count(&clockNum)
-		hosDashboard.XianshagndakaTotal = strconv.FormatInt(clockNum, 10)
+		g.Go(func() error {
+			global.GVA_DB.Model(&hos.HosSportClock{}).Scopes(scope.TenantScope(ctx)).Count(&clockNum)
+			hosDashboard.XianshagndakaTotal = strconv.FormatInt(clockNum, 10)
+			return nil
+		})
 		//默认处理
+		//开始处理 其他的表格数据
+		var diqupaihang []hos.Diqupaihang
+		//SELECT province, city, COUNT(*) AS user_count
+		//FROM hos_users
+		//GROUP BY province, city
+		//ORDER BY total DESC;
+		//1.地区排行
+		g.Go(func() error {
+			global.GVA_DB.Model(&hos.HosUsers{}).
+				Scopes(scope.TenantScope(ctx)).
+				Select("province, city, COUNT(*) AS total").
+				Where("province != ?", "").Where("city != ?", "").
+				Group("province, city").
+				Order("total desc").
+				Scan(&diqupaihang)
+			if len(diqupaihang) != 0 {
+				marshal, err := json.Marshal(diqupaihang)
+				if err != nil {
+					return err
+				}
+				hosDashboard.Diqupaihang = string(marshal)
+			}
+			return nil
+		})
 
-		//hosDashboard.Diqupaihang=
+		//2.年龄范围
+		var duilienianling []hos.Duilienianling
+		g.Go(func() error {
+			//遍历 duilienianling 分类 年龄范围
+			//0≦幼儿≦2：2<儿童≦6：6<少年≦14：14<青年≦
+			//35、35<中年≦60、老年>60
+			global.GVA_DB.
+				Table("hos_users").             // 使用 Table 代替 Model，方便后续 Scope
+				Scopes(scope.TenantScope(ctx)). // 作用于整个查询
+				Select(`
+        CASE 
+            WHEN age BETWEEN 0 AND 2 THEN '幼儿'
+            WHEN age BETWEEN 3 AND 6 THEN '儿童'
+            WHEN age BETWEEN 7 AND 14 THEN '少年'
+            WHEN age BETWEEN 15 AND 35 THEN '青年'
+            WHEN age BETWEEN 36 AND 60 THEN '中年'
+            WHEN age > 60 THEN '老年'
+        END AS name,
+        COUNT(*) AS number
+    `).
+				Where("age != ?", 0).
+				Group(`
+        CASE 
+            WHEN age BETWEEN 0 AND 2 THEN '幼儿'
+            WHEN age BETWEEN 3 AND 6 THEN '儿童'
+            WHEN age BETWEEN 7 AND 14 THEN '少年'
+            WHEN age BETWEEN 15 AND 35 THEN '青年'
+            WHEN age BETWEEN 36 AND 60 THEN '中年'
+            WHEN age > 60 THEN '老年'
+        END
+    `).
+				Order("number DESC").
+				Scan(&duilienianling)
+
+			if len(duilienianling) != 0 {
+				marshal, err := json.Marshal(duilienianling)
+				if err != nil {
+					return err
+				}
+				hosDashboard.Duilienianling = string(marshal)
+			}
+			return nil
+		})
+		//3.队列严重性
+		var duilieyanzhongxing []hos.Duilieyanzhongxing
+		g.Go(func() error {
+			global.GVA_DB.
+				Table("hos_local_ask").         // 使用 Table 代替 Model，方便后续 Scope
+				Scopes(scope.TenantScope(ctx)). // 作用于整个查询
+				Raw(`
+    SELECT 
+        '轻' AS name, COUNT(CASE WHEN jizhucewan LIKE '%轻%' THEN 1 END) AS number
+    FROM hos_local_ask
+    UNION
+    SELECT 
+        '轻度温和' AS name, COUNT(CASE WHEN jizhucewan LIKE '%轻度温和%' THEN 1 END) AS number
+    FROM hos_local_ask
+    UNION
+    SELECT 
+        '温和' AS name, COUNT(CASE WHEN jizhucewan LIKE '%温和%' THEN 1 END) AS number
+    FROM hos_local_ask
+    UNION
+    SELECT 
+        '温和严重' AS name, COUNT(CASE WHEN jizhucewan LIKE '%温和严重%' THEN 1 END) AS number
+    FROM hos_local_ask
+    UNION
+    SELECT 
+        '建议手术' AS name, COUNT(CASE WHEN jizhucewan LIKE '%建议手术%' THEN 1 END) AS number
+    FROM hos_local_ask
+    UNION
+    SELECT 
+        '必须手术' AS name, COUNT(CASE WHEN jizhucewan LIKE '%必须手术%' THEN 1 END) AS number
+    FROM hos_local_ask
+`).Scan(&duilieyanzhongxing)
+			if len(duilieyanzhongxing) != 0 {
+				marshal, err := json.Marshal(duilieyanzhongxing)
+				if err != nil {
+					return err
+				}
+				hosDashboard.Duilieyanzhongxing = string(marshal)
+			}
+			return nil
+		})
+		//4.病形统计
+		var duiliefenlei []hos.Duiliefenlei
+		g.Go(func() error {
+			// Execute the SQL query to fetch the counts for each condition
+			global.GVA_DB.
+				Table("hos_local_ask"). // 使用 Table 代替 Model，方便后续 Scope
+				Scopes(scope.TenantScope(ctx)).
+				Raw(`
+    SELECT 
+        '脊柱侧弯' AS name, 
+        COUNT(*) AS number
+    FROM hos_local_ask
+    WHERE jizhucewan REGEXP '[一-龥]'
+    UNION
+    SELECT 
+        '矢状面障碍' AS name, 
+        COUNT(*) AS number
+    FROM hos_local_ask
+    WHERE shizhuangmianzhangai REGEXP '[一-龥]'
+    UNION
+    SELECT 
+        '脊椎化脱' AS name, 
+        COUNT(*) AS number
+    FROM hos_local_ask
+    WHERE jizhuihuatuo REGEXP '[一-龥]'
+    UNION
+    SELECT 
+        '长短脚' AS name, 
+        COUNT(*) AS number
+    FROM hos_local_ask
+    WHERE changduanjiao REGEXP '[一-龥]'
+    UNION
+    SELECT 
+        '背痛' AS name, 
+        COUNT(*) AS number
+    FROM hos_local_ask
+    WHERE beitong REGEXP '[一-龥]'
+    UNION
+    SELECT 
+        '其他' AS name, 
+        COUNT(*) AS number
+    FROM hos_local_ask
+    WHERE jizhucewan NOT REGEXP '[一-龥]' 
+      AND shizhuangmianzhangai NOT REGEXP '[一-龥]' 
+      AND jizhuihuatuo NOT REGEXP '[一-龥]' 
+      AND changduanjiao NOT REGEXP '[一-龥]' 
+      AND beitong NOT REGEXP '[一-龥]'
+`).Scan(&duiliefenlei)
+
+			// Handle potential errors
+			if len(duiliefenlei) != 0 {
+				// Optionally, marshal the result into JSON
+				marshal, _ := json.Marshal(duiliefenlei)
+				// Assign the result to a field in your dashboard or struct
+				hosDashboard.Duiliefenlei = string(marshal)
+			}
+			// Return nil if no error
+			return nil
+		})
+
+		if err := g.Wait(); err != nil {
+			return hos.HosDashboard{}, err
+		}
 
 		return hosDashboard, err
 
