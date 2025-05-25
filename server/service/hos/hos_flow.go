@@ -64,7 +64,7 @@ func (hosFlowService *HosFlowService) GetHosFlowInfoList(info hosReq.HosFlowSear
 	}
 	// 如果需要联表 hos_users
 	if info.Name != "" || info.Phone != "" || info.YuyueType != "" {
-		db.Joins("JOIN `hos_users`  ON hos_sport_clock.hos_user_id = hos_users.id")
+		db.Joins("JOIN `hos_users`  ON hos_flow.hos_user_id = hos_users.id")
 	}
 	if info.YuyueType != "" {
 		db = db.Where("hos_users.yuyue_type = ?", info.YuyueType)
