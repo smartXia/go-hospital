@@ -1,6 +1,7 @@
 ## server项目结构
 
 gox -os "linux" -arch amd64
+gox -os "linux" -arch amd64
 ```shell
 ├── api
 │   └── v1

@@ -15,5 +15,7 @@ type HosFlowSearch struct {
 	AskId          *int       `json:"askId" form:"askId" `
 	HosUserId      *int       `json:"hosUserId" form:"hosUserId" `
 	AdviceId       *int       `json:"adviceId" form:"adviceId" `
+	Phone          string     `json:"phone" form:"phone" `
+	YuyueType      string     `json:"yuyueType" form:"yuyueType"`
 	request.PageInfo
 }

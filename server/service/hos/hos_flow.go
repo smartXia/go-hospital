@@ -62,8 +62,17 @@ func (hosFlowService *HosFlowService) GetHosFlowInfoList(info hosReq.HosFlowSear
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("hos_flow.created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
+	// 如果需要联表 hos_users
+	if info.Name != "" || info.Phone != "" || info.YuyueType != "" {
+		db.Joins("JOIN `hos_users`  ON hos_sport_clock.hos_user_id = hos_users.id")
+	}
+	if info.YuyueType != "" {
+		db = db.Where("hos_users.yuyue_type = ?", info.YuyueType)
+	}
+	if info.Phone != "" {
+		db = db.Where("hos_users.phone = ?", info.Phone)
+	}
 	if info.Name != "" {
-		db.Joins("JOIN `hos_users`  ON hos_flow.hos_user_id = hos_users.id")
 		db = db.Where("hos_users.username = ?", info.Name)
 	}
 	// 如果有条件搜索 下方会自动创建搜索语句

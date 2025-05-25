@@ -15,5 +15,7 @@ type HosSportClockSearch struct {
 	AdviceId       *int   `json:"adviceId" form:"adviceId" `
 	ClockStartTime string `json:"clockStartTime" form:"clockStartTime" `
 	ClockEndTime   string `json:"clockEndTime" form:"clockEndTime" `
+	Phone          string `json:"phone" form:"phone" `
+	YuyueType      string `json:"yuyueType" form:"yuyueType"`
 	request.PageInfo
 }

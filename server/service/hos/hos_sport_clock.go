@@ -79,8 +79,16 @@ func (hosSportClockService *HosSportClockService) GetHosSportDistinctClockList(i
 	if info.StartCreatedAt != nil && info.EndCreatedAt != nil {
 		db = db.Where("created_at BETWEEN ? AND ?", info.StartCreatedAt, info.EndCreatedAt)
 	}
-	if info.Name != "" {
+	if info.Name != "" || info.Phone != "" || info.YuyueType != "" {
 		db.Joins("JOIN `hos_users`  ON hos_sport_clock.hos_user_id = hos_users.id")
+	}
+	if info.YuyueType != "" {
+		db = db.Where("hos_users.yuyue_type = ?", info.YuyueType)
+	}
+	if info.Phone != "" {
+		db = db.Where("hos_users.phone = ?", info.Phone)
+	}
+	if info.Name != "" {
 		db = db.Where("hos_users.username = ?", info.Name)
 	}
 	if info.HosUserId != nil {

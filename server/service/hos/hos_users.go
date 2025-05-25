@@ -34,6 +34,10 @@ func (hosUsersService *HosUsersService) CreateHosUsers(hosUsers *hos.HosUsers, c
 		db.Find(&d)
 		//直接返回详情
 		if d.ID != 0 {
+			//更新信息 和返回最新信息
+			err = db.Model(&hos.HosUsers{}).Where("id = ?", d.ID).Updates(&hosUsers).Error
+			//更新完查询这个id 相关信息
+			err = db.First(&d).Error
 			return err, d
 		}
 	}
@@ -198,7 +202,7 @@ func (hosUsersService *HosUsersService) GetHosUsersIdsByPhone(ctx *gin.Context) 
 	var hosUserss []hos.HosUsers
 	// 如果有条件搜索 下方会自动创建搜索语句
 	// 通过搜索患者id对应的监护人创建人 获取hos_user_id
-	phone = "15951697667"
+	//phone = "15951697667"
 	db = db.Where("phone = ?", phone)
 	err = db.Find(&hosUserss).Error
 	if len(hosUserss) != 0 {
